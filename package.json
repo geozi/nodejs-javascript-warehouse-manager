@@ -1,0 +1,26 @@
+{
+  "name": "nodejs-warehouse-manager",
+  "version": "1.0.0",
+  "description": "This is a demo project for a small warehouse manager app",
+  "main": "app.js",
+  "scripts": {
+    "start": "node src/app.js",
+    "test": "jest --coverage",
+    "test:detect": "jest --detectOpenHandles",
+    "dev": "nodemon src/app.js"
+  },
+  "author": "geozi",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "express": "^4.21.1",
+    "express-validator": "^7.2.0",
+    "mongoose": "^7.8.3",
+    "mongoose-unique-validator": "^4.0.1"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "mockingoose": "^2.16.2",
+    "nodemon": "^3.1.7"
+  }
+}
