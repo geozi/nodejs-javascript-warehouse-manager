@@ -5,8 +5,10 @@
   "main": "app.js",
   "scripts": {
     "start": "npm start",
-    "test": "jest --coverage",
-    "dev": "nodemon src/app.js"
+    "test": "jest",
+    "testWithCoverage": "jest --coverage",
+    "dev": "nodemon src/app.js",
+    "lint": "eslint ."
   },
   "keywords": [
     "RESTful API"
@@ -21,6 +23,9 @@
     "mongoose-unique-validator": "^4.0.1"
   },
   "devDependencies": {
+    "@eslint/js": "^9.17.0",
+    "eslint": "^9.17.0",
+    "globals": "^15.13.0",
     "jest": "^29.7.0",
     "nodemon": "^3.1.9"
   }
