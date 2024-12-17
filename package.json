@@ -4,12 +4,23 @@
   "description": "Contains the backend implementation of a warehouse management API",
   "main": "app.js",
   "scripts": {
-    "test": "jest --coverage"
+    "start": "npm start",
+    "test": "jest --coverage",
+    "dev": "nodemon src/app.js"
   },
   "keywords": [
-    "\"RESTful",
-    "API\""
+    "RESTful API"
   ],
   "author": "geozi",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.21.2",
+    "express-validator": "^7.2.0",
+    "mongoose": "^7.8.3",
+    "mongoose-unique-validator": "^4.0.1"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "nodemon": "^3.1.9"
+  }
 }
