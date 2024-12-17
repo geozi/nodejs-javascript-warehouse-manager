@@ -1,0 +1,15 @@
+{
+  "name": "nodejs-javascript-warehouse-manager",
+  "version": "1.0.0",
+  "description": "Contains the backend implementation of a warehouse management API",
+  "main": "app.js",
+  "scripts": {
+    "test": "jest --coverage"
+  },
+  "keywords": [
+    "\"RESTful",
+    "API\""
+  ],
+  "author": "geozi",
+  "license": "ISC"
+}
