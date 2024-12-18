@@ -23,7 +23,7 @@ const userSchema = new Schema(
     email: {
       type: String,
       required: [true, validationErrorMessages.EMAIL_REQUIRED],
-      matches: [EMAIL_REGEX, validationErrorMessages.EMAIL_INVALID],
+      match: [EMAIL_REGEX, validationErrorMessages.EMAIL_INVALID],
       trim: true,
       lowercase: true,
     },
