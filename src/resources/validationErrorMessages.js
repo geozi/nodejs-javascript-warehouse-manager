@@ -15,6 +15,8 @@ module.exports = {
   PASSWORD_MIN_LENGTH: "Password must be at least 7 characters long",
   PASSWORD_MUST_HAVE_CHARACTERS:
     "Password must contain at least one lowercase character, one uppercase character, one number, and one special symbol",
+  ROLE_REQUIRED: "Role is a required field",
+  ROLE_INVALID: "Role must be either admin or customer",
 
   // Customer model validation messages
   FIRST_NAME_REQUIRED: "First name is a required field",
@@ -34,4 +36,5 @@ module.exports = {
   ZIP_CODE_REQUIRED: "Zip code is a required field",
   ZIP_CODE_INVALID: "Zip code must contain 5 digits",
   CUSTOMER_TYPE_REQUIRED: "Customer type is a required field",
+  CUSTOMER_TYPE_INVALID: "Customer type must be either wholesale or retail",
 };

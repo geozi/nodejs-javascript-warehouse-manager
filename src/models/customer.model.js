@@ -65,7 +65,16 @@ const customerSchema = new Schema(
     customerType: {
       type: String,
       required: [true, validationErrorMessages.CUSTOMER_TYPE_REQUIRED],
-      enum: ["wholesale", "retail"],
+      enum: {
+        values: ["wholesale", "retail"],
+        message: validationErrorMessages.CUSTOMER_TYPE_INVALID,
+      },
+    },
+    username: {
+      type: String,
+      unique: [true, validationErrorMessages.USERNAME_UNIQUE],
+      required: [true, validationErrorMessages.USERNAME_REQUIRED],
+      trim: true,
     },
   },
   {

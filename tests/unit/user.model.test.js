@@ -14,6 +14,7 @@ describe("User model unit tests", () => {
     const validUsername = "newUser";
     const validEmail = "random@mail.com";
     const validPassword = "W;Vj(+C8Sgqo'_4";
+    const validRole = "customer";
 
     beforeAll(() => {
       mockingoose.resetAll();
@@ -23,6 +24,7 @@ describe("User model unit tests", () => {
         username: validUsername,
         email: validEmail,
         password: validPassword,
+        role: validRole,
       });
 
       const err = newUser.validateSync();
@@ -36,6 +38,7 @@ describe("User model unit tests", () => {
         {
           email: validEmail,
           password: validPassword,
+          role: validRole,
         },
       ],
       [
@@ -44,6 +47,7 @@ describe("User model unit tests", () => {
           username: null,
           email: validEmail,
           password: validPassword,
+          role: validRole,
         },
       ],
     ];
@@ -66,6 +70,7 @@ describe("User model unit tests", () => {
         username: "ab",
         email: validEmail,
         password: validPassword,
+        role: validRole,
       });
       const err = newUser.validateSync();
       expect(err).toBeDefined();
@@ -80,6 +85,7 @@ describe("User model unit tests", () => {
         username: "thisIsAVeryLongUsername",
         email: validEmail,
         password: validPassword,
+        role: validRole,
       });
 
       const err = newUser.validateSync();
@@ -96,6 +102,7 @@ describe("User model unit tests", () => {
         {
           username: validUsername,
           password: validPassword,
+          role: validRole,
         },
       ],
       [
@@ -104,6 +111,7 @@ describe("User model unit tests", () => {
           username: validUsername,
           email: null,
           password: validPassword,
+          role: validRole,
         },
       ],
     ];
@@ -128,6 +136,7 @@ describe("User model unit tests", () => {
           username: validUsername,
           email: "@mail.com",
           password: validPassword,
+          role: validRole,
         },
       ],
       [
@@ -136,6 +145,7 @@ describe("User model unit tests", () => {
           username: validUsername,
           email: "randommail.com",
           password: validPassword,
+          role: validRole,
         },
       ],
       [
@@ -144,6 +154,7 @@ describe("User model unit tests", () => {
           username: validUsername,
           email: "random@.com",
           password: validPassword,
+          role: validRole,
         },
       ],
       [
@@ -152,6 +163,7 @@ describe("User model unit tests", () => {
           username: validUsername,
           email: "random@mailcom",
           password: validPassword,
+          role: validRole,
         },
       ],
       [
@@ -160,6 +172,7 @@ describe("User model unit tests", () => {
           username: validUsername,
           email: "random@mail.",
           password: validPassword,
+          role: validRole,
         },
       ],
     ];
@@ -167,7 +180,6 @@ describe("User model unit tests", () => {
     emailInvalidCases.forEach(([testName, input]) => {
       test(testName, () => {
         const newUser = new User(input);
-        console.log(newUser);
         const err = newUser.validateSync();
 
         expect(err).toBeDefined();
@@ -184,6 +196,7 @@ describe("User model unit tests", () => {
         {
           username: validUsername,
           email: validEmail,
+          role: validRole,
         },
       ],
       [
@@ -192,6 +205,7 @@ describe("User model unit tests", () => {
           username: validUsername,
           email: validEmail,
           password: null,
+          role: validRole,
         },
       ],
     ];
@@ -216,6 +230,7 @@ describe("User model unit tests", () => {
           username: validUsername,
           email: validEmail,
           password: "3(HV$@8,;'@$BOA",
+          role: validRole,
         },
       ],
       [
@@ -224,6 +239,7 @@ describe("User model unit tests", () => {
           username: validUsername,
           email: validEmail,
           password: "-[0lm+(=a;,fvg3",
+          role: validRole,
         },
       ],
       [
@@ -232,6 +248,7 @@ describe("User model unit tests", () => {
           username: validUsername,
           email: validEmail,
           password: "&.vhLDK[yyIn;[}",
+          role: validRole,
         },
       ],
       [
@@ -240,6 +257,7 @@ describe("User model unit tests", () => {
           username: validUsername,
           email: validEmail,
           password: "YWNH752LnudO2CU",
+          role: validRole,
         },
       ],
     ];
@@ -262,6 +280,7 @@ describe("User model unit tests", () => {
         username: validUsername,
         email: validEmail,
         password: "2t*wY&",
+        role: validRole,
       });
 
       const err = newUser.validateSync();
@@ -273,11 +292,57 @@ describe("User model unit tests", () => {
       );
     });
 
+    const roleRequiredCases = [
+      [
+        "with role undefined",
+        {
+          username: validUsername,
+          email: validEmail,
+          password: validPassword,
+        },
+      ],
+      [
+        "with role null",
+        {
+          username: validUsername,
+          email: validEmail,
+          password: validPassword,
+          role: null,
+        },
+      ],
+    ];
+
+    roleRequiredCases.forEach(([testName, input]) => {
+      test(testName, () => {
+        const newUser = new User(input);
+        const err = newUser.validateSync();
+        expect(err).toBeDefined();
+        expect(err.errors).toBeDefined();
+        expect(err.errors.role.message).toBe(
+          validationErrorMessages.ROLE_REQUIRED
+        );
+      });
+    });
+
+    test("with invalid role", () => {
+      const newUser = new User({
+        username: validUsername,
+        email: validEmail,
+        password: validPassword,
+        role: "consumer",
+      });
+
+      const err = newUser.validateSync();
+      expect(err).toBeDefined();
+      expect(err.errors).toBeDefined();
+      expect(err.errors.role.message).toBe(
+        validationErrorMessages.ROLE_INVALID
+      );
+    });
+
     test("with no fields", () => {
       const newUser = new User();
       const err = newUser.validateSync();
-
-      console.log(err.errors);
 
       expect(err).toBeDefined();
       expect(err.errors.username).toBeDefined();
@@ -291,6 +356,10 @@ describe("User model unit tests", () => {
       expect(err.errors.password).toBeDefined();
       expect(err.errors.password.message).toBe(
         validationErrorMessages.PASSWORD_REQUIRED
+      );
+      expect(err.errors.role).toBeDefined();
+      expect(err.errors.role.message).toBe(
+        validationErrorMessages.ROLE_REQUIRED
       );
     });
   });

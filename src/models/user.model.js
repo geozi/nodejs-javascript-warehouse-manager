@@ -46,6 +46,14 @@ const userSchema = new Schema(
         },
       },
     },
+    role: {
+      type: String,
+      required: [true, validationErrorMessages.ROLE_REQUIRED],
+      enum: {
+        values: ["admin", "customer"],
+        message: validationErrorMessages.ROLE_INVALID,
+      },
+    },
   },
   {
     collection: "users",
