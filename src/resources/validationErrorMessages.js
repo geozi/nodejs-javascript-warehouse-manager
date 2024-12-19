@@ -37,4 +37,21 @@ module.exports = {
   ZIP_CODE_INVALID: "Zip code must contain 5 digits",
   CUSTOMER_TYPE_REQUIRED: "Customer type is a required field",
   CUSTOMER_TYPE_INVALID: "Customer type must be either wholesale or retail",
+
+  // Product model validation messages
+  PRODUCT_NAME_REQUIRED: "Product name is a required field",
+  PRODUCT_NAME_UNIQUE: "Product name must be unique",
+  PRICE_REQUIRED: "Price is a required field",
+  PRICE_NEGATIVE: "Price must be a positive number",
+  CATEGORY_REQUIRED: "Category is a required field",
+  CATEGORY_INVALID: `Category must be one of the following: 
+  Activity
+  Automotive
+  Beauty
+  Clothing
+  Electronics
+  Entertainment
+  Health
+  Home
+  Pets`,
 };
