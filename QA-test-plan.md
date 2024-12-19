@@ -1,6 +1,6 @@
 # Warehouse Manager API test plan
 
-### Document version 1.0.0
+### Document version 1.0.1
 
 ## Introduction
 
@@ -11,6 +11,7 @@ The Warehouse Manager API test plan contains information on the tests that are t
 The project's tests will be unit, integration, and API tests. They will be developed and executed in the following order:
 
 1. Unit tests,
+   - Focus will be placed on the validation rules of the Mongoose schemas.
 2. Integration tests,
 3. API tests.
 

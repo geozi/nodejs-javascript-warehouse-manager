@@ -36,6 +36,7 @@ describe("User model unit tests", () => {
       [
         "with undefined username",
         {
+          username: undefined,
           email: validEmail,
           password: validPassword,
           role: validRole,
@@ -57,8 +58,7 @@ describe("User model unit tests", () => {
         const newUser = new User(input);
         const err = newUser.validateSync();
 
-        expect(err).toBeDefined();
-        expect(err.errors).toBeDefined();
+        expect(err.errors.username).toBeDefined();
         expect(err.errors.username.message).toBe(
           validationErrorMessages.USERNAME_REQUIRED
         );
@@ -73,8 +73,8 @@ describe("User model unit tests", () => {
         role: validRole,
       });
       const err = newUser.validateSync();
-      expect(err).toBeDefined();
-      expect(err.errors).toBeDefined();
+
+      expect(err.errors.username).toBeDefined();
       expect(err.errors.username.message).toBe(
         validationErrorMessages.USERNAME_MIN_LENGTH
       );
@@ -89,8 +89,8 @@ describe("User model unit tests", () => {
       });
 
       const err = newUser.validateSync();
-      expect(err).toBeDefined();
-      expect(err.errors).toBeDefined();
+
+      expect(err.errors.username).toBeDefined();
       expect(err.errors.username.message).toBe(
         validationErrorMessages.USERNAME_MAX_LENGTH
       );
@@ -101,6 +101,7 @@ describe("User model unit tests", () => {
         "with undefined email",
         {
           username: validUsername,
+          email: undefined,
           password: validPassword,
           role: validRole,
         },
@@ -121,8 +122,8 @@ describe("User model unit tests", () => {
         const newUser = new User(input);
 
         const err = newUser.validateSync();
-        expect(err).toBeDefined();
-        expect(err.errors).toBeDefined();
+
+        expect(err.errors.email).toBeDefined();
         expect(err.errors.email.message).toBe(
           validationErrorMessages.EMAIL_REQUIRED
         );
@@ -182,8 +183,7 @@ describe("User model unit tests", () => {
         const newUser = new User(input);
         const err = newUser.validateSync();
 
-        expect(err).toBeDefined();
-        expect(err.errors).toBeDefined();
+        expect(err.errors.email).toBeDefined();
         expect(err.errors.email.message).toBe(
           validationErrorMessages.EMAIL_INVALID
         );
@@ -196,6 +196,7 @@ describe("User model unit tests", () => {
         {
           username: validUsername,
           email: validEmail,
+          password: undefined,
           role: validRole,
         },
       ],
@@ -215,8 +216,7 @@ describe("User model unit tests", () => {
         const newUser = new User(input);
         const err = newUser.validateSync();
 
-        expect(err).toBeDefined();
-        expect(err.errors).toBeDefined();
+        expect(err.errors.password).toBeDefined();
         expect(err.errors.password.message).toBe(
           validationErrorMessages.PASSWORD_REQUIRED
         );
@@ -267,8 +267,7 @@ describe("User model unit tests", () => {
         const newUser = new User(input);
         const err = newUser.validateSync();
 
-        expect(err).toBeDefined();
-        expect(err.errors).toBeDefined();
+        expect(err.errors.password).toBeDefined();
         expect(err.errors.password.message).toBe(
           validationErrorMessages.PASSWORD_MUST_HAVE_CHARACTERS
         );
@@ -285,8 +284,7 @@ describe("User model unit tests", () => {
 
       const err = newUser.validateSync();
 
-      expect(err).toBeDefined();
-      expect(err.errors).toBeDefined();
+      expect(err.errors.password).toBeDefined();
       expect(err.errors.password.message).toBe(
         validationErrorMessages.PASSWORD_MIN_LENGTH
       );
@@ -299,6 +297,7 @@ describe("User model unit tests", () => {
           username: validUsername,
           email: validEmail,
           password: validPassword,
+          role: undefined,
         },
       ],
       [
@@ -316,8 +315,8 @@ describe("User model unit tests", () => {
       test(testName, () => {
         const newUser = new User(input);
         const err = newUser.validateSync();
-        expect(err).toBeDefined();
-        expect(err.errors).toBeDefined();
+
+        expect(err.errors.role).toBeDefined();
         expect(err.errors.role.message).toBe(
           validationErrorMessages.ROLE_REQUIRED
         );
@@ -333,8 +332,8 @@ describe("User model unit tests", () => {
       });
 
       const err = newUser.validateSync();
-      expect(err).toBeDefined();
-      expect(err.errors).toBeDefined();
+
+      expect(err.errors.role).toBeDefined();
       expect(err.errors.role.message).toBe(
         validationErrorMessages.ROLE_INVALID
       );
@@ -344,22 +343,121 @@ describe("User model unit tests", () => {
       const newUser = new User();
       const err = newUser.validateSync();
 
-      expect(err).toBeDefined();
-      expect(err.errors.username).toBeDefined();
+      expect(Object.keys(err.errors)).toHaveLength(4);
+      expect(Object.keys(err.errors).sort()).toStrictEqual([
+        "email",
+        "password",
+        "role",
+        "username",
+      ]);
       expect(err.errors.username.message).toBe(
         validationErrorMessages.USERNAME_REQUIRED
       );
-      expect(err.errors.email).toBeDefined();
       expect(err.errors.email.message).toBe(
         validationErrorMessages.EMAIL_REQUIRED
       );
-      expect(err.errors.password).toBeDefined();
       expect(err.errors.password.message).toBe(
         validationErrorMessages.PASSWORD_REQUIRED
       );
-      expect(err.errors.role).toBeDefined();
       expect(err.errors.role.message).toBe(
         validationErrorMessages.ROLE_REQUIRED
+      );
+    });
+
+    test("with 2 undefined fields", () => {
+      const newUser = new User({
+        username: undefined,
+        email: undefined,
+        password: validPassword,
+        role: validRole,
+      });
+
+      const err = newUser.validateSync();
+
+      expect(Object.keys(err.errors)).toHaveLength(2);
+      expect(Object.keys(err.errors).sort()).toStrictEqual([
+        "email",
+        "username",
+      ]);
+      expect(err.errors.username.message).toBe(
+        validationErrorMessages.USERNAME_REQUIRED
+      );
+      expect(err.errors.email.message).toBe(
+        validationErrorMessages.EMAIL_REQUIRED
+      );
+    });
+
+    test("with 2 null fields", () => {
+      const newUser = new User({
+        username: validUsername,
+        email: null,
+        password: validPassword,
+        role: null,
+      });
+
+      const err = newUser.validateSync();
+
+      expect(Object.keys(err.errors)).toHaveLength(2);
+      expect(Object.keys(err.errors).sort()).toStrictEqual(["email", "role"]);
+      expect(err.errors.email.message).toBe(
+        validationErrorMessages.EMAIL_REQUIRED
+      );
+      expect(err.errors.role.message).toBe(
+        validationErrorMessages.ROLE_REQUIRED
+      );
+    });
+
+    test("with mix null and undefined fields", () => {
+      const newUser = new User({
+        username: undefined,
+        email: null,
+        password: validPassword,
+        role: null,
+      });
+
+      const err = newUser.validateSync();
+
+      expect(Object.keys(err.errors)).toHaveLength(3);
+      expect(Object.keys(err.errors).sort()).toStrictEqual([
+        "email",
+        "role",
+        "username",
+      ]);
+      expect(err.errors.email.message).toBe(
+        validationErrorMessages.EMAIL_REQUIRED
+      );
+      expect(err.errors.role.message).toBe(
+        validationErrorMessages.ROLE_REQUIRED
+      );
+      expect(err.errors.username.message).toBe(
+        validationErrorMessages.USERNAME_REQUIRED
+      );
+    });
+
+    test("with mix undefined and invalid fields", () => {
+      const newUser = new User({
+        username: "ab",
+        email: undefined,
+        password: "GjPgNEq0XVY0yPK",
+        role: validRole,
+      });
+
+      const err = newUser.validateSync();
+
+      expect(Object.keys(err.errors)).toHaveLength(3);
+      expect(Object.keys(err.errors).sort()).toStrictEqual([
+        "email",
+        "password",
+        "username",
+      ]);
+      expect(err.errors.email.message).toBe(
+        validationErrorMessages.EMAIL_REQUIRED
+      );
+      expect(err.errors.password.message).toBe(
+        validationErrorMessages.PASSWORD_MUST_HAVE_CHARACTERS
+      );
+      expect(err.errors.username.message).toBe(
+        validationErrorMessages.USERNAME_MIN_LENGTH
       );
     });
   });
