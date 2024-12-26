@@ -2,30 +2,16 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 const uniqueValidator = require("mongoose-unique-validator");
 const validationErrorMessages = require("../resources/validationErrorMessages");
-const { ID_REGEX } = require("../resources/validationRegExp");
 
+/**
+ * Represents the stock of a product.
+ */
 const stockSchema = new Schema(
   {
     productId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Product",
       required: [true, validationErrorMessages.PRODUCT_ID_REQUIRED],
-      validate: {
-        validator: function (value) {
-          const validLength = 24;
-          if (value.toString().length !== validLength) {
-            return false;
-          }
-
-          return ID_REGEX.test(value.toString());
-        },
-        message: function (props) {
-          if (props.value.toString().length !== 24) {
-            return validationErrorMessages.PRODUCT_ID_LENGTH;
-          }
-          return validationErrorMessages.PRODUCT_ID_INVALID;
-        },
-      },
     },
     numberOfUnits: {
       type: Number,
