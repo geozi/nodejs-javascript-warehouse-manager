@@ -1,6 +1,6 @@
 # Warehouse Manager API test plan
 
-### Document version 1.0.1
+Document version 1.0.1
 
 ## Introduction
 
@@ -27,7 +27,7 @@ The backend implementation is ongoing.
 
 The primary tool for unit testing is the Jest testing framework:
 
-```
+```javascript
 "jest": "^29.7.0",
 ```
 
