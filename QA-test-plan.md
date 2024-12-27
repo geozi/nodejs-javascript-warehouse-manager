@@ -1,6 +1,6 @@
 # Warehouse Manager API test plan
 
-Document version 1.0.1
+Document version 1.0.2
 
 ## Introduction
 
@@ -8,12 +8,39 @@ The Warehouse Manager API test plan contains information on the tests that are t
 
 ## In Scope
 
-The project's tests will be unit, integration, and API tests. They will be developed and executed in the following order:
+The project's tests will be unit, integration, and API tests. Completed tests are noted with ✔, while the pending ones are noted with ⌛.
 
-1. Unit tests,
-   - Focus will be placed on the validation rules of the Mongoose schemas.
-2. Integration tests,
-3. API tests.
+### Unit tests
+
+Focus will be placed on the validation rules of the Mongoose schemas. They are to be conducted per model schema:
+
+- User model [✔] ,
+- Customer model [✔],
+- Product model [✔],
+- Stock model [✔],
+- Order model [✔]
+
+### Integration tests
+
+They are to be conducted per operation, involving middleware and controllers:
+
+- User registration [⌛],
+- User login [⌛],
+- Customer addition [⌛],
+- Customer information update [⌛],
+- Customer deletion [⌛],
+- Product addition [⌛],
+- Product information update [⌛],
+- Product deletion [⌛],
+- Stock creation [⌛],
+- Stock information update [⌛],
+- Order addition [⌛],
+- Order update [⌛],
+- Order deletion [⌛]
+
+### API tests
+
+[To be developed]
 
 ## Out of scope
 
