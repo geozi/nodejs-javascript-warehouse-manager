@@ -18,15 +18,9 @@ const stockSchema = new Schema(
       required: [true, validationErrorMessages.UNIT_NUMBER_REQUIRED],
       validate: {
         validator: function (value) {
-          if (value < 0) {
-            return false;
-          }
+          return value >= 0;
         },
-        message: function (props) {
-          if (props.value < 0) {
-            return validationErrorMessages.UNIT_NUMBER_NEGATIVE;
-          }
-        },
+        message: validationErrorMessages.UNIT_NUMBER_NEGATIVE,
       },
     },
   },

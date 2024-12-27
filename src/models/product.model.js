@@ -19,15 +19,9 @@ const productSchema = new Schema(
       required: [true, validationErrorMessages.PRICE_REQUIRED],
       validate: {
         validator: function (value) {
-          if (value < 0) {
-            return false;
-          }
+          return value >= 0;
         },
-        message: function (props) {
-          if (props.value < 0) {
-            return validationErrorMessages.PRICE_NEGATIVE;
-          }
-        },
+        message: validationErrorMessages.PRICE_NEGATIVE,
       },
     },
     category: {
