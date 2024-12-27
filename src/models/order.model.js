@@ -14,13 +14,21 @@ const orderSchema = new Schema(
       ref: "Customer",
       required: [true, validationErrorMessages.CUSTOMER_ID_REQUIRED],
     },
-    products: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Product",
-        required: [true, validationErrorMessages.PRODUCT_ITEMS_REQUIRED],
+    products: {
+      type: [
+        {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "Product",
+        },
+      ],
+      required: [true, validationErrorMessages.PRODUCT_ITEMS_REQUIRED],
+      validate: {
+        validator: function (value) {
+          return Array.isArray(value) && value.length > 0;
+        },
+        message: validationErrorMessages.PRODUCT_ITEMS_REQUIRED,
       },
-    ],
+    },
     orderDate: {
       type: Date,
       required: [true, validationErrorMessages.ORDER_DATE_REQUIRED],
@@ -30,15 +38,9 @@ const orderSchema = new Schema(
       required: [true, validationErrorMessages.TOTAL_UNIT_NUMBER_REQUIRED],
       validate: {
         validator: function (value) {
-          if (value < 1) {
-            return false;
-          }
+          return value >= 1;
         },
-        message: function (props) {
-          if (props.value < 1) {
-            return validationErrorMessages.TOTAL_UNIT_NUMBER_ABOVE_ZERO;
-          }
-        },
+        message: validationErrorMessages.TOTAL_UNIT_NUMBER_ABOVE_ZERO,
       },
     },
     totalCost: {
@@ -46,15 +48,9 @@ const orderSchema = new Schema(
       required: [true, validationErrorMessages.TOTAL_COST_REQUIRED],
       validate: {
         validator: function (value) {
-          if (value <= 0) {
-            return false;
-          }
+          return value > 0;
         },
-        message: function (props) {
-          if (props.value <= 0) {
-            return validationErrorMessages.TOTAL_COST_ABOVE_ZERO;
-          }
-        },
+        message: validationErrorMessages.TOTAL_COST_ABOVE_ZERO,
       },
     },
     shippingAddress: {
@@ -97,4 +93,4 @@ const orderSchema = new Schema(
 );
 
 orderSchema.plugin(uniqueValidator);
-module.exports = mongoose.Schema("Order", orderSchema);
+module.exports = mongoose.model("Order", orderSchema);
