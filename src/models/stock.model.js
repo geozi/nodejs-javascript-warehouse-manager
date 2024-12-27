@@ -16,15 +16,17 @@ const stockSchema = new Schema(
     numberOfUnits: {
       type: Number,
       required: [true, validationErrorMessages.UNIT_NUMBER_REQUIRED],
-      validate: function (value) {
-        if (value < 0) {
-          return false;
-        }
-      },
-      message: function (props) {
-        if (props.value < 0) {
-          return validationErrorMessages.UNIT_NUMBER_NEGATIVE;
-        }
+      validate: {
+        validator: function (value) {
+          if (value < 0) {
+            return false;
+          }
+        },
+        message: function (props) {
+          if (props.value < 0) {
+            return validationErrorMessages.UNIT_NUMBER_NEGATIVE;
+          }
+        },
       },
     },
   },

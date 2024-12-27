@@ -44,16 +44,18 @@ module.exports = {
   PRICE_REQUIRED: "Price is a required field",
   PRICE_NEGATIVE: "Price must be a positive number",
   CATEGORY_REQUIRED: "Category is a required field",
-  CATEGORY_INVALID: `Category must be one of the following: 
-  Activity
-  Automotive
-  Beauty
-  Clothing
-  Electronics
-  Entertainment
-  Health
-  Home
-  Pets`,
+  CATEGORY_INVALID: `
+  **Category must be one of the following:**
+  - **Activity**
+  - **Automotive**
+  - **Beauty**
+  - **Clothing**
+  - **Electronics**
+  - **Entertainment**
+  - **Health**
+  - **Home**
+  - **Pets**
+  `,
 
   // Stock model validation messages
   PRODUCT_ID_REQUIRED: "Product ID is a required field",
@@ -61,4 +63,35 @@ module.exports = {
   PRODUCT_ID_LENGTH: "Product ID must be 24 characters in length",
   UNIT_NUMBER_REQUIRED: "Number of units is a required field",
   UNIT_NUMBER_NEGATIVE: "Number of units must be a positive number",
+
+  // Order model validation messages
+  CUSTOMER_ID_REQUIRED: "Customer ID is a required field",
+  PRODUCT_ITEMS_REQUIRED: "The order must contain at least 1 product",
+  ORDER_DATE_REQUIRED: "Order date is a required field",
+  TOTAL_UNIT_NUMBER_REQUIRED: "Total number of units is a required field",
+  TOTAL_UNIT_NUMBER_ABOVE_ZERO: "Total number of units must be at least 1",
+  TOTAL_COST_REQUIRED: "Total cost is a required field",
+  TOTAL_COST_ABOVE_ZERO: "Total cost must be above 0",
+  SHIPPING_ADDRESS_REQUIRED: "Shipping address is a required field",
+  STATUS_REQUIRED: "Status is a required field",
+  STATUS_INVALID: `
+  **Status must be one of the following:**
+  - **Pending**
+  - **Shipped**
+  - **Delivered**
+  - **Canceled**
+  `,
+  SHIPPING_METHOD_REQUIRED: "Shipping method is a required field",
+  SHIPPING_METHOD_INVALID: `
+  **Shipping method must be one of the following:**
+  - **Standard**,
+  - **Express**
+  `,
+  PAYMENT_METHOD_REQUIRED: "Payment method is a required field",
+  PAYMENT_METHOD_INVALID: `
+  **Payment method must be one of the following:**
+  - **Credit/Debit card**
+  - **Cash**
+  `,
+  BILLING_ADDRESS_REQUIRED: "Billing address is required field",
 };
