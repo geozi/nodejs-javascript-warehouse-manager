@@ -42,6 +42,7 @@ Focus will be placed on the integration of the following directories and files:
 ```text
 └── src
     ├── controllers
+    │   ├── customer.controller.js
     │   └── user.controller.js
     ├── middleware
     │   └── expressValidationRules.js
@@ -59,9 +60,9 @@ Focus will be placed on the integration of the following directories and files:
 
 They are to be conducted per operation:
 
-- User registration [⌛],
+- User registration [✔],
 - User login [⌛],
-- Customer addition [⌛],
+- Customer addition [✔],
 - Customer information update [⌛],
 - Customer deletion [⌛],
 - Product addition [⌛],
@@ -83,7 +84,7 @@ The Warehouse Manager API is a backend project, therefore any tests referring to
 
 ## Assumptions
 
-The backend implementation is ongoing.
+The backend implementation is ongoing. MongoDB is the database of choice.
 
 ## Environments + Tools
 

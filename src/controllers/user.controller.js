@@ -6,6 +6,14 @@ const {
 } = require("../middleware/expressValidationRules");
 const responseMessages = require("../resources/responseMessages");
 
+/**
+ * Handles user registration.
+ *
+ * When the create method is called, it first executes the
+ * ValidationChain path, running all middleware functions responsible
+ * for validation. If the validation passes, it proceeds to the main
+ * logic of the method which handles user creation and response generation.
+ */
 const create = [
   ...userRegistrationRules(),
   async (req, res) => {

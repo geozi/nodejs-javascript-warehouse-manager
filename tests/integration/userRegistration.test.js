@@ -9,6 +9,7 @@ describe("User reg. integration tests", () => {
   const validUsername = "newUser";
   const validEmail = "myEmail@example.com";
   const validPassword = "lj}6L6H$=0(UgI&";
+  const validRole = "customer";
 
   beforeEach(() => {
     res = { status: jest.fn().mockReturnThis(), json: jest.fn() };
@@ -28,6 +29,7 @@ describe("User reg. integration tests", () => {
           username: validUsername,
           email: validEmail,
           password: validPassword,
+          role: validRole,
         },
       };
       for (let middleware of create) {
@@ -50,6 +52,7 @@ describe("User reg. integration tests", () => {
           username: undefined,
           email: validEmail,
           password: validPassword,
+          role: validRole,
         },
       ],
       [
@@ -58,6 +61,7 @@ describe("User reg. integration tests", () => {
           username: null,
           email: validEmail,
           password: validPassword,
+          role: validRole,
         },
       ],
     ];
@@ -85,6 +89,7 @@ describe("User reg. integration tests", () => {
           username: validUsername,
           email: undefined,
           password: validPassword,
+          role: validRole,
         },
       ],
       [
@@ -93,6 +98,7 @@ describe("User reg. integration tests", () => {
           username: validUsername,
           email: null,
           password: validPassword,
+          role: validRole,
         },
       ],
     ];
@@ -120,6 +126,7 @@ describe("User reg. integration tests", () => {
           username: validUsername,
           email: validEmail,
           password: undefined,
+          role: validRole,
         },
       ],
       [
@@ -128,6 +135,7 @@ describe("User reg. integration tests", () => {
           username: validUsername,
           email: validEmail,
           password: null,
+          role: validRole,
         },
       ],
     ];
@@ -152,12 +160,50 @@ describe("User reg. integration tests", () => {
       });
     });
 
+    const roleRequiredCases = [
+      [
+        "with undefined role",
+        {
+          username: validUsername,
+          email: validEmail,
+          password: validPassword,
+          role: undefined,
+        },
+      ],
+      [
+        "with null role",
+        {
+          username: validUsername,
+          email: validEmail,
+          password: validPassword,
+          role: null,
+        },
+      ],
+    ];
+
+    roleRequiredCases.forEach(([testName, input]) => {
+      test(testName, async () => {
+        req = { body: input };
+
+        for (let middleware of create) {
+          await middleware(req, res, next);
+        }
+
+        expect(User.prototype.save).not.toHaveBeenCalled();
+        expect(res.status).toHaveBeenCalledWith(400);
+        expect(res.json).toHaveBeenCalledWith({
+          errors: [{ msg: validationErrorMessages.ROLE_REQUIRED }],
+        });
+      });
+    });
+
     test("with 2 undefined fields", async () => {
       req = {
         body: {
           username: undefined,
           email: undefined,
           password: validPassword,
+          role: validRole,
         },
       };
 
@@ -171,6 +217,55 @@ describe("User reg. integration tests", () => {
         errors: [
           { msg: validationErrorMessages.USERNAME_REQUIRED },
           { msg: validationErrorMessages.EMAIL_REQUIRED },
+        ],
+      });
+    });
+
+    test("with 2 null fields", async () => {
+      req = {
+        body: {
+          username: null,
+          email: validEmail,
+          password: null,
+          role: validRole,
+        },
+      };
+
+      for (let middleware of create) {
+        await middleware(req, res, next);
+      }
+
+      expect(User.prototype.save).not.toHaveBeenCalled();
+      expect(res.status).toHaveBeenCalledWith(400);
+      expect(res.json).toHaveBeenCalledWith({
+        errors: [
+          { msg: validationErrorMessages.USERNAME_REQUIRED },
+          { msg: validationErrorMessages.PASSWORD_REQUIRED },
+          { msg: validationErrorMessages.PASSWORD_MIN_LENGTH },
+          { msg: validationErrorMessages.PASSWORD_MUST_HAVE_CHARACTERS },
+        ],
+      });
+    });
+
+    test("with empty request", async () => {
+      req = {
+        body: {},
+      };
+
+      for (let middleware of create) {
+        await middleware(req, res, next);
+      }
+
+      expect(User.prototype.save).not.toHaveBeenCalled();
+      expect(res.status).toHaveBeenCalledWith(400);
+      expect(res.json).toHaveBeenCalledWith({
+        errors: [
+          { msg: validationErrorMessages.USERNAME_REQUIRED },
+          { msg: validationErrorMessages.EMAIL_REQUIRED },
+          { msg: validationErrorMessages.PASSWORD_REQUIRED },
+          { msg: validationErrorMessages.PASSWORD_MIN_LENGTH },
+          { msg: validationErrorMessages.PASSWORD_MUST_HAVE_CHARACTERS },
+          { msg: validationErrorMessages.ROLE_REQUIRED },
         ],
       });
     });
