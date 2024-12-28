@@ -55,6 +55,7 @@ const customerAdditionRules = () => {
   ];
 };
 
+// Validation rules for customer update.
 const customerUpdateRules = () => {
   return [
     check("id")

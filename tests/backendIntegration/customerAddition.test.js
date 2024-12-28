@@ -1,5 +1,5 @@
 const Customer = require("../../src/models/customer.model");
-const { create } = require("../../src/controllers/customer.controller");
+const { createCustomer } = require("../../src/controllers/customer.controller");
 const responseMessages = require("../../src/resources/responseMessages");
 const validationErrorMessages = require("../../src/resources/validationErrorMessages");
 
@@ -40,7 +40,7 @@ describe("Customer addition integration tests", () => {
         },
       };
 
-      for (let middleware of create) {
+      for (let middleware of createCustomer) {
         await middleware(req, res, next);
       }
 
@@ -86,7 +86,7 @@ describe("Customer addition integration tests", () => {
       test(testName, async () => {
         req = { body: input };
 
-        for (let middleware of create) {
+        for (let middleware of createCustomer) {
           await middleware(req, res, next);
         }
 
@@ -131,7 +131,7 @@ describe("Customer addition integration tests", () => {
       test(testName, async () => {
         req = { body: input };
 
-        for (let middleware of create) {
+        for (let middleware of createCustomer) {
           await middleware(req, res, next);
         }
 
@@ -176,7 +176,7 @@ describe("Customer addition integration tests", () => {
       test(testName, async () => {
         req = { body: input };
 
-        for (let middleware of create) {
+        for (let middleware of createCustomer) {
           await middleware(req, res, next);
         }
 
@@ -221,7 +221,7 @@ describe("Customer addition integration tests", () => {
       test(testName, async () => {
         req = { body: input };
 
-        for (let middleware of create) {
+        for (let middleware of createCustomer) {
           await middleware(req, res, next);
         }
 
@@ -266,7 +266,7 @@ describe("Customer addition integration tests", () => {
       test(testName, async () => {
         req = { body: input };
 
-        for (let middleware of create) {
+        for (let middleware of createCustomer) {
           await middleware(req, res, next);
         }
 
@@ -311,7 +311,7 @@ describe("Customer addition integration tests", () => {
       test(testName, async () => {
         req = { body: input };
 
-        for (let middleware of create) {
+        for (let middleware of createCustomer) {
           await middleware(req, res, next);
         }
 
@@ -356,7 +356,7 @@ describe("Customer addition integration tests", () => {
       test(testName, async () => {
         req = { body: input };
 
-        for (let middleware of create) {
+        for (let middleware of createCustomer) {
           await middleware(req, res, next);
         }
 
@@ -401,7 +401,7 @@ describe("Customer addition integration tests", () => {
       test(testName, async () => {
         req = { body: input };
 
-        for (let middleware of create) {
+        for (let middleware of createCustomer) {
           await middleware(req, res, next);
         }
 
