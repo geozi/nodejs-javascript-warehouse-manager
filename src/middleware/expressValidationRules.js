@@ -12,16 +12,10 @@ const userRegistrationRules = () => {
   return [
     check("username")
       .notEmpty()
-      .withMessage(validationErrorMessages.USERNAME_REQUIRED)
-      .isLength({ min: 3 })
-      .withMessage(validationErrorMessages.USERNAME_MIN_LENGTH)
-      .isLength({ max: 20 })
-      .withMessage(validationErrorMessages.USERNAME_MAX_LENGTH),
+      .withMessage(validationErrorMessages.USERNAME_REQUIRED),
     check("email")
       .notEmpty()
-      .withMessage(validationErrorMessages.EMAIL_REQUIRED)
-      .isEmail()
-      .withMessage(validationErrorMessages.EMAIL_INVALID),
+      .withMessage(validationErrorMessages.EMAIL_REQUIRED),
     check("password")
       .notEmpty()
       .withMessage(validationErrorMessages.PASSWORD_REQUIRED)

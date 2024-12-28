@@ -1,6 +1,6 @@
 # Warehouse Manager API test plan
 
-Document version 1.0.2
+Document version 1.0.3
 
 ## Introduction
 
@@ -12,7 +12,22 @@ The project's tests will be unit, integration, and API tests. Completed tests ar
 
 ### Unit tests
 
-Focus will be placed on the validation rules of the Mongoose schemas. They are to be conducted per model schema:
+Focus will be placed on the validation rules of the Mongoose schemas. The tests involve the following directories and files:
+
+```text
+└── src
+    ├── models
+    │   ├── customer.model.js
+    │   ├── order.model.js
+    │   ├── product.model.js
+    │   ├── stock.model.js
+    │   └── user.model.js
+    └── resources
+        ├── validationErrorMessages.js
+        └── validationRegExp.js
+```
+
+Tests are to be conducted per model:
 
 - User model [✔] ,
 - Customer model [✔],
@@ -22,7 +37,27 @@ Focus will be placed on the validation rules of the Mongoose schemas. They are t
 
 ### Integration tests
 
-They are to be conducted per operation, involving middleware and controllers:
+Focus will be placed on the integration of the following directories and files:
+
+```text
+└── src
+    ├── controllers
+    │   └── user.controller.js
+    ├── middleware
+    │   └── expressValidationRules.js
+    ├── models
+    │   ├── customer.model.js
+    │   ├── order.model.js
+    │   ├── product.model.js
+    │   ├── stock.model.js
+    │   └── user.model.js
+    └── resources
+        ├── responseMessages.js
+        ├── validationErrorMessages.js
+        └── validationRegExp.js
+```
+
+They are to be conducted per operation:
 
 - User registration [⌛],
 - User login [⌛],
@@ -54,7 +89,7 @@ The backend implementation is ongoing.
 
 The primary tool for unit testing is the Jest testing framework:
 
-```javascript
+```json
 "jest": "^29.7.0",
 ```
 

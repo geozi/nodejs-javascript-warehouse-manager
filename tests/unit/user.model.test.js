@@ -223,73 +223,6 @@ describe("User model unit tests", () => {
       });
     });
 
-    const passwordMustHaveCases = [
-      [
-        "with invalid password: no lowercase characters",
-        {
-          username: validUsername,
-          email: validEmail,
-          password: "3(HV$@8,;'@$BOA",
-          role: validRole,
-        },
-      ],
-      [
-        "with invalid password: no uppercase characters",
-        {
-          username: validUsername,
-          email: validEmail,
-          password: "-[0lm+(=a;,fvg3",
-          role: validRole,
-        },
-      ],
-      [
-        "with invalid password: no numbers",
-        {
-          username: validUsername,
-          email: validEmail,
-          password: "&.vhLDK[yyIn;[}",
-          role: validRole,
-        },
-      ],
-      [
-        "with invalid password: no special symbols",
-        {
-          username: validUsername,
-          email: validEmail,
-          password: "YWNH752LnudO2CU",
-          role: validRole,
-        },
-      ],
-    ];
-
-    passwordMustHaveCases.forEach(([testName, input]) => {
-      test(testName, () => {
-        const newUser = new User(input);
-        const err = newUser.validateSync();
-
-        expect(err.errors.password).toBeDefined();
-        expect(err.errors.password.message).toBe(
-          validationErrorMessages.PASSWORD_MUST_HAVE_CHARACTERS
-        );
-      });
-    });
-
-    test("with too short password", () => {
-      const newUser = new User({
-        username: validUsername,
-        email: validEmail,
-        password: "2t*wY&",
-        role: validRole,
-      });
-
-      const err = newUser.validateSync();
-
-      expect(err.errors.password).toBeDefined();
-      expect(err.errors.password.message).toBe(
-        validationErrorMessages.PASSWORD_MIN_LENGTH
-      );
-    });
-
     const roleRequiredCases = [
       [
         "with role undefined",
@@ -438,23 +371,19 @@ describe("User model unit tests", () => {
       const newUser = new User({
         username: "ab",
         email: undefined,
-        password: "GjPgNEq0XVY0yPK",
+        password: validPassword,
         role: validRole,
       });
 
       const err = newUser.validateSync();
 
-      expect(Object.keys(err.errors)).toHaveLength(3);
+      expect(Object.keys(err.errors)).toHaveLength(2);
       expect(Object.keys(err.errors).sort()).toStrictEqual([
         "email",
-        "password",
         "username",
       ]);
       expect(err.errors.email.message).toBe(
         validationErrorMessages.EMAIL_REQUIRED
-      );
-      expect(err.errors.password.message).toBe(
-        validationErrorMessages.PASSWORD_MUST_HAVE_CHARACTERS
       );
       expect(err.errors.username.message).toBe(
         validationErrorMessages.USERNAME_MIN_LENGTH

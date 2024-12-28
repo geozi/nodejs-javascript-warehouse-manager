@@ -2,10 +2,7 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 const uniqueValidator = require("mongoose-unique-validator");
 const validationErrorMessages = require("../resources/validationErrorMessages");
-const {
-  PASSWORD_REGEX,
-  EMAIL_REGEX,
-} = require("../resources/validationRegExp");
+const { EMAIL_REGEX } = require("../resources/validationRegExp");
 
 /**
  * Represents a User.
@@ -30,21 +27,7 @@ const userSchema = new Schema(
     password: {
       type: String,
       required: [true, validationErrorMessages.PASSWORD_REQUIRED],
-      validate: {
-        validator: function (value) {
-          const minLength = 7;
-          if (value.length < minLength) {
-            return false;
-          }
-          return PASSWORD_REGEX.test(value);
-        },
-        message: function (props) {
-          if (props.value.length < 7) {
-            return validationErrorMessages.PASSWORD_MIN_LENGTH;
-          }
-          return validationErrorMessages.PASSWORD_MUST_HAVE_CHARACTERS;
-        },
-      },
+      trim: true,
     },
     role: {
       type: String,
