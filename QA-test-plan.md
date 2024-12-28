@@ -1,6 +1,6 @@
 # Warehouse Manager API test plan
 
-Document version 1.0.3
+Document version 1.0.4
 
 ## Introduction
 
@@ -36,6 +36,8 @@ Tests are to be conducted per model:
 - Order model [✔]
 
 ### Integration tests
+
+#### Backend integration tests
 
 Focus will be placed on the integration of the following directories and files:
 
@@ -73,6 +75,10 @@ They are to be conducted per operation:
 - Order addition [⌛],
 - Order update [⌛],
 - Order deletion [⌛]
+
+#### Database integration tests
+
+[To be developed]
 
 ### API tests
 

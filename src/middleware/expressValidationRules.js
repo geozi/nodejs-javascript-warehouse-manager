@@ -55,7 +55,24 @@ const customerAdditionRules = () => {
   ];
 };
 
+const customerUpdateRules = () => {
+  return [
+    check("id")
+      .notEmpty()
+      .withMessage(validationErrorMessages.CUSTOMER_ID_REQUIRED),
+    check("firstName").optional(),
+    check("lastName").optional(),
+    check("phoneNumber").optional(),
+    check("city").optional(),
+    check("streetAddress").optional(),
+    check("zipCode").optional(),
+    check("customerType").optional(),
+    check("username").optional(),
+  ];
+};
+
 module.exports = {
   userRegistrationRules,
   customerAdditionRules,
+  customerUpdateRules,
 };
