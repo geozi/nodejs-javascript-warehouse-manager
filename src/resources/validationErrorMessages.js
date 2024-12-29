@@ -44,6 +44,7 @@ module.exports = {
   PRODUCT_NAME_REQUIRED: "Product name is a required field",
   PRODUCT_NAME_UNIQUE: "Product name must be unique",
   PRICE_REQUIRED: "Price is a required field",
+  PRICE_NUMERIC: "Price must be a number",
   PRICE_NEGATIVE: "Price must be a positive number",
   CATEGORY_REQUIRED: "Category is a required field",
   CATEGORY_INVALID: `

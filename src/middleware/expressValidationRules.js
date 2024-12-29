@@ -89,9 +89,27 @@ const customerDeletionRules = () => {
   ];
 };
 
+// Validation rules for product addition.
+const productAdditionRules = () => {
+  return [
+    check("name")
+      .notEmpty()
+      .withMessage(validationErrorMessages.PRODUCT_NAME_REQUIRED),
+    check("price")
+      .notEmpty()
+      .withMessage(validationErrorMessages.PRICE_REQUIRED)
+      .isNumeric()
+      .withMessage(validationErrorMessages.PRICE_NUMERIC),
+    check("category")
+      .notEmpty()
+      .withMessage(validationErrorMessages.CATEGORY_REQUIRED),
+  ];
+};
+
 module.exports = {
   userRegistrationRules,
   customerAdditionRules,
   customerUpdateRules,
   customerDeletionRules,
+  productAdditionRules,
 };
