@@ -5,7 +5,7 @@
 
 const { check } = require("express-validator");
 const validationErrorMessages = require("../resources/validationErrorMessages");
-const { PASSWORD_REGEX } = require("../resources/validationRegExp");
+const { PASSWORD_REGEX, ID_REGEX } = require("../resources/validationRegExp");
 
 // Validation rules for user registration
 const userRegistrationRules = () => {
@@ -60,7 +60,11 @@ const customerUpdateRules = () => {
   return [
     check("id")
       .notEmpty()
-      .withMessage(validationErrorMessages.CUSTOMER_ID_REQUIRED),
+      .withMessage(validationErrorMessages.CUSTOMER_ID_REQUIRED)
+      .matches(ID_REGEX)
+      .withMessage(validationErrorMessages.CUSTOMER_ID_INVALID)
+      .isLength({ min: 24, max: 24 })
+      .withMessage(validationErrorMessages.CUSTOMER_ID_LENGTH),
     check("firstName").optional(),
     check("lastName").optional(),
     check("phoneNumber").optional(),
@@ -72,8 +76,22 @@ const customerUpdateRules = () => {
   ];
 };
 
+// Validation rules for customer deletion.
+const customerDeletionRules = () => {
+  return [
+    check("id")
+      .notEmpty()
+      .withMessage(validationErrorMessages.CUSTOMER_ID_REQUIRED)
+      .matches(ID_REGEX)
+      .withMessage(validationErrorMessages.CUSTOMER_ID_INVALID)
+      .isLength({ min: 24, max: 24 })
+      .withMessage(validationErrorMessages.CUSTOMER_ID_LENGTH),
+  ];
+};
+
 module.exports = {
   userRegistrationRules,
   customerAdditionRules,
   customerUpdateRules,
+  customerDeletionRules,
 };

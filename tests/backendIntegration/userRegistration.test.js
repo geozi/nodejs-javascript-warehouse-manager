@@ -77,7 +77,7 @@ describe("User reg. integration tests", () => {
         expect(User.prototype.save).not.toHaveBeenCalled();
         expect(res.status).toHaveBeenCalledWith(400);
         expect(res.json).toHaveBeenCalledWith({
-          errors: [{ msg: validationErrorMessages.USERNAME_REQUIRED }],
+          errors: [{ message: validationErrorMessages.USERNAME_REQUIRED }],
         });
       }),
     ]);
@@ -114,7 +114,7 @@ describe("User reg. integration tests", () => {
         expect(User.prototype.save).not.toHaveBeenCalled();
         expect(res.status).toHaveBeenCalledWith(400);
         expect(res.json).toHaveBeenCalledWith({
-          errors: [{ msg: validationErrorMessages.EMAIL_REQUIRED }],
+          errors: [{ message: validationErrorMessages.EMAIL_REQUIRED }],
         });
       });
     });
@@ -152,9 +152,9 @@ describe("User reg. integration tests", () => {
         expect(res.status).toHaveBeenCalledWith(400);
         expect(res.json).toHaveBeenCalledWith({
           errors: [
-            { msg: validationErrorMessages.PASSWORD_REQUIRED },
-            { msg: validationErrorMessages.PASSWORD_MIN_LENGTH },
-            { msg: validationErrorMessages.PASSWORD_MUST_HAVE_CHARACTERS },
+            { message: validationErrorMessages.PASSWORD_REQUIRED },
+            { message: validationErrorMessages.PASSWORD_MIN_LENGTH },
+            { message: validationErrorMessages.PASSWORD_MUST_HAVE_CHARACTERS },
           ],
         });
       });
@@ -192,7 +192,7 @@ describe("User reg. integration tests", () => {
         expect(User.prototype.save).not.toHaveBeenCalled();
         expect(res.status).toHaveBeenCalledWith(400);
         expect(res.json).toHaveBeenCalledWith({
-          errors: [{ msg: validationErrorMessages.ROLE_REQUIRED }],
+          errors: [{ message: validationErrorMessages.ROLE_REQUIRED }],
         });
       });
     });
@@ -215,8 +215,8 @@ describe("User reg. integration tests", () => {
       expect(res.status).toHaveBeenLastCalledWith(400);
       expect(res.json).toHaveBeenCalledWith({
         errors: [
-          { msg: validationErrorMessages.USERNAME_REQUIRED },
-          { msg: validationErrorMessages.EMAIL_REQUIRED },
+          { message: validationErrorMessages.USERNAME_REQUIRED },
+          { message: validationErrorMessages.EMAIL_REQUIRED },
         ],
       });
     });
@@ -239,10 +239,10 @@ describe("User reg. integration tests", () => {
       expect(res.status).toHaveBeenCalledWith(400);
       expect(res.json).toHaveBeenCalledWith({
         errors: [
-          { msg: validationErrorMessages.USERNAME_REQUIRED },
-          { msg: validationErrorMessages.PASSWORD_REQUIRED },
-          { msg: validationErrorMessages.PASSWORD_MIN_LENGTH },
-          { msg: validationErrorMessages.PASSWORD_MUST_HAVE_CHARACTERS },
+          { message: validationErrorMessages.USERNAME_REQUIRED },
+          { message: validationErrorMessages.PASSWORD_REQUIRED },
+          { message: validationErrorMessages.PASSWORD_MIN_LENGTH },
+          { message: validationErrorMessages.PASSWORD_MUST_HAVE_CHARACTERS },
         ],
       });
     });
@@ -260,12 +260,12 @@ describe("User reg. integration tests", () => {
       expect(res.status).toHaveBeenCalledWith(400);
       expect(res.json).toHaveBeenCalledWith({
         errors: [
-          { msg: validationErrorMessages.USERNAME_REQUIRED },
-          { msg: validationErrorMessages.EMAIL_REQUIRED },
-          { msg: validationErrorMessages.PASSWORD_REQUIRED },
-          { msg: validationErrorMessages.PASSWORD_MIN_LENGTH },
-          { msg: validationErrorMessages.PASSWORD_MUST_HAVE_CHARACTERS },
-          { msg: validationErrorMessages.ROLE_REQUIRED },
+          { message: validationErrorMessages.USERNAME_REQUIRED },
+          { message: validationErrorMessages.EMAIL_REQUIRED },
+          { message: validationErrorMessages.PASSWORD_REQUIRED },
+          { message: validationErrorMessages.PASSWORD_MIN_LENGTH },
+          { message: validationErrorMessages.PASSWORD_MUST_HAVE_CHARACTERS },
+          { message: validationErrorMessages.ROLE_REQUIRED },
         ],
       });
     });

@@ -20,7 +20,7 @@ const create = [
     const errors = validator.validationResult(req);
     if (!errors.isEmpty()) {
       const errorMessage = errors.array().map((err) => ({
-        msg: err.msg,
+        message: err.msg,
       }));
 
       return res.status(400).json({ errors: errorMessage });
@@ -40,7 +40,7 @@ const create = [
     } catch (err) {
       if (err.name === "ValidationError") {
         const mongooseErrors = Object.values(err.errors).map((e) => ({
-          msg: e.message,
+          message: e.message,
         }));
 
         return res.status(400).json({ errors: mongooseErrors });

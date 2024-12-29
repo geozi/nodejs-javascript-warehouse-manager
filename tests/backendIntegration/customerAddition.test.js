@@ -93,7 +93,7 @@ describe("Customer addition integration tests", () => {
         expect(Customer.prototype.save).not.toHaveBeenCalled();
         expect(res.status).toHaveBeenCalledWith(400);
         expect(res.json).toHaveBeenCalledWith({
-          errors: [{ msg: validationErrorMessages.FIRST_NAME_REQUIRED }],
+          errors: [{ message: validationErrorMessages.FIRST_NAME_REQUIRED }],
         });
       });
     });
@@ -138,7 +138,7 @@ describe("Customer addition integration tests", () => {
         expect(Customer.prototype.save).not.toHaveBeenCalled();
         expect(res.status).toHaveBeenCalledWith(400);
         expect(res.json).toHaveBeenCalledWith({
-          errors: [{ msg: validationErrorMessages.LAST_NAME_REQUIRED }],
+          errors: [{ message: validationErrorMessages.LAST_NAME_REQUIRED }],
         });
       });
     });
@@ -183,7 +183,7 @@ describe("Customer addition integration tests", () => {
         expect(Customer.prototype.save).not.toHaveBeenCalled();
         expect(res.status).toHaveBeenCalledWith(400);
         expect(res.json).toHaveBeenCalledWith({
-          errors: [{ msg: validationErrorMessages.PHONE_NUMBER_REQUIRED }],
+          errors: [{ message: validationErrorMessages.PHONE_NUMBER_REQUIRED }],
         });
       });
     });
@@ -228,7 +228,7 @@ describe("Customer addition integration tests", () => {
         expect(Customer.prototype.save).not.toHaveBeenCalled();
         expect(res.status).toHaveBeenCalledWith(400);
         expect(res.json).toHaveBeenCalledWith({
-          errors: [{ msg: validationErrorMessages.CITY_REQUIRED }],
+          errors: [{ message: validationErrorMessages.CITY_REQUIRED }],
         });
       });
     });
@@ -273,7 +273,9 @@ describe("Customer addition integration tests", () => {
         expect(Customer.prototype.save).not.toHaveBeenCalled();
         expect(res.status).toHaveBeenCalledWith(400);
         expect(res.json).toHaveBeenCalledWith({
-          errors: [{ msg: validationErrorMessages.STREET_ADDRESS_REQUIRED }],
+          errors: [
+            { message: validationErrorMessages.STREET_ADDRESS_REQUIRED },
+          ],
         });
       });
     });
@@ -318,7 +320,7 @@ describe("Customer addition integration tests", () => {
         expect(Customer.prototype.save).not.toHaveBeenCalled();
         expect(res.status).toHaveBeenCalledWith(400);
         expect(res.json).toHaveBeenCalledWith({
-          errors: [{ msg: validationErrorMessages.ZIP_CODE_REQUIRED }],
+          errors: [{ message: validationErrorMessages.ZIP_CODE_REQUIRED }],
         });
       });
     });
@@ -363,7 +365,7 @@ describe("Customer addition integration tests", () => {
         expect(Customer.prototype.save).not.toHaveBeenCalled();
         expect(res.status).toHaveBeenCalledWith(400);
         expect(res.json).toHaveBeenCalledWith({
-          errors: [{ msg: validationErrorMessages.CUSTOMER_TYPE_REQUIRED }],
+          errors: [{ message: validationErrorMessages.CUSTOMER_TYPE_REQUIRED }],
         });
       });
     });
@@ -408,7 +410,7 @@ describe("Customer addition integration tests", () => {
         expect(Customer.prototype.save).not.toHaveBeenCalled();
         expect(res.status).toHaveBeenCalledWith(400);
         expect(res.json).toHaveBeenCalledWith({
-          errors: [{ msg: validationErrorMessages.USERNAME_REQUIRED }],
+          errors: [{ message: validationErrorMessages.USERNAME_REQUIRED }],
         });
       });
     });

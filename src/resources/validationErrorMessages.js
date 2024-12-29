@@ -19,6 +19,8 @@ module.exports = {
   ROLE_INVALID: "Role must be either admin or customer",
 
   // Customer model validation messages
+  CUSTOMER_ID_INVALID: "Customer ID must only contain alphanumeric characters",
+  CUSTOMER_ID_LENGTH: "Customer ID must be 24 characters long",
   FIRST_NAME_REQUIRED: "First name is a required field",
   FIRST_NAME_MIN_LENGTH: "First name must be at least 2 characters long",
   FIRST_NAME_INVALID: "First name must contain only letters",
