@@ -122,6 +122,19 @@ const productUpdateRules = () => {
   ];
 };
 
+// Validation rules for product deletion.
+const productDeletionRules = () => {
+  return [
+    check("id")
+      .notEmpty()
+      .withMessage(validationErrorMessages.PRODUCT_ID_REQUIRED)
+      .matches(ID_REGEX)
+      .withMessage(validationErrorMessages.PRODUCT_ID_INVALID)
+      .isLength({ min: 24, max: 24 })
+      .withMessage(validationErrorMessages.PRODUCT_ID_LENGTH),
+  ];
+};
+
 module.exports = {
   userRegistrationRules,
   customerAdditionRules,
@@ -129,4 +142,5 @@ module.exports = {
   customerDeletionRules,
   productAdditionRules,
   productUpdateRules,
+  productDeletionRules,
 };

@@ -1,59 +1,31 @@
 const Product = require("../../src/models/product.model");
-const { updateProduct } = require("../../src/controllers/product.controller");
-const responseMessages = require("../../src/resources/responseMessages");
+const { deleteProduct } = require("../../src/controllers/product.controller");
 const validationErrorMessages = require("../../src/resources/validationErrorMessages");
 
-describe("Product update integration tests", () => {
+describe("Product deletion integration tests", () => {
   let req, res, next;
-
   const validId = "67710722913928977aa04ea0";
-  const validName = "Truck Tool";
-  const validPrice = 198;
-  const validCategory = "Automotive";
 
   beforeEach(() => {
     res = { status: jest.fn().mockReturnThis(), json: jest.fn() };
     next = jest.fn();
-    Product.findByIdAndUpdate = jest.fn().mockResolvedValue({});
+    Product.findByIdAndDelete = jest.fn().mockResolvedValue({});
   });
 
   afterEach(() => {
     jest.resetAllMocks();
   });
 
-  describe("updated (201)", () => {
-    const updatedCustomerCases = [
-      [
-        "with valid ID only",
-        {
-          id: validId,
-        },
-      ],
-      [
-        "with valid fields",
-        {
-          id: validId,
-          name: validName,
-          price: validPrice,
-          category: validCategory,
-        },
-      ],
-    ];
+  describe("deleted (204)", () => {
+    test("with valid id", async () => {
+      req = { body: { id: validId } };
 
-    updatedCustomerCases.forEach(([testName, input]) => {
-      test(testName, async () => {
-        req = { body: input };
+      for (let middleware of deleteProduct) {
+        await middleware(req, res, next);
+      }
 
-        for (let middleware of updateProduct) {
-          await middleware(req, res, next);
-        }
-
-        expect(Product.findByIdAndUpdate.mock.calls).toHaveLength(1);
-        expect(res.status).toHaveBeenCalledWith(201);
-        expect(res.json).toHaveBeenCalledWith({
-          message: responseMessages.PRODUCT_UPDATED,
-        });
-      });
+      expect(Product.findByIdAndDelete.mock.calls).toHaveLength(1);
+      expect(res.status).toHaveBeenCalledWith(204);
     });
   });
 
@@ -65,23 +37,18 @@ describe("Product update integration tests", () => {
           id: undefined,
         },
       ],
-      [
-        "with null id",
-        {
-          id: null,
-        },
-      ],
+      ["with null id", { id: null }],
     ];
 
     idRequiredCases.forEach(([testName, input]) => {
       test(testName, async () => {
         req = { body: input };
 
-        for (let middleware of updateProduct) {
+        for (let middleware of deleteProduct) {
           await middleware(req, res, next);
         }
 
-        expect(Product.findByIdAndUpdate).not.toHaveBeenCalled();
+        expect(Product.findByIdAndDelete).not.toHaveBeenCalled();
         expect(res.status).toHaveBeenCalledWith(400);
         expect(res.json).toHaveBeenCalledWith({
           errors: [
@@ -112,11 +79,11 @@ describe("Product update integration tests", () => {
       test(testName, async () => {
         req = { body: input };
 
-        for (let middleware of updateProduct) {
+        for (let middleware of deleteProduct) {
           await middleware(req, res, next);
         }
 
-        expect(Product.findByIdAndUpdate).not.toHaveBeenCalled();
+        expect(Product.findByIdAndDelete).not.toHaveBeenCalled();
         expect(res.status).toHaveBeenCalledWith(400);
         expect(res.json).toHaveBeenCalledWith({
           errors: [{ message: validationErrorMessages.PRODUCT_ID_LENGTH }],
@@ -149,11 +116,11 @@ describe("Product update integration tests", () => {
       test(testName, async () => {
         req = { body: input };
 
-        for (let middleware of updateProduct) {
+        for (let middleware of deleteProduct) {
           await middleware(req, res, next);
         }
 
-        expect(Product.findByIdAndUpdate).not.toHaveBeenCalled();
+        expect(Product.findByIdAndDelete).not.toHaveBeenCalled();
         expect(res.status).toHaveBeenCalledWith(400);
         expect(res.json).toHaveBeenCalledWith({
           errors: [{ message: validationErrorMessages.PRODUCT_ID_INVALID }],

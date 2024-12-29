@@ -153,7 +153,7 @@ const updateCustomerInfo = [
  * functions responsible for the validation of customer
  * deletion requests. If the validation passes successfully, it
  * proceeds to the main logic of the method which handles
- * blogpost removals.
+ * customer removals.
  */
 const deleteCustomer = [
   ...customerDeletionRules(),

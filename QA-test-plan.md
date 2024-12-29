@@ -45,6 +45,7 @@ The tests are meant to check the integration of backend directories and files. F
 └── src
     ├── controllers
     │   ├── customer.controller.js
+    │   ├── product.controller.js
     │   └── user.controller.js
     ├── middleware
     │   └── expressValidationRules.js
@@ -68,8 +69,8 @@ They are to be conducted per operation:
 - Customer information update [✔],
 - Customer deletion [✔],
 - Product addition [✔],
-- Product information update [⌛],
-- Product deletion [⌛],
+- Product information update [✔],
+- Product deletion [✔],
 - Stock creation [⌛],
 - Stock information update [⌛],
 - Stock deletion [⌛],

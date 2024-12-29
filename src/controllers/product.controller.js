@@ -2,6 +2,7 @@ const Product = require("../models/product.model");
 const {
   productAdditionRules,
   productUpdateRules,
+  productDeletionRules,
 } = require("../middleware/expressValidationRules");
 const responseMessages = require("../resources/responseMessages");
 const validator = require("express-validator");
@@ -116,4 +117,50 @@ const updateProduct = [
   },
 ];
 
-module.exports = { createProduct, updateProduct };
+/**
+ * Handles product deletion.
+ *
+ * When the deleteProduct method is called, it first
+ * executes the ValidationChain path, running all middleware
+ * functions responsible for the validation of product deletion
+ * requests. If the validation passes successfully, it proceeds
+ * to the main logic of the method which handles product removals.
+ */
+const deleteProduct = [
+  ...productDeletionRules(),
+  async (req, res) => {
+    const errors = validator.validationResult(req);
+    if (!errors.isEmpty()) {
+      const errorMsg = errors.array().map((err) => ({
+        message: err.msg,
+      }));
+
+      return res.status(400).json({ errors: errorMsg });
+    }
+
+    try {
+      const { id } = req.body;
+      const deletedProduct = await Product.findByIdAndDelete(id);
+
+      if (!deletedProduct) {
+        return res
+          .status(404)
+          .json({ message: responseMessages.PRODUCT_NOT_FOUND });
+      }
+
+      return res.status(204).json({});
+    } catch (err) {
+      if (err.name == "ValidationError") {
+        const mongooseErrors = Object.values(err.errors).map((e) => ({
+          message: e.message,
+        }));
+        return res.status(400).json({ errors: mongooseErrors });
+      }
+      return res
+        .status(500)
+        .json({ message: responseMessages.INTERNAL_SERVER_ERROR });
+    }
+  },
+];
+
+module.exports = { createProduct, updateProduct, deleteProduct };
