@@ -7,5 +7,8 @@ module.exports = {
   PRODUCT_ADDED: "Successful product addition",
   PRODUCT_NOT_FOUND: "Product was not found",
   PRODUCT_UPDATED: "Successful product update",
+  STOCK_CREATED: "Successful product stock creation",
+  STOCK_NOT_FOUND: "Product stock was not found",
+  STOCK_UPDATED: "Successful product stock update",
   INTERNAL_SERVER_ERROR: "Internal Server Error",
 };

@@ -7,7 +7,7 @@ const { check } = require("express-validator");
 const validationErrorMessages = require("../resources/validationErrorMessages");
 const { PASSWORD_REGEX, ID_REGEX } = require("../resources/validationRegExp");
 
-// Validation rules for user registration
+// Validation rules for user registration.
 const userRegistrationRules = () => {
   return [
     check("username")
@@ -27,7 +27,7 @@ const userRegistrationRules = () => {
   ];
 };
 
-// Validation rules for user registration
+// Validation rules for customer addition.
 const customerAdditionRules = () => {
   return [
     check("firstName")
@@ -135,6 +135,20 @@ const productDeletionRules = () => {
   ];
 };
 
+// Validation rules for stock creation.
+const stockCreationRules = () => {
+  return [
+    check("productId")
+      .notEmpty()
+      .withMessage(validationErrorMessages.PRODUCT_ID_REQUIRED),
+    check("numberOfUnits")
+      .notEmpty()
+      .withMessage(validationErrorMessages.UNIT_NUMBER_REQUIRED)
+      .isNumeric()
+      .withMessage(validationErrorMessages.UNIT_NUMBER_NUMERIC),
+  ];
+};
+
 module.exports = {
   userRegistrationRules,
   customerAdditionRules,
@@ -143,4 +157,5 @@ module.exports = {
   productAdditionRules,
   productUpdateRules,
   productDeletionRules,
+  stockCreationRules,
 };

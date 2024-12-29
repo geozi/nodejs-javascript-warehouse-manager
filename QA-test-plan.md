@@ -1,6 +1,6 @@
 # Warehouse Manager API test plan
 
-Document version 1.0.4
+Document version 1.0.5
 
 ## Introduction
 
@@ -46,6 +46,7 @@ The tests are meant to check the integration of backend directories and files. F
     ├── controllers
     │   ├── customer.controller.js
     │   ├── product.controller.js
+    │   ├── stock.controller.js
     │   └── user.controller.js
     ├── middleware
     │   └── expressValidationRules.js

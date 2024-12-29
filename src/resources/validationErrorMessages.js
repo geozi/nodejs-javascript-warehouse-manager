@@ -65,6 +65,7 @@ module.exports = {
   PRODUCT_ID_INVALID: "Product ID must only contain alphanumeric characters",
   PRODUCT_ID_LENGTH: "Product ID must be 24 characters in length",
   UNIT_NUMBER_REQUIRED: "Number of units is a required field",
+  UNIT_NUMBER_NUMERIC: "Number of units must be a number",
   UNIT_NUMBER_NEGATIVE: "Number of units must be a positive number",
 
   // Order model validation messages
