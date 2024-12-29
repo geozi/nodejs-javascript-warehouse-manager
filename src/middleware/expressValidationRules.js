@@ -106,10 +106,27 @@ const productAdditionRules = () => {
   ];
 };
 
+// Validation rules for product update.
+const productUpdateRules = () => {
+  return [
+    check("id")
+      .notEmpty()
+      .withMessage(validationErrorMessages.PRODUCT_ID_REQUIRED)
+      .matches(ID_REGEX)
+      .withMessage(validationErrorMessages.PRODUCT_ID_INVALID)
+      .isLength({ min: 24, max: 24 })
+      .withMessage(validationErrorMessages.PRODUCT_ID_LENGTH),
+    check("name").optional(),
+    check("price").optional(),
+    check("category").optional(),
+  ];
+};
+
 module.exports = {
   userRegistrationRules,
   customerAdditionRules,
   customerUpdateRules,
   customerDeletionRules,
   productAdditionRules,
+  productUpdateRules,
 };

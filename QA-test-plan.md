@@ -67,11 +67,12 @@ They are to be conducted per operation:
 - Customer addition [✔],
 - Customer information update [✔],
 - Customer deletion [✔],
-- Product addition [⌛],
+- Product addition [✔],
 - Product information update [⌛],
 - Product deletion [⌛],
 - Stock creation [⌛],
 - Stock information update [⌛],
+- Stock deletion [⌛],
 - Order addition [⌛],
 - Order update [⌛],
 - Order deletion [⌛]
