@@ -65,14 +65,13 @@ The tests are meant to check the integration of backend directories and files. F
 They are to be conducted per operation:
 
 - User registration [✔],
-- User login [⌛],
 - Customer addition [✔],
 - Customer information update [✔],
 - Customer deletion [✔],
 - Product addition [✔],
 - Product information update [✔],
 - Product deletion [✔],
-- Stock creation [⌛],
+- Stock creation [✔],
 - Stock information update [⌛],
 - Stock deletion [⌛],
 - Order addition [⌛],
