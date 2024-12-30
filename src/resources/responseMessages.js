@@ -10,5 +10,7 @@ module.exports = {
   STOCK_CREATED: "Successful product stock creation",
   STOCK_NOT_FOUND: "Product stock was not found",
   STOCK_UPDATED: "Successful product stock update",
+  ORDER_CREATED: "Successful order creation",
+  ORDER_DELETED: "Successful order deletion",
   INTERNAL_SERVER_ERROR: "Internal Server Error",
 };

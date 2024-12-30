@@ -63,7 +63,7 @@ They are to be conducted per operation:
 - Product deletion [✔],
 - Stock creation [✔],
 - Stock information update [✔],
-- Stock deletion [⌛],
+- Stock deletion [✔],
 - Order addition [⌛],
 - Order deletion [⌛]
 

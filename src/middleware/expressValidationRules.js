@@ -174,6 +174,45 @@ const stockDeletionRules = () => [
     .withMessage(validationErrorMessages.PRODUCT_ID_LENGTH),
 ];
 
+// Validation rules for order creation.
+const orderCreationRules = () => {
+  return [
+    check("customerId")
+      .notEmpty()
+      .withMessage(validationErrorMessages.CUSTOMER_ID_REQUIRED),
+    check("products")
+      .notEmpty()
+      .withMessage(validationErrorMessages.PRODUCT_ITEMS_REQUIRED),
+    check("orderDate")
+      .notEmpty()
+      .withMessage(validationErrorMessages.ORDER_DATE_REQUIRED)
+      .isDate()
+      .withMessage(validationErrorMessages.ORDER_DATE_INVALID),
+    check("totalNumberOfUnits")
+      .notEmpty()
+      .withMessage(validationErrorMessages.TOTAL_UNIT_NUMBER_REQUIRED)
+      .isNumeric()
+      .withMessage(validationErrorMessages.TOTAL_UNIT_NUMBER_NUMERIC),
+    check("totalCost")
+      .notEmpty()
+      .withMessage(validationErrorMessages.TOTAL_COST_REQUIRED)
+      .isNumeric()
+      .withMessage(validationErrorMessages.TOTAL_COST_NUMERIC),
+    check("shippingAddress")
+      .notEmpty()
+      .withMessage(validationErrorMessages.SHIPPING_ADDRESS_REQUIRED),
+    check("billingAddress")
+      .notEmpty()
+      .withMessage(validationErrorMessages.BILLING_ADDRESS_REQUIRED),
+    check("shippingMethod")
+      .notEmpty()
+      .withMessage(validationErrorMessages.SHIPPING_METHOD_REQUIRED),
+    check("paymentMethod")
+      .notEmpty()
+      .withMessage(validationErrorMessages.PAYMENT_METHOD_REQUIRED),
+  ];
+};
+
 module.exports = {
   userRegistrationRules,
   customerAdditionRules,
@@ -185,4 +224,5 @@ module.exports = {
   stockCreationRules,
   stockUpdateRules,
   stockDeletionRules,
+  orderCreationRules,
 };
