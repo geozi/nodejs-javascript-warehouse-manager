@@ -2,6 +2,7 @@ const Order = require("../models/order.model");
 const { orderCreationRules } = require("../middleware/expressValidationRules");
 const responseMessages = require("../resources/responseMessages");
 const validator = require("express-validator");
+const { default: mongoose } = require("mongoose");
 
 /**
  * Handles new order creation requests.
@@ -37,9 +38,13 @@ const createOrder = [
         paymentMethod,
       } = req.body;
 
+      const productsAsObjectIds = products.map(
+        (idAsString) => new mongoose.Types.ObjectId(idAsString)
+      );
+
       const newOrder = new Order({
         customerId: customerId,
-        products: products,
+        products: productsAsObjectIds,
         orderDate: orderDate,
         totalNumberOfUnits: totalNumberOfUnits,
         totalCost: totalCost,
@@ -52,7 +57,7 @@ const createOrder = [
 
       await newOrder.save();
 
-      res.status(201).json(responseMessages.ORDER_CREATED);
+      res.status(201).json({ message: responseMessages.ORDER_CREATED });
     } catch (err) {
       if (err.name === "ValidationError") {
         const mongooseErrors = Object.values(err.errors).map((e) => ({

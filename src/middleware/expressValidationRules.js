@@ -185,9 +185,7 @@ const orderCreationRules = () => {
       .withMessage(validationErrorMessages.PRODUCT_ITEMS_REQUIRED),
     check("orderDate")
       .notEmpty()
-      .withMessage(validationErrorMessages.ORDER_DATE_REQUIRED)
-      .isDate()
-      .withMessage(validationErrorMessages.ORDER_DATE_INVALID),
+      .withMessage(validationErrorMessages.ORDER_DATE_REQUIRED),
     check("totalNumberOfUnits")
       .notEmpty()
       .withMessage(validationErrorMessages.TOTAL_UNIT_NUMBER_REQUIRED)
