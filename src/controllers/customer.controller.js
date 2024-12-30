@@ -10,18 +10,18 @@ const validator = require("express-validator");
 /**
  * Handles new customer addition requests.
  *
- * When the createCustomer method is called, it first executes the
- * ValidationChain path, running all middleware functions responsible
- * for the validation of new customer addition requests. If the validation
- * passes successfully, it proceeds to the main logic of the method which
- * handles new customer addition.
+ * When the createCustomer is used, the Express ValidationChain path
+ * is executed first, running all middleware functions responsible for the
+ * validation of new customer addition requests. If the validation passes
+ * successfully, it proceeds to the main method which handles new customer
+ * additions.
  */
 const createCustomer = [
   ...customerAdditionRules(),
   async (req, res) => {
-    const errors = validator.validationResult(req);
-    if (!errors.isEmpty()) {
-      const errorMsg = errors.array().map((err) => ({
+    const expressErrors = validator.validationResult(req);
+    if (!expressErrors.isEmpty()) {
+      const errorMsg = expressErrors.array().map((err) => ({
         message: err.msg,
       }));
 
@@ -70,18 +70,18 @@ const createCustomer = [
 /**
  * Handles customer information update requests.
  *
- * When the updateCustomerInfo method is called, it first executes the
- * ValidationChain path, running all middleware functions responsible
- * for the validation of customer information update requests. If the
- * validation passes successfully, it proceeds to the main logic of the
- * method which handles customer information updates.
+ * When the updateCustomerInfo is used, the Express ValidationChain path
+ * is executed first, running all middleware functions responsible for the
+ * validation of customer information update requests. If the validation passes
+ * successfully, it proceeds to the main method which handles customer
+ * information updates.
  */
 const updateCustomerInfo = [
   ...customerUpdateRules(),
   async (req, res) => {
-    const errors = validator.validationResult(req);
-    if (!errors.isEmpty()) {
-      const errorMsg = errors.array().map((err) => ({
+    const expressErrors = validator.validationResult(req);
+    if (!expressErrors.isEmpty()) {
+      const errorMsg = expressErrors.array().map((err) => ({
         message: err.msg,
       }));
 
@@ -146,21 +146,20 @@ const updateCustomerInfo = [
 ];
 
 /**
- * Handles customer deletion.
+ * Handles customer deletion requests.
  *
- * When the deleteCustomer method is called, it first
- * executes the ValidationChain path, running all middleware
- * functions responsible for the validation of customer
- * deletion requests. If the validation passes successfully, it
- * proceeds to the main logic of the method which handles
- * customer removals.
+ * When the deleteCustomer is used, the Express ValidationChain path
+ * is executed first, running all middleware functions responsible for the
+ * validation of customer deletion requests. If the validation passes
+ * successfully, it proceeds to the main method which handles customer
+ * deletions.
  */
 const deleteCustomer = [
   ...customerDeletionRules(),
   async (req, res) => {
-    const errors = validator.validationResult(req);
-    if (!errors.isEmpty()) {
-      const errorMsg = errors.array().map((err) => ({
+    const expressErrors = validator.validationResult(req);
+    if (!expressErrors.isEmpty()) {
+      const errorMsg = expressErrors.array().map((err) => ({
         message: err.msg,
       }));
 

@@ -7,19 +7,20 @@ const {
 const responseMessages = require("../resources/responseMessages");
 
 /**
- * Handles user registration.
+ * Handles user registration requests.
  *
- * When the create method is called, it first executes the
- * ValidationChain path, running all middleware functions responsible
- * for validation. If the validation passes, it proceeds to the main
- * logic of the method which handles user creation and response generation.
+ * When the create method is used, the Express ValidationChain path
+ * is executed first, running all middleware functions responsible for
+ * the validation of new user creation requests. If the validation passes
+ * successfully, it proceeds to the main method which handles new user
+ * creation.
  */
 const create = [
   ...userRegistrationRules(),
   async (req, res) => {
-    const errors = validator.validationResult(req);
-    if (!errors.isEmpty()) {
-      const errorMessage = errors.array().map((err) => ({
+    const expressErrors = validator.validationResult(req);
+    if (!expressErrors.isEmpty()) {
+      const errorMessage = expressErrors.array().map((err) => ({
         message: err.msg,
       }));
 

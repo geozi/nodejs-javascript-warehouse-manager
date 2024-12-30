@@ -12,6 +12,7 @@ const stockSchema = new Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "Product",
       required: [true, validationErrorMessages.PRODUCT_ID_REQUIRED],
+      unique: [true, validationErrorMessages.PRODUCT_ID_UNIQUE],
     },
     numberOfUnits: {
       type: Number,

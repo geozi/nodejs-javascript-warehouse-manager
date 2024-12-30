@@ -10,18 +10,18 @@ const validator = require("express-validator");
 /**
  * Handles new product addition requests.
  *
- * When the createProduct method is called, it first executes the
- * ValidationChain path, running all middleware functions responsible
- * for the validation of new product addition requests. If the validation
- * passes successfully, it proceeds to the main logic of the method which
- * handles new product addition.
+ * When the createProduct is used, the Express ValidationChain path
+ * is executed, running all middleware functions responsible for the
+ * validation of new product addition requests. If the validation passes
+ * successfully, it proceeds to the main method which handles new
+ * product addition requests.
  */
 const createProduct = [
   ...productAdditionRules(),
   async (req, res) => {
-    const errors = validator.validationResult(req);
-    if (!errors.isEmpty()) {
-      const errorMsg = errors.array().map((err) => ({
+    const expressErrors = validator.validationResult(req);
+    if (!expressErrors.isEmpty()) {
+      const errorMsg = expressErrors.array().map((err) => ({
         message: err.msg,
       }));
 
@@ -56,18 +56,17 @@ const createProduct = [
 /**
  * Handles product update requests.
  *
- * When the updateProduct method is called, it first executes
- * the ValidationChain path, running all middleware functions responsible
- * for the validation of product update requests. If the validation passes
- * successfully, it proceeds to the main logic of the method which handles
- * product updates.
+ * When the updateProduct is used, the Express ValidationChain path is
+ * executed, running all middleware functions responsible for the validation
+ * of product update requests. If the validation passes successfully, it
+ * proceeds to the main method which handles product updates.
  */
 const updateProduct = [
   ...productUpdateRules(),
   async (req, res) => {
-    const errors = validator.validationResult(req);
-    if (!errors.isEmpty()) {
-      const errorMsg = errors.array().map((err) => ({
+    const expressErrors = validator.validationResult(req);
+    if (!expressErrors.isEmpty()) {
+      const errorMsg = expressErrors.array().map((err) => ({
         message: err.msg,
       }));
 
@@ -118,20 +117,19 @@ const updateProduct = [
 ];
 
 /**
- * Handles product deletion.
+ * Handles product deletion requests.
  *
- * When the deleteProduct method is called, it first
- * executes the ValidationChain path, running all middleware
- * functions responsible for the validation of product deletion
- * requests. If the validation passes successfully, it proceeds
- * to the main logic of the method which handles product removals.
+ * When the deleteProduct is used, the Express ValidationChain path is
+ * executed, running all middleware functions responsible for the validation
+ * of product deletion requests. If the validation passes successfully, it
+ * proceeds to the main method which handles product deletions.
  */
 const deleteProduct = [
   ...productDeletionRules(),
   async (req, res) => {
-    const errors = validator.validationResult(req);
-    if (!errors.isEmpty()) {
-      const errorMsg = errors.array().map((err) => ({
+    const expressErrors = validator.validationResult(req);
+    if (!expressErrors.isEmpty()) {
+      const errorMsg = expressErrors.array().map((err) => ({
         message: err.msg,
       }));
 

@@ -149,6 +149,31 @@ const stockCreationRules = () => {
   ];
 };
 
+// Validation rules for stock update.
+const stockUpdateRules = () => {
+  return [
+    check("productId")
+      .notEmpty()
+      .withMessage(validationErrorMessages.PRODUCT_ID_REQUIRED)
+      .matches(ID_REGEX)
+      .withMessage(validationErrorMessages.PRODUCT_ID_INVALID)
+      .isLength({ min: 24, max: 24 })
+      .withMessage(validationErrorMessages.PRODUCT_ID_LENGTH),
+    check("numberOfUnits").optional(),
+  ];
+};
+
+// Validation rules for stock deletion.
+const stockDeletionRules = () => [
+  check("productId")
+    .notEmpty()
+    .withMessage(validationErrorMessages.PRODUCT_ID_REQUIRED)
+    .matches(ID_REGEX)
+    .withMessage(validationErrorMessages.PRODUCT_ID_INVALID)
+    .isLength({ min: 24, max: 24 })
+    .withMessage(validationErrorMessages.PRODUCT_ID_LENGTH),
+];
+
 module.exports = {
   userRegistrationRules,
   customerAdditionRules,
@@ -158,4 +183,6 @@ module.exports = {
   productUpdateRules,
   productDeletionRules,
   stockCreationRules,
+  stockUpdateRules,
+  stockDeletionRules,
 };
