@@ -65,7 +65,7 @@ They are to be conducted per operation:
 - Stock information update [✔],
 - Stock deletion [✔],
 - Order addition [✔],
-- Order deletion [⌛]
+- Order deletion [✔]
 
 #### Database integration tests
 
