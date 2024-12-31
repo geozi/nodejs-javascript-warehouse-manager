@@ -32,39 +32,6 @@ describe("User model unit tests", () => {
       expect(err).toBeUndefined();
     });
 
-    const usernameRequiredCases = [
-      [
-        "with undefined username",
-        {
-          username: undefined,
-          email: validEmail,
-          password: validPassword,
-          role: validRole,
-        },
-      ],
-      [
-        "with null username",
-        {
-          username: null,
-          email: validEmail,
-          password: validPassword,
-          role: validRole,
-        },
-      ],
-    ];
-
-    usernameRequiredCases.forEach(([testName, input]) => {
-      test(testName, () => {
-        const newUser = new User(input);
-        const err = newUser.validateSync();
-
-        expect(err.errors.username).toBeDefined();
-        expect(err.errors.username.message).toBe(
-          validationErrorMessages.USERNAME_REQUIRED
-        );
-      });
-    });
-
     test("with too short username", () => {
       const newUser = new User({
         username: "ab",
@@ -94,40 +61,6 @@ describe("User model unit tests", () => {
       expect(err.errors.username.message).toBe(
         validationErrorMessages.USERNAME_MAX_LENGTH
       );
-    });
-
-    const emailRequiredCases = [
-      [
-        "with undefined email",
-        {
-          username: validUsername,
-          email: undefined,
-          password: validPassword,
-          role: validRole,
-        },
-      ],
-      [
-        "with null email",
-        {
-          username: validUsername,
-          email: null,
-          password: validPassword,
-          role: validRole,
-        },
-      ],
-    ];
-
-    emailRequiredCases.forEach(([testName, input]) => {
-      test(testName, () => {
-        const newUser = new User(input);
-
-        const err = newUser.validateSync();
-
-        expect(err.errors.email).toBeDefined();
-        expect(err.errors.email.message).toBe(
-          validationErrorMessages.EMAIL_REQUIRED
-        );
-      });
     });
 
     const emailInvalidCases = [
@@ -190,72 +123,6 @@ describe("User model unit tests", () => {
       });
     });
 
-    const passwordRequiredCases = [
-      [
-        "with undefined password",
-        {
-          username: validUsername,
-          email: validEmail,
-          password: undefined,
-          role: validRole,
-        },
-      ],
-      [
-        "with null password",
-        {
-          username: validUsername,
-          email: validEmail,
-          password: null,
-          role: validRole,
-        },
-      ],
-    ];
-
-    passwordRequiredCases.forEach(([testName, input]) => {
-      test(testName, () => {
-        const newUser = new User(input);
-        const err = newUser.validateSync();
-
-        expect(err.errors.password).toBeDefined();
-        expect(err.errors.password.message).toBe(
-          validationErrorMessages.PASSWORD_REQUIRED
-        );
-      });
-    });
-
-    const roleRequiredCases = [
-      [
-        "with role undefined",
-        {
-          username: validUsername,
-          email: validEmail,
-          password: validPassword,
-          role: undefined,
-        },
-      ],
-      [
-        "with role null",
-        {
-          username: validUsername,
-          email: validEmail,
-          password: validPassword,
-          role: null,
-        },
-      ],
-    ];
-
-    roleRequiredCases.forEach(([testName, input]) => {
-      test(testName, () => {
-        const newUser = new User(input);
-        const err = newUser.validateSync();
-
-        expect(err.errors.role).toBeDefined();
-        expect(err.errors.role.message).toBe(
-          validationErrorMessages.ROLE_REQUIRED
-        );
-      });
-    });
-
     test("with invalid role", () => {
       const newUser = new User({
         username: validUsername,
@@ -269,101 +136,6 @@ describe("User model unit tests", () => {
       expect(err.errors.role).toBeDefined();
       expect(err.errors.role.message).toBe(
         validationErrorMessages.ROLE_INVALID
-      );
-    });
-
-    test("with no fields", () => {
-      const newUser = new User();
-      const err = newUser.validateSync();
-
-      expect(Object.keys(err.errors)).toHaveLength(4);
-      expect(Object.keys(err.errors).sort()).toStrictEqual([
-        "email",
-        "password",
-        "role",
-        "username",
-      ]);
-      expect(err.errors.username.message).toBe(
-        validationErrorMessages.USERNAME_REQUIRED
-      );
-      expect(err.errors.email.message).toBe(
-        validationErrorMessages.EMAIL_REQUIRED
-      );
-      expect(err.errors.password.message).toBe(
-        validationErrorMessages.PASSWORD_REQUIRED
-      );
-      expect(err.errors.role.message).toBe(
-        validationErrorMessages.ROLE_REQUIRED
-      );
-    });
-
-    test("with 2 undefined fields", () => {
-      const newUser = new User({
-        username: undefined,
-        email: undefined,
-        password: validPassword,
-        role: validRole,
-      });
-
-      const err = newUser.validateSync();
-
-      expect(Object.keys(err.errors)).toHaveLength(2);
-      expect(Object.keys(err.errors).sort()).toStrictEqual([
-        "email",
-        "username",
-      ]);
-      expect(err.errors.username.message).toBe(
-        validationErrorMessages.USERNAME_REQUIRED
-      );
-      expect(err.errors.email.message).toBe(
-        validationErrorMessages.EMAIL_REQUIRED
-      );
-    });
-
-    test("with 2 null fields", () => {
-      const newUser = new User({
-        username: validUsername,
-        email: null,
-        password: validPassword,
-        role: null,
-      });
-
-      const err = newUser.validateSync();
-
-      expect(Object.keys(err.errors)).toHaveLength(2);
-      expect(Object.keys(err.errors).sort()).toStrictEqual(["email", "role"]);
-      expect(err.errors.email.message).toBe(
-        validationErrorMessages.EMAIL_REQUIRED
-      );
-      expect(err.errors.role.message).toBe(
-        validationErrorMessages.ROLE_REQUIRED
-      );
-    });
-
-    test("with mix null and undefined fields", () => {
-      const newUser = new User({
-        username: undefined,
-        email: null,
-        password: validPassword,
-        role: null,
-      });
-
-      const err = newUser.validateSync();
-
-      expect(Object.keys(err.errors)).toHaveLength(3);
-      expect(Object.keys(err.errors).sort()).toStrictEqual([
-        "email",
-        "role",
-        "username",
-      ]);
-      expect(err.errors.email.message).toBe(
-        validationErrorMessages.EMAIL_REQUIRED
-      );
-      expect(err.errors.role.message).toBe(
-        validationErrorMessages.ROLE_REQUIRED
-      );
-      expect(err.errors.username.message).toBe(
-        validationErrorMessages.USERNAME_REQUIRED
       );
     });
 

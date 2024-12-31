@@ -1,6 +1,6 @@
 # Warehouse Manager API test plan
 
-Document version 1.0.5
+Document version 1.0.6
 
 ## Introduction
 
@@ -8,7 +8,7 @@ The Warehouse Manager API test plan contains information on the tests that are t
 
 ## In Scope
 
-The project's tests will be unit, integration, and API tests. Completed tests are noted with ✔, while the pending ones are noted with ⌛.
+The project's tests will be unit and integration tests. Completed tests are noted with ✔, while the pending ones are noted with ⌛.
 
 ### Unit tests
 
@@ -68,10 +68,6 @@ They are to be conducted per operation:
 - Order deletion [⌛]
 
 #### Database integration tests
-
-[To be developed]
-
-### API tests
 
 [To be developed]
 

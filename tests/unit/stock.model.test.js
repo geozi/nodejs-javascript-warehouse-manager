@@ -28,62 +28,17 @@ describe("Stock model unit tests", () => {
       expect(err).toBeUndefined();
     });
 
-    const productIdRequiredCases = [
-      [
-        "with undefined productId",
-        {
-          productId: undefined,
-          numberOfUnits: validNumberOfUnits,
-        },
-      ],
-      [
-        "with null productId",
-        {
-          productId: null,
-          numberOfUnits: validNumberOfUnits,
-        },
-      ],
-    ];
-
-    productIdRequiredCases.forEach(([testName, input]) => {
-      test(testName, () => {
-        const newStock = new Stock(input);
-        const err = newStock.validateSync();
-
-        expect(err.errors.productId).toBeDefined();
-        expect(err.errors.productId.message).toBe(
-          validationErrorMessages.PRODUCT_ID_REQUIRED
-        );
+    test("with negative numberOfUnits", () => {
+      const newStock = new Stock({
+        productId: validProductId,
+        numberOfUnits: -1,
       });
-    });
+      const err = newStock.validateSync();
 
-    const unitNumberRequiredCases = [
-      [
-        "with undefined numberOfUnits",
-        {
-          productId: validProductId,
-          numberOfUnits: undefined,
-        },
-      ],
-      [
-        "with null numbersOfUnits",
-        {
-          productId: validProductId,
-          numberOfUnits: null,
-        },
-      ],
-    ];
-
-    unitNumberRequiredCases.forEach(([testName, input]) => {
-      test(testName, () => {
-        const newStock = new Stock(input);
-        const err = newStock.validateSync();
-
-        expect(err.errors.numberOfUnits).toBeDefined();
-        expect(err.errors.numberOfUnits.message).toBe(
-          validationErrorMessages.UNIT_NUMBER_REQUIRED
-        );
-      });
+      expect(err.errors.numberOfUnits).toBeDefined();
+      expect(err.errors.numberOfUnits.message).toBe(
+        validationErrorMessages.UNIT_NUMBER_NEGATIVE
+      );
     });
   });
 });

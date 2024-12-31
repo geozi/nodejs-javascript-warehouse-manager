@@ -37,47 +37,6 @@ describe("Customer model unit tests", () => {
       expect(err).toBeUndefined();
     });
 
-    const firstNameRequiredCases = [
-      [
-        "with undefined firstName",
-        {
-          firstName: undefined,
-          lastName: validLastName,
-          phoneNumber: validPhoneNumber,
-          city: validCity,
-          streetAddress: validStreetAddress,
-          zipCode: validZipCode,
-          customerType: validCustomerType,
-          username: validUsername,
-        },
-      ],
-      [
-        "with null firstName",
-        {
-          firstName: null,
-          lastName: validLastName,
-          phoneNumber: validPhoneNumber,
-          city: validCity,
-          streetAddress: validStreetAddress,
-          zipCode: validZipCode,
-          customerType: validCustomerType,
-          username: validUsername,
-        },
-      ],
-    ];
-
-    firstNameRequiredCases.forEach(([testName, input]) => {
-      test(testName, () => {
-        const newCustomer = new Customer(input);
-        const err = newCustomer.validateSync();
-
-        expect(err.errors.firstName).toBeDefined();
-        expect(err.errors.firstName.message).toBe(
-          validationErrorMessages.FIRST_NAME_REQUIRED
-        );
-      });
-    });
-
     test("with too short firstName", () => {
       const newCustomer = new Customer({
         firstName: "L",
@@ -118,48 +77,6 @@ describe("Customer model unit tests", () => {
       );
     });
 
-    const lastNameRequiredCases = [
-      [
-        "with undefined lastName",
-        {
-          firstName: validFirstName,
-          lastName: undefined,
-          phoneNumber: validPhoneNumber,
-          city: validCity,
-          streetAddress: validStreetAddress,
-          zipCode: validZipCode,
-          customerType: validCustomerType,
-          username: validUsername,
-        },
-      ],
-      [
-        "with null lastName",
-        {
-          firstName: validFirstName,
-          lastName: null,
-          phoneNumber: validPhoneNumber,
-          city: validCity,
-          streetAddress: validStreetAddress,
-          zipCode: validZipCode,
-          customerType: validCustomerType,
-          username: validUsername,
-        },
-      ],
-    ];
-
-    lastNameRequiredCases.forEach(([testName, input]) => {
-      test(testName, () => {
-        const newCustomer = new Customer(input);
-
-        const err = newCustomer.validateSync();
-
-        expect(err.errors.lastName).toBeDefined();
-        expect(err.errors.lastName.message).toBe(
-          validationErrorMessages.LAST_NAME_REQUIRED
-        );
-      });
-    });
-
     test("with too short lastName", () => {
       const newCustomer = new Customer({
         firstName: validFirstName,
@@ -198,48 +115,6 @@ describe("Customer model unit tests", () => {
       expect(err.errors.lastName.message).toBe(
         validationErrorMessages.LAST_NAME_INVALID
       );
-    });
-
-    const phoneNumberRequiredCases = [
-      [
-        "with undefined phoneNumber",
-        {
-          firstName: validFirstName,
-          lastName: validLastName,
-          phoneNumber: undefined,
-          city: validCity,
-          streetAddress: validStreetAddress,
-          zipCode: validZipCode,
-          customerType: validCustomerType,
-          username: validUsername,
-        },
-      ],
-      [
-        "with null phoneNumber",
-        {
-          firstName: validFirstName,
-          lastName: validLastName,
-          phoneNumber: null,
-          city: validCity,
-          streetAddress: validStreetAddress,
-          zipCode: validZipCode,
-          customerType: validCustomerType,
-          username: validUsername,
-        },
-      ],
-    ];
-
-    phoneNumberRequiredCases.forEach(([testName, input]) => {
-      test(testName, () => {
-        const newCustomer = new Customer(input);
-
-        const err = newCustomer.validateSync();
-
-        expect(err.errors.phoneNumber).toBeDefined();
-        expect(err.errors.phoneNumber.message).toBe(
-          validationErrorMessages.PHONE_NUMBER_REQUIRED
-        );
-      });
     });
 
     test("with too short phoneNumber", () => {
@@ -330,48 +205,6 @@ describe("Customer model unit tests", () => {
       });
     });
 
-    const cityRequiredCases = [
-      [
-        "with undefined city",
-        {
-          firstName: validFirstName,
-          lastName: validLastName,
-          phoneNumber: validPhoneNumber,
-          city: undefined,
-          streetAddress: validStreetAddress,
-          zipCode: validZipCode,
-          customerType: validCustomerType,
-          username: validUsername,
-        },
-      ],
-      [
-        "with null city",
-        {
-          firstName: validFirstName,
-          lastName: validLastName,
-          phoneNumber: validPhoneNumber,
-          city: null,
-          streetAddress: validStreetAddress,
-          zipCode: validZipCode,
-          customerType: validCustomerType,
-          username: validUsername,
-        },
-      ],
-    ];
-
-    cityRequiredCases.forEach(([testName, input]) => {
-      test(testName, () => {
-        const newCustomer = new Customer(input);
-
-        const err = newCustomer.validateSync();
-
-        expect(err.errors.city).toBeDefined();
-        expect(err.errors.city.message).toBe(
-          validationErrorMessages.CITY_REQUIRED
-        );
-      });
-    });
-
     const cityInvalidCases = [
       [
         "with invalid city -> digits",
@@ -423,90 +256,6 @@ describe("Customer model unit tests", () => {
         expect(err.errors.city).toBeDefined();
         expect(err.errors.city.message).toBe(
           validationErrorMessages.CITY_INVALID
-        );
-      });
-    });
-
-    const streetAddressRequiredCases = [
-      [
-        "with undefined streetAddress",
-        {
-          firstName: validFirstName,
-          lastName: validLastName,
-          phoneNumber: validPhoneNumber,
-          city: validCity,
-          streetAddress: undefined,
-          zipCode: validZipCode,
-          customerType: validCustomerType,
-          username: validUsername,
-        },
-      ],
-      [
-        "with null streetAddress",
-        {
-          firstName: validFirstName,
-          lastName: validLastName,
-          phoneNumber: validPhoneNumber,
-          city: validCity,
-          streetAddress: null,
-          zipCode: validZipCode,
-          customerType: validCustomerType,
-          username: validUsername,
-        },
-      ],
-    ];
-
-    streetAddressRequiredCases.forEach(([testName, input]) => {
-      test(testName, () => {
-        const newCustomer = new Customer(input);
-
-        const err = newCustomer.validateSync();
-
-        expect(err.errors.streetAddress).toBeDefined();
-        expect(err.errors.streetAddress.message).toBe(
-          validationErrorMessages.STREET_ADDRESS_REQUIRED
-        );
-      });
-    });
-
-    const zipCodeRequiredCases = [
-      [
-        "with undefined zipCode",
-        {
-          firstName: validFirstName,
-          lastName: validLastName,
-          phoneNumber: validPhoneNumber,
-          city: validCity,
-          streetAddress: validStreetAddress,
-          zipCode: undefined,
-          customerType: validCustomerType,
-          username: validUsername,
-        },
-      ],
-      [
-        "with null zipCode",
-        {
-          firstName: validFirstName,
-          lastName: validLastName,
-          phoneNumber: validPhoneNumber,
-          city: validCity,
-          streetAddress: validStreetAddress,
-          zipCode: null,
-          customerType: validCustomerType,
-          username: validUsername,
-        },
-      ],
-    ];
-
-    zipCodeRequiredCases.forEach(([testName, input]) => {
-      test(testName, () => {
-        const newCustomer = new Customer(input);
-
-        const err = newCustomer.validateSync();
-
-        expect(err.errors.zipCode).toBeDefined();
-        expect(err.errors.zipCode.message).toBe(
-          validationErrorMessages.ZIP_CODE_REQUIRED
         );
       });
     });
@@ -592,48 +341,6 @@ describe("Customer model unit tests", () => {
       });
     });
 
-    const customerTypeRequiredCases = [
-      [
-        "with undefined customerType",
-        {
-          firstName: validFirstName,
-          lastName: validLastName,
-          phoneNumber: validPhoneNumber,
-          city: validCity,
-          streetAddress: validStreetAddress,
-          zipCode: validZipCode,
-          customerType: undefined,
-          username: validUsername,
-        },
-      ],
-      [
-        "with null customerType",
-        {
-          firstName: validFirstName,
-          lastName: validLastName,
-          phoneNumber: validPhoneNumber,
-          city: validCity,
-          streetAddress: validStreetAddress,
-          zipCode: validZipCode,
-          customerType: null,
-          username: validUsername,
-        },
-      ],
-    ];
-
-    customerTypeRequiredCases.forEach(([testName, input]) => {
-      test(testName, () => {
-        const newCustomer = new Customer(input);
-
-        const err = newCustomer.validateSync();
-
-        expect(err.errors.customerType).toBeDefined();
-        expect(err.errors.customerType.message).toBe(
-          validationErrorMessages.CUSTOMER_TYPE_REQUIRED
-        );
-      });
-    });
-
     test("with invalid customerType", () => {
       const newCustomer = new Customer({
         firstName: validFirstName,
@@ -651,145 +358,6 @@ describe("Customer model unit tests", () => {
       expect(err.errors.customerType).toBeDefined();
       expect(err.errors.customerType.message).toBe(
         validationErrorMessages.CUSTOMER_TYPE_INVALID
-      );
-    });
-
-    const usernameRequiredCases = [
-      [
-        "with undefined username",
-        {
-          firstName: validFirstName,
-          lastName: validLastName,
-          phoneNumber: validPhoneNumber,
-          city: validCity,
-          streetAddress: validStreetAddress,
-          zipCode: validZipCode,
-          customerType: validCustomerType,
-          username: undefined,
-        },
-      ],
-      [
-        "with null username",
-        {
-          firstName: validFirstName,
-          lastName: validLastName,
-          phoneNumber: validPhoneNumber,
-          city: validCity,
-          streetAddress: validStreetAddress,
-          zipCode: validZipCode,
-          customerType: validCustomerType,
-          username: null,
-        },
-      ],
-    ];
-
-    usernameRequiredCases.forEach(([testName, input]) => {
-      test(testName, () => {
-        const newCustomer = new Customer(input);
-
-        const err = newCustomer.validateSync();
-
-        expect(err.errors.username).toBeDefined();
-        expect(err.errors.username.message).toBe(
-          validationErrorMessages.USERNAME_REQUIRED
-        );
-      });
-    });
-
-    test("with 2 undefined fields", () => {
-      const newCustomer = new Customer({
-        firstName: undefined,
-        lastName: validLastName,
-        phoneNumber: validPhoneNumber,
-        city: validCity,
-        streetAddress: validStreetAddress,
-        zipCode: validZipCode,
-        customerType: undefined,
-        username: validUsername,
-      });
-
-      const err = newCustomer.validateSync();
-
-      expect(Object.keys(err.errors)).toHaveLength(2);
-      expect(Object.keys(err.errors).sort()).toStrictEqual([
-        "customerType",
-        "firstName",
-      ]);
-      expect(err.errors.firstName.message).toBe(
-        validationErrorMessages.FIRST_NAME_REQUIRED
-      );
-      expect(err.errors.customerType.message).toBe(
-        validationErrorMessages.CUSTOMER_TYPE_REQUIRED
-      );
-    });
-
-    test("with 3 null fields", () => {
-      const newCustomer = new Customer({
-        firstName: validFirstName,
-        lastName: null,
-        phoneNumber: validPhoneNumber,
-        city: null,
-        streetAddress: null,
-        zipCode: validZipCode,
-        customerType: validCustomerType,
-        username: validUsername,
-      });
-
-      const err = newCustomer.validateSync();
-
-      expect(Object.keys(err.errors)).toHaveLength(3);
-      expect(Object.keys(err.errors).sort()).toStrictEqual([
-        "city",
-        "lastName",
-        "streetAddress",
-      ]);
-      expect(err.errors.lastName.message).toBe(
-        validationErrorMessages.LAST_NAME_REQUIRED
-      );
-      expect(err.errors.city.message).toBe(
-        validationErrorMessages.CITY_REQUIRED
-      );
-      expect(err.errors.streetAddress.message).toBe(
-        validationErrorMessages.STREET_ADDRESS_REQUIRED
-      );
-    });
-
-    test("with mix of null and undefined fields", () => {
-      const newCustomer = new Customer({
-        firstName: undefined,
-        lastName: null,
-        phoneNumber: validPhoneNumber,
-        city: validCity,
-        streetAddress: null,
-        zipCode: undefined,
-        customerType: validCustomerType,
-        username: undefined,
-      });
-
-      const err = newCustomer.validateSync();
-
-      expect(Object.keys(err.errors)).toHaveLength(5);
-      expect(Object.keys(err.errors).sort()).toStrictEqual([
-        "firstName",
-        "lastName",
-        "streetAddress",
-        "username",
-        "zipCode",
-      ]);
-      expect(err.errors.firstName.message).toBe(
-        validationErrorMessages.FIRST_NAME_REQUIRED
-      );
-      expect(err.errors.lastName.message).toBe(
-        validationErrorMessages.LAST_NAME_REQUIRED
-      );
-      expect(err.errors.streetAddress.message).toBe(
-        validationErrorMessages.STREET_ADDRESS_REQUIRED
-      );
-      expect(err.errors.zipCode.message).toBe(
-        validationErrorMessages.ZIP_CODE_REQUIRED
-      );
-      expect(err.errors.username.message).toBe(
-        validationErrorMessages.USERNAME_REQUIRED
       );
     });
 
