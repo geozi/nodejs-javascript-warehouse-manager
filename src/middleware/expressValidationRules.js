@@ -214,6 +214,19 @@ const orderCreationRules = () => {
   ];
 };
 
+// Validation rules for order deletion.
+const orderDeletionRules = () => {
+  return [
+    check("customerId")
+      .notEmpty()
+      .withMessage(validationErrorMessages.CUSTOMER_ID_REQUIRED)
+      .matches(ID_REGEX)
+      .withMessage(validationErrorMessages.CUSTOMER_ID_INVALID)
+      .isLength({ min: 24, max: 24 })
+      .withMessage(validationErrorMessages.CUSTOMER_ID_LENGTH),
+  ];
+};
+
 module.exports = {
   userRegistrationRules,
   customerAdditionRules,
@@ -226,4 +239,5 @@ module.exports = {
   stockUpdateRules,
   stockDeletionRules,
   orderCreationRules,
+  orderDeletionRules,
 };

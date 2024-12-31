@@ -71,6 +71,7 @@ module.exports = {
 
   // Order model validation messages
   CUSTOMER_ID_REQUIRED: "Customer ID is a required field",
+  CUSTOMER_ID_UNIQUE: "Customer ID must be unique",
   PRODUCT_ITEMS_REQUIRED: "The order must contain at least 1 product",
   ORDER_DATE_REQUIRED: "Order date is a required field",
   ORDER_DATE_INVALID: "Order date must be a valid date",

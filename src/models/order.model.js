@@ -13,6 +13,7 @@ const orderSchema = new Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "Customer",
       required: [true, validationErrorMessages.CUSTOMER_ID_REQUIRED],
+      unique: [true, validationErrorMessages.CUSTOMER_ID_UNIQUE],
     },
     products: {
       type: [
