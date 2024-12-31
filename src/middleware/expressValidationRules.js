@@ -202,6 +202,9 @@ const orderCreationRules = () => {
     check("billingAddress")
       .notEmpty()
       .withMessage(validationErrorMessages.BILLING_ADDRESS_REQUIRED),
+    check("status")
+      .notEmpty()
+      .withMessage(validationErrorMessages.STATUS_REQUIRED),
     check("shippingMethod")
       .notEmpty()
       .withMessage(validationErrorMessages.SHIPPING_METHOD_REQUIRED),

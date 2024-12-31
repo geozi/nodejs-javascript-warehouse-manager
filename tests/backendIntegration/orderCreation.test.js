@@ -492,5 +492,207 @@ describe("Order creation integration tests", () => {
         });
       });
     });
+
+    const billingAddressRequiredCases = [
+      [
+        "with undefined billingAddress",
+        {
+          customerId: validCustomerId,
+          products: validProductList,
+          orderDate: validOrderDate,
+          totalNumberOfUnits: validTotalNumberOfUnits,
+          totalCost: validTotalCost,
+          shippingAddress: validShippingAddress,
+          billingAddress: undefined,
+          status: validStatus,
+          shippingMethod: validShippingMethod,
+          paymentMethod: validPaymentMethod,
+        },
+      ],
+      [
+        "with null billingAddress",
+        {
+          customerId: validCustomerId,
+          products: validProductList,
+          orderDate: validOrderDate,
+          totalNumberOfUnits: validTotalNumberOfUnits,
+          totalCost: validTotalCost,
+          shippingAddress: validShippingAddress,
+          billingAddress: null,
+          status: validStatus,
+          shippingMethod: validShippingMethod,
+          paymentMethod: validPaymentMethod,
+        },
+      ],
+    ];
+
+    billingAddressRequiredCases.forEach(([testName, input]) => {
+      test(testName, async () => {
+        req = { body: input };
+
+        for (let middleware of createOrder) {
+          await middleware(req, res, next);
+        }
+
+        expect(Order.prototype.save).not.toHaveBeenCalled();
+        expect(res.status).toHaveBeenCalledWith(400);
+        expect(res.json).toHaveBeenCalledWith({
+          errors: [
+            { message: validationErrorMessages.BILLING_ADDRESS_REQUIRED },
+          ],
+        });
+      });
+    });
+
+    const statusRequiredCases = [
+      [
+        "with undefined status",
+        {
+          customerId: validCustomerId,
+          products: validProductList,
+          orderDate: validOrderDate,
+          totalNumberOfUnits: validTotalNumberOfUnits,
+          totalCost: validTotalCost,
+          shippingAddress: validShippingAddress,
+          billingAddress: validBillingAddress,
+          status: undefined,
+          shippingMethod: validShippingMethod,
+          paymentMethod: validPaymentMethod,
+        },
+      ],
+      [
+        "with null status",
+        {
+          customerId: validCustomerId,
+          products: validProductList,
+          orderDate: validOrderDate,
+          totalNumberOfUnits: validTotalNumberOfUnits,
+          totalCost: validTotalCost,
+          shippingAddress: validShippingAddress,
+          billingAddress: validBillingAddress,
+          status: null,
+          shippingMethod: validShippingMethod,
+          paymentMethod: validPaymentMethod,
+        },
+      ],
+    ];
+
+    statusRequiredCases.forEach(([testName, input]) => {
+      test(testName, async () => {
+        req = { body: input };
+
+        for (let middleware of createOrder) {
+          await middleware(req, res, next);
+        }
+
+        expect(Order.prototype.save).not.toHaveBeenCalled();
+        expect(res.status).toHaveBeenCalledWith(400);
+        expect(res.json).toHaveBeenCalledWith({
+          errors: [{ message: validationErrorMessages.STATUS_REQUIRED }],
+        });
+      });
+    });
+
+    const shippingMethodRequiredCases = [
+      [
+        "with undefined shippingMethod",
+        {
+          customerId: validCustomerId,
+          products: validProductList,
+          orderDate: validOrderDate,
+          totalNumberOfUnits: validTotalNumberOfUnits,
+          totalCost: validTotalCost,
+          shippingAddress: validShippingAddress,
+          billingAddress: validBillingAddress,
+          status: validStatus,
+          shippingMethod: undefined,
+          paymentMethod: validPaymentMethod,
+        },
+      ],
+      [
+        "with null shippingMethod",
+        {
+          customerId: validCustomerId,
+          products: validProductList,
+          orderDate: validOrderDate,
+          totalNumberOfUnits: validTotalNumberOfUnits,
+          totalCost: validTotalCost,
+          shippingAddress: validShippingAddress,
+          billingAddress: validBillingAddress,
+          status: validStatus,
+          shippingMethod: null,
+          paymentMethod: validPaymentMethod,
+        },
+      ],
+    ];
+
+    shippingMethodRequiredCases.forEach(([testName, input]) => {
+      test(testName, async () => {
+        req = { body: input };
+
+        for (let middleware of createOrder) {
+          await middleware(req, res, next);
+        }
+
+        expect(Order.prototype.save).not.toHaveBeenCalled();
+        expect(res.status).toHaveBeenCalledWith(400);
+        expect(res.json).toHaveBeenCalledWith({
+          errors: [
+            { message: validationErrorMessages.SHIPPING_METHOD_REQUIRED },
+          ],
+        });
+      });
+    });
+
+    const paymentMethodRequiredCases = [
+      [
+        "with undefined paymentMethod",
+        {
+          customerId: validCustomerId,
+          products: validProductList,
+          orderDate: validOrderDate,
+          totalNumberOfUnits: validTotalNumberOfUnits,
+          totalCost: validTotalCost,
+          shippingAddress: validShippingAddress,
+          billingAddress: validBillingAddress,
+          status: validStatus,
+          shippingMethod: validShippingMethod,
+          paymentMethod: undefined,
+        },
+      ],
+      [
+        "with null paymentMethod",
+        {
+          customerId: validCustomerId,
+          products: validProductList,
+          orderDate: validOrderDate,
+          totalNumberOfUnits: validTotalNumberOfUnits,
+          totalCost: validTotalCost,
+          shippingAddress: validShippingAddress,
+          billingAddress: validBillingAddress,
+          status: validStatus,
+          shippingMethod: validShippingMethod,
+          paymentMethod: null,
+        },
+      ],
+    ];
+
+    paymentMethodRequiredCases.forEach(([testName, input]) => {
+      test(testName, async () => {
+        req = { body: input };
+
+        for (let middleware of createOrder) {
+          await middleware(req, res, next);
+        }
+
+        expect(Order.prototype.save).not.toHaveBeenCalled();
+        expect(res.status).toHaveBeenCalledWith(400);
+        expect(res.json).toHaveBeenCalledWith({
+          errors: [
+            { message: validationErrorMessages.PAYMENT_METHOD_REQUIRED },
+          ],
+        });
+      });
+    });
   });
 });
