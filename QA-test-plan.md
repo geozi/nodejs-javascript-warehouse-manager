@@ -81,8 +81,9 @@ The focus of these integration tests is the auth directory and its contained fil
 
 The tests will be executed per login outcome:
 
-- Successful user login [⌛],
-- Failed user login [⌛]
+- Successful user login [✔],
+- Failed user login [✔]
+- Web token verification [✔]
 
 #### Database integration test(s)
 

@@ -3,7 +3,7 @@ const validator = require("express-validator");
 const authMessages = require("./authResponseMessages");
 const responseMessages = require("../resources/responseMessages");
 const bcrypt = require("bcryptjs");
-const User = require("../models/user");
+const User = require("../models/user.model");
 const {
   userLoginRules,
   headerValidationRules,
@@ -59,6 +59,7 @@ const verifyToken = [
   ...headerValidationRules(),
   async (req, res, next) => {
     const expressErrors = validator.validationResult(req);
+
     if (!expressErrors.isEmpty()) {
       const errorMsg = expressErrors.array().map((err) => ({
         message: err.msg,
