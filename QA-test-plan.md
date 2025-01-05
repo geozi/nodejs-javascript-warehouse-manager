@@ -90,15 +90,15 @@ The tests are executed per login outcome. Separate tests are also included for w
 The integration between the backend (middleware + controllers) and the MongoDB database is the main theme for these tests. Since middleware and controller behavior has already been tested, focus will be placed on limited operations per collection.
 
 - **users** collection:
-  - user processing [✔]
+  - auth processing [✔]
 - **customers** collection:
   - customer processing [✔]
 - **products** collection:
-  - product processing [⌛]
+  - product processing [✔]
 - **stocks** collection:
-  - stock processing [⌛]
+  - stock processing [✔]
 - **orders** collection:
-  - order processing [⌛]
+  - order processing [✔]
 
 ## Out of scope
 

@@ -3,6 +3,7 @@ const { createProduct } = require("../../src/controllers/product.controller");
 const {
   createStock,
   updateStock,
+  deleteStock,
 } = require("../../src/controllers/stock.controller");
 const responseMessages = require("../../src/resources/responseMessages");
 const Stock = require("../../src/models/stock.model");
@@ -84,5 +85,22 @@ describe("Stock processing integration test(s)", () => {
     expect(res.json).toHaveBeenCalledWith({
       message: responseMessages.STOCK_UPDATED,
     });
+  });
+
+  test("stock deleted (204)", async () => {
+    const stockToDelete = await Product.findOne({ name: name });
+    const productIdAsString = stockToDelete._id.toString();
+
+    const req = {
+      body: {
+        productId: productIdAsString,
+      },
+    };
+
+    for (let middleware of deleteStock) {
+      await middleware(req, res, next);
+    }
+
+    expect(res.status).toHaveBeenCalledWith(204);
   });
 });
