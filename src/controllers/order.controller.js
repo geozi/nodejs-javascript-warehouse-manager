@@ -41,12 +41,13 @@ const createOrder = [
         paymentMethod,
       } = req.body;
 
+      const customerIdAsObjectId = new mongoose.Types.ObjectId(customerId);
       const productsAsObjectIds = products.map(
         (idAsString) => new mongoose.Types.ObjectId(idAsString)
       );
 
       const newOrder = new Order({
-        customerId: customerId,
+        customerId: customerIdAsObjectId,
         products: productsAsObjectIds,
         orderDate: orderDate,
         totalNumberOfUnits: totalNumberOfUnits,
@@ -98,11 +99,12 @@ const deleteOrder = [
 
     try {
       const { customerId } = req.body;
+      const customerIdAsObjectId = new mongoose.Types.ObjectId(customerId);
       const deletedOrder = await Order.findOneAndDelete({
-        customerId: customerId,
+        customerId: customerIdAsObjectId,
       });
 
-      if (!deletedOrder) {
+      if (deletedOrder === null) {
         return res
           .status(404)
           .json({ message: responseMessages.ORDER_NOT_FOUND });

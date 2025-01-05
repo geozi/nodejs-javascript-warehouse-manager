@@ -6,7 +6,7 @@ const {
 } = require("../middleware/expressValidationRules");
 const responseMessages = require("../resources/responseMessages");
 const validator = require("express-validator");
-
+const mongoose = require("mongoose");
 /**
  * Handles new customer addition requests.
  *
@@ -101,6 +101,8 @@ const updateCustomerInfo = [
         username,
       } = req.body;
 
+      const idAsObjectId = new mongoose.Types.ObjectId(id);
+
       const customerToUpdate = {
         firstName: firstName,
         lastName: lastName,
@@ -113,7 +115,7 @@ const updateCustomerInfo = [
       };
 
       const updatedCustomer = await Customer.findByIdAndUpdate(
-        id,
+        idAsObjectId,
         customerToUpdate,
         {
           new: true,
@@ -122,7 +124,7 @@ const updateCustomerInfo = [
         }
       );
 
-      if (!updatedCustomer) {
+      if (updatedCustomer === null) {
         return res
           .status(404)
           .json({ message: responseMessages.CUSTOMER_NOT_FOUND });
@@ -168,9 +170,10 @@ const deleteCustomer = [
 
     try {
       const { id } = req.body;
-      const deletedCustomer = await Customer.findByIdAndDelete(id);
+      const idAsObjectId = new mongoose.Types.ObjectId(id);
+      const deletedCustomer = await Customer.findByIdAndDelete(idAsObjectId);
 
-      if (!deletedCustomer) {
+      if (deletedCustomer === null) {
         return res
           .status(404)
           .json({ message: responseMessages.CUSTOMER_NOT_FOUND });

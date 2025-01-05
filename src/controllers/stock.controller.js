@@ -6,6 +6,7 @@ const {
 } = require("../middleware/expressValidationRules");
 const responseMessages = require("../resources/responseMessages");
 const validator = require("express-validator");
+const mongoose = require("mongoose");
 
 /**
  * Handles stock creation requests.
@@ -30,9 +31,10 @@ const createStock = [
 
     try {
       const { productId, numberOfUnits } = req.body;
+      const productIdAsObjectId = new mongoose.Types.ObjectId(productId);
 
       const newStock = new Stock({
-        productId: productId,
+        productId: productIdAsObjectId,
         numberOfUnits: numberOfUnits,
       });
 
@@ -77,14 +79,15 @@ const updateStock = [
 
     try {
       const { productId, numberOfUnits } = req.body;
+      const productIdAsObjectId = new mongoose.Types.ObjectId(productId);
 
-      const stockToUpdate = new Stock({
-        productId: productId,
+      const stockToUpdate = {
+        productId: productIdAsObjectId,
         numberOfUnits: numberOfUnits,
-      });
+      };
 
       const updatedStock = await Stock.findOneAndUpdate(
-        { productId: productId },
+        { productId: productIdAsObjectId },
         stockToUpdate,
         {
           new: true,
@@ -93,7 +96,7 @@ const updateStock = [
         }
       );
 
-      if (!updatedStock) {
+      if (updatedStock === null) {
         return res
           .status(404)
           .json({ message: responseMessages.STOCK_NOT_FOUND });
@@ -138,11 +141,12 @@ const deleteStock = [
 
     try {
       const { productId } = req.body;
+      const productIdAsObjectId = new mongoose.Types.ObjectId(productId);
       const deletedStock = await Stock.findOneAndDelete({
-        productId: productId,
+        productId: productIdAsObjectId,
       });
 
-      if (!deletedStock) {
+      if (deletedStock === null) {
         return res
           .status(404)
           .json({ message: responseMessages.STOCK_NOT_FOUND });

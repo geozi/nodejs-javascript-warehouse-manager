@@ -10,7 +10,7 @@ const User = require("../../src/models/user.model");
 const responseMessages = require("../../src/resources/responseMessages");
 require("dotenv").config();
 
-describe.skip("Customer processing integration test(s)", () => {
+describe("Customer processing integration test(s)", () => {
   let res, next;
 
   beforeAll(async () => {

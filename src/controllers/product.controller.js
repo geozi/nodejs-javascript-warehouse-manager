@@ -6,6 +6,7 @@ const {
 } = require("../middleware/expressValidationRules");
 const responseMessages = require("../resources/responseMessages");
 const validator = require("express-validator");
+const { default: mongoose } = require("mongoose");
 
 /**
  * Handles new product addition requests.
@@ -75,16 +76,16 @@ const updateProduct = [
 
     try {
       const { id, name, price, category } = req.body;
+      const idAsObjectId = new mongoose.Types.ObjectId(id);
 
       const productToUpdate = {
-        id: id,
         name: name,
         price: price,
         category: category,
       };
 
       const updatedProduct = await Product.findByIdAndUpdate(
-        id,
+        idAsObjectId,
         productToUpdate,
         {
           new: true,
@@ -93,7 +94,7 @@ const updateProduct = [
         }
       );
 
-      if (!updatedProduct) {
+      if (updatedProduct === null) {
         return res
           .status(404)
           .json({ message: responseMessages.PRODUCT_NOT_FOUND });
@@ -138,9 +139,10 @@ const deleteProduct = [
 
     try {
       const { id } = req.body;
-      const deletedProduct = await Product.findByIdAndDelete(id);
+      const idAsObjectId = new mongoose.Types.ObjectId(id);
+      const deletedProduct = await Product.findByIdAndDelete(idAsObjectId);
 
-      if (!deletedProduct) {
+      if (deletedProduct === null) {
         return res
           .status(404)
           .json({ message: responseMessages.PRODUCT_NOT_FOUND });
