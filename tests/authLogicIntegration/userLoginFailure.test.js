@@ -221,7 +221,7 @@ describe("Failed login integration test(s)", () => {
         await middleware(req, res, next);
       }
 
-      expect(res.status).toHaveBeenLastCalledWith(401);
+      expect(res.status).toHaveBeenCalledWith(401);
       expect(res.json).toHaveBeenCalledWith({
         message: authResponses.AUTH_FAILED,
       });

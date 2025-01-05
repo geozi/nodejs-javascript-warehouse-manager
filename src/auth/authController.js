@@ -33,6 +33,7 @@ const login = [
     try {
       const { username, password } = req.body;
       const user = await User.findOne({ username: username });
+
       if (!user) {
         return res.status(401).json({ message: authMessages.AUTH_FAILED });
       }

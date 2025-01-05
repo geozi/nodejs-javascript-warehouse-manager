@@ -28,12 +28,13 @@ const create = [
     }
 
     try {
-      const { username, email, password } = req.body;
+      const { username, email, password, role } = req.body;
       const hashedPassword = await bcrypt.hash(password, 10);
       const newUser = new User({
         username: username,
         email: email,
         password: hashedPassword,
+        role: role,
       });
 
       await newUser.save();

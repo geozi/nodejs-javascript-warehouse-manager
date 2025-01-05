@@ -87,7 +87,18 @@ The tests will be executed per login outcome:
 
 #### Database integration test(s)
 
-[To be developed]
+The integration between the backend (middleware + controllers) and the MongoDB database is the main theme for these tests. Since middleware and controller behavior has already been tested, focus will be placed on limited operations per collection.
+
+- **users** collection:
+  - [under development]
+- **customers** collection:
+  - [under development]
+- **products** collection:
+  - [under development]
+- **stocks** collection:
+  - [under development]
+- **orders** collection:
+  - [under development]
 
 ## Out of scope
 
