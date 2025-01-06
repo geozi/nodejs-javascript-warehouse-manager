@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: models/customer.model.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: models/customer.model.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * Customer schema.
+ * @module src/models/customer
+ */
+
+const mongoose = require("mongoose");
+const Schema = mongoose.Schema;
+const uniqueValidator = require("mongoose-unique-validator");
+const validationErrorMessages = require("../resources/validationErrorMessages");
+const {
+  NAME_REGEX,
+  CITY_REGEX,
+  ZIP_CODE_REGEX,
+  PHONE_REGEX,
+} = require("../resources/validationRegExp");
+
+/**
+ * Customer schema for persistence in MongoDB.
+ *
+ * @memberof module:src/models/customer
+ * @type {mongoose.Schema&lt;Customer>}
+ * @typedef {Object} Customer
+ * @property {String} firstName - The first name of the customer.
+ * @property {String} lastName - The last name of the customer.
+ * @property {String} phoneNumber - The phone number of the customer.
+ * @property {String} city - The city where the customer lives.
+ * @property {String} streetAddress - The street address where the customer resides.
+ * @property {String} zipCode - The zip code of the customer's residential area
+ * @property {String} customerType - The categorization of the customer (wholesale / retail)
+ * @property {String} username - The username of the customer
+ */
+const customerSchema = new Schema(
+  {
+    firstName: {
+      type: String,
+      required: [true, validationErrorMessages.FIRST_NAME_REQUIRED],
+      minLength: [2, validationErrorMessages.FIRST_NAME_MIN_LENGTH],
+      match: [NAME_REGEX, validationErrorMessages.FIRST_NAME_INVALID],
+      trim: true,
+    },
+    lastName: {
+      type: String,
+      required: [true, validationErrorMessages.LAST_NAME_REQUIRED],
+      minLength: [2, validationErrorMessages.LAST_NAME_MIN_LENGTH],
+      match: [NAME_REGEX, validationErrorMessages.LAST_NAME_INVALID],
+      trim: true,
+    },
+    phoneNumber: {
+      type: String,
+      required: [true, validationErrorMessages.PHONE_NUMBER_REQUIRED],
+      validate: {
+        validator: function (value) {
+          const minLength = 7;
+          if (value.length &lt; minLength) {
+            return false;
+          }
+          return PHONE_REGEX.test(value);
+        },
+        message: function (props) {
+          if (props.value.length &lt; 7) {
+            return validationErrorMessages.PHONE_NUMBER_MIN_LENGTH;
+          }
+          return validationErrorMessages.PHONE_NUMBER_INVALID;
+        },
+      },
+      trim: true,
+    },
+    city: {
+      type: String,
+      required: [true, validationErrorMessages.CITY_REQUIRED],
+      match: [CITY_REGEX, validationErrorMessages.CITY_INVALID],
+      trim: true,
+    },
+    streetAddress: {
+      type: String,
+      required: [true, validationErrorMessages.STREET_ADDRESS_REQUIRED],
+      trim: true,
+    },
+    zipCode: {
+      type: String,
+      required: [true, validationErrorMessages.ZIP_CODE_REQUIRED],
+      match: [ZIP_CODE_REGEX, validationErrorMessages.ZIP_CODE_INVALID],
+      trim: true,
+    },
+    customerType: {
+      type: String,
+      required: [true, validationErrorMessages.CUSTOMER_TYPE_REQUIRED],
+      enum: {
+        values: ["wholesale", "retail"],
+        message: validationErrorMessages.CUSTOMER_TYPE_INVALID,
+      },
+    },
+    username: {
+      type: String,
+      unique: [true, validationErrorMessages.USERNAME_UNIQUE],
+      required: [true, validationErrorMessages.USERNAME_REQUIRED],
+      trim: true,
+    },
+  },
+  {
+    collection: "customers",
+    timestamps: true,
+  }
+);
+
+customerSchema.plugin(uniqueValidator);
+module.exports = mongoose.model("Customer", customerSchema);
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-src_auth_authController.html">src/auth/authController</a></li><li><a href="module-src_auth_authResponseMessages.html">src/auth/authResponseMessages</a></li><li><a href="module-src_auth_authValidationRules.html">src/auth/authValidationRules</a></li><li><a href="module-src_controllers_customer.html">src/controllers/customer</a></li><li><a href="module-src_controllers_order.html">src/controllers/order</a></li><li><a href="module-src_controllers_product.html">src/controllers/product</a></li><li><a href="module-src_controllers_stock.html">src/controllers/stock</a></li><li><a href="module-src_controllers_user.html">src/controllers/user</a></li><li><a href="module-src_middleware_expressValidationRules.html">src/middleware/expressValidationRules</a></li><li><a href="module-src_models_customer.html">src/models/customer</a></li><li><a href="module-src_models_order.html">src/models/order</a></li><li><a href="module-src_models_product.html">src/models/product</a></li><li><a href="module-src_models_stock.html">src/models/stock</a></li><li><a href="module-src_models_user.html">src/models/user</a></li><li><a href="module-src_resources_responseMessages.html">src/resources/responseMessages</a></li><li><a href="module-src_resources_validationErrorMessages.html">src/resources/validationErrorMessages</a></li><li><a href="module-src_resources_validationRegExp.html">src/resources/validationRegExp</a></li><li><a href="module-src_routes_auth.html">src/routes/auth</a></li><li><a href="module-src_routes_customer.html">src/routes/customer</a></li><li><a href="module-src_routes_order.html">src/routes/order</a></li><li><a href="module-src_routes_product.html">src/routes/product</a></li><li><a href="module-src_routes_stock.html">src/routes/stock</a></li><li><a href="module-src_routes_user.html">src/routes/user</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Mon Jan 06 2025 12:59:09 GMT+0200 (Eastern European Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

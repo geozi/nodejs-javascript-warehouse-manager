@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: auth/authController.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: auth/authController.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * Auth controller functions.
+ * @module src/auth/authController
+ */
+
+require("dotenv").config();
+const validator = require("express-validator");
+const authMessages = require("./authResponseMessages");
+const responseMessages = require("../resources/responseMessages");
+const bcrypt = require("bcryptjs");
+const User = require("../models/user.model");
+const {
+  userLoginRules,
+  headerValidationRules,
+} = require("./authValidationRules");
+const jwt = require("jsonwebtoken");
+
+/**
+ * Middleware array that contains user login logic.
+ *
+ * @memberof module:src/auth/authController
+ * @type {Array&lt;Function>}
+ * @property {Array&lt;Function>} userLoginRules - Express validation rules for user login.
+ * @property {Function} anonymousAsyncFunction - Handles user login requests and responses.
+ *
+ */
+const login = [
+  ...userLoginRules(),
+  async (req, res) => {
+    const expressErrors = validator.validationResult(req);
+    if (!expressErrors.isEmpty()) {
+      const errorMsg = expressErrors.array().map((err) => ({
+        message: err.msg,
+      }));
+
+      return res.status(400).json({ errors: errorMsg });
+    }
+
+    try {
+      const { username, password } = req.body;
+      const user = await User.findOne({ username: username });
+
+      if (!user) {
+        return res.status(401).json({ message: authMessages.AUTH_FAILED });
+      }
+
+      const passwordMatch = await bcrypt.compare(password, user.password);
+      if (!passwordMatch) {
+        return res.status(401).json({ message: authMessages.AUTH_FAILED });
+      }
+
+      const token = jwt.sign({ username: user.username }, process.env.KEY, {
+        expiresIn: "1h",
+      });
+
+      res.status(200).json({ token: token });
+      /*eslint-disable no-unused-vars*/
+    } catch (err) {
+      /*eslint-enable no-unused-vars*/
+      res.status(500).json({ message: responseMessages.INTERNAL_SERVER_ERROR });
+    }
+  },
+];
+
+/**
+ * Middleware array that contains token validation logic.
+ *
+ * @memberof module:src/auth/authController
+ * @type {Array&lt;Function>}
+ * @property {Array&lt;Function>} headerValidationRules - Express validation rules for token validation.
+ * @property {Function} anonymousAsyncFunction - Handles token validation processes.
+ *
+ */
+const verifyToken = [
+  ...headerValidationRules(),
+  async (req, res, next) => {
+    const expressErrors = validator.validationResult(req);
+
+    if (!expressErrors.isEmpty()) {
+      const errorMsg = expressErrors.array().map((err) => ({
+        message: err.msg,
+      }));
+      return res.status(401).json({ errors: errorMsg });
+    }
+
+    try {
+      const token = req.header("Authorization");
+      const decoded = jwt.verify(token.replace("Bearer ", ""), process.env.KEY);
+      req.body.username = decoded.username;
+      next();
+      /*eslint-disable no-unused-vars*/
+    } catch (err) {
+      /*eslint-enable no-unused-vars*/
+      res.status(401).json({ message: authMessages.TOKEN_INVALID });
+    }
+  },
+];
+
+module.exports = { login, verifyToken };
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-src_auth_authController.html">src/auth/authController</a></li><li><a href="module-src_auth_authResponseMessages.html">src/auth/authResponseMessages</a></li><li><a href="module-src_auth_authValidationRules.html">src/auth/authValidationRules</a></li><li><a href="module-src_controllers_customer.html">src/controllers/customer</a></li><li><a href="module-src_controllers_order.html">src/controllers/order</a></li><li><a href="module-src_controllers_product.html">src/controllers/product</a></li><li><a href="module-src_controllers_stock.html">src/controllers/stock</a></li><li><a href="module-src_controllers_user.html">src/controllers/user</a></li><li><a href="module-src_middleware_expressValidationRules.html">src/middleware/expressValidationRules</a></li><li><a href="module-src_models_customer.html">src/models/customer</a></li><li><a href="module-src_models_order.html">src/models/order</a></li><li><a href="module-src_models_product.html">src/models/product</a></li><li><a href="module-src_models_stock.html">src/models/stock</a></li><li><a href="module-src_models_user.html">src/models/user</a></li><li><a href="module-src_resources_responseMessages.html">src/resources/responseMessages</a></li><li><a href="module-src_resources_validationErrorMessages.html">src/resources/validationErrorMessages</a></li><li><a href="module-src_resources_validationRegExp.html">src/resources/validationRegExp</a></li><li><a href="module-src_routes_auth.html">src/routes/auth</a></li><li><a href="module-src_routes_customer.html">src/routes/customer</a></li><li><a href="module-src_routes_order.html">src/routes/order</a></li><li><a href="module-src_routes_product.html">src/routes/product</a></li><li><a href="module-src_routes_stock.html">src/routes/stock</a></li><li><a href="module-src_routes_user.html">src/routes/user</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Mon Jan 06 2025 12:59:09 GMT+0200 (Eastern European Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

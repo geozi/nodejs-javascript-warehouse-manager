@@ -1,11 +1,30 @@
+/**
+ * Order schema.
+ * @module src/models/order
+ */
+
 const mongoose = require("mongoose");
 const uniqueValidator = require("mongoose-unique-validator");
 const validationErrorMessages = require("../resources/validationErrorMessages");
 const Schema = mongoose.Schema;
 
 /**
- * The Order schema corresponds to the basket
- * utility of the frontend.
+ * Order schema for persistence in MongoDB.
+ *
+ * @memberof module:src/models/order
+ * @type {mongoose.Schema<Order>}
+ * @typedef {Object} Order
+ * @property {mongoose.Schema.Types.ObjectId} customerId - The ID of the customer.
+ * @property {Array<mongoose.Schema.Types.ObjectId>} products - The products ordered by the customer.
+ * @property {Date} orderDate - The date the order took place.
+ * @property {Number} totalNumberOfUnits - The total number of units of the ordered products.
+ * @property {Number} totalCost - The total cost of the order.
+ * @property {String} shippingAddress - The shipping address of the customer.
+ * @property {String} billingAddress - The billing address of the customer.
+ * @property {String} status - The status of the order.
+ * @property {String} shippingMethod - The shipping method chosen by the customer.
+ * @property {String} paymentMethod - The payment method chosen by the customer.
+ *
  */
 const orderSchema = new Schema(
   {

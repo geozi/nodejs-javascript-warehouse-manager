@@ -1,6 +1,6 @@
 /**
- * Contains regular expressions used in validation
- * processes.
+ * Regular expressions for validation processes.
+ * @module src/resources/validationRegExp
  */
 
 const PASSWORD_REGEX = new RegExp(

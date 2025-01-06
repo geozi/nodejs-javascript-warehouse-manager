@@ -1,3 +1,8 @@
+/**
+ * Customer controller functions.
+ * @module src/controllers/customer
+ */
+
 const Customer = require("../models/customer.model");
 const {
   customerAdditionRules,
@@ -7,14 +12,14 @@ const {
 const responseMessages = require("../resources/responseMessages");
 const validator = require("express-validator");
 const mongoose = require("mongoose");
+
 /**
- * Handles new customer addition requests.
+ * Middleware array that contains new customer addition logic.
  *
- * When the createCustomer is used, the Express ValidationChain path
- * is executed first, running all middleware functions responsible for the
- * validation of new customer addition requests. If the validation passes
- * successfully, it proceeds to the main method which handles new customer
- * additions.
+ * @memberof module:src/controllers/customer
+ * @type {Array<Function>}
+ * @property {Array<Function>} customerAdditionRules - Express validation rules for customer addition.
+ * @property {Function} anonymousAsyncFunction - Handles new customer addition requests and responses.
  */
 const createCustomer = [
   ...customerAdditionRules(),
@@ -68,13 +73,12 @@ const createCustomer = [
 ];
 
 /**
- * Handles customer information update requests.
+ * Middleware array that contains customer info update logic.
  *
- * When the updateCustomerInfo is used, the Express ValidationChain path
- * is executed first, running all middleware functions responsible for the
- * validation of customer information update requests. If the validation passes
- * successfully, it proceeds to the main method which handles customer
- * information updates.
+ * @memberof module:src/controllers/customer
+ * @type {Array<Function>}
+ * @property {Array<Function>} customerUpdateRules - Express validation rules for customer info updates.
+ * @property {Function} anonymousAsyncFunction - Handles customer info update requests and responses.
  */
 const updateCustomerInfo = [
   ...customerUpdateRules(),
@@ -148,13 +152,12 @@ const updateCustomerInfo = [
 ];
 
 /**
- * Handles customer deletion requests.
+ * Middleware array that contains customer deletion logic.
  *
- * When the deleteCustomer is used, the Express ValidationChain path
- * is executed first, running all middleware functions responsible for the
- * validation of customer deletion requests. If the validation passes
- * successfully, it proceeds to the main method which handles customer
- * deletions.
+ * @memberof module:src/controllers/customer
+ * @type {Array<Function>}
+ * @property {Array<Function>} customerDeletionRules - Express validation rules for customer deletion.
+ * @property {Function} anonymousAsyncFunction - Handles customer deletion requests and responses.
  */
 const deleteCustomer = [
   ...customerDeletionRules(),

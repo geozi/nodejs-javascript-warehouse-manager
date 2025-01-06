@@ -1,3 +1,8 @@
+/**
+ * HTTP response messages.
+ * @module src/resources/responseMessages
+ */
+
 module.exports = {
   BAD_REQUEST: "Bad Request",
   USER_REGISTERED: "Successful user registration",

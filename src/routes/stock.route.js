@@ -1,6 +1,6 @@
 /**
  * Stock routes.
- * @module routes/stock
+ * @module src/routes/stock
  */
 const express = require("express");
 const stockRouter = express.Router();
@@ -9,7 +9,7 @@ const stockController = require("../controllers/stock.controller");
 
 /**
  * Route for stock creation.
- * @memberof module:routes/stock
+ * @memberof module:src/routes/stock
  * @param {String} path - Express path.
  * @param {Function} authController.verifyToken - Authentication middleware
  * @param {Array} stockController.createStock - Contains ValidationChain and new stock creation logic.
@@ -18,7 +18,7 @@ stockRouter.post("/", authController.verifyToken, stockController.createStock);
 
 /**
  * Route for stock update.
- * @memberof module:routes/stock
+ * @memberof module:src/routes/stock
  * @param {String} path - Express path.
  * @param {Function} authController.verifyToken - Authentication middleware
  * @param {Array} stockController.updateStock - Contains ValidationChain and stock update logic.
@@ -27,7 +27,7 @@ stockRouter.put("/", authController.verifyToken, stockController.updateStock);
 
 /**
  * Route for stock deletion.
- * @memberof module:routes/stock
+ * @memberof module:src/routes/stock
  * @param {String} path - Express path.
  * @param {Function} authController.verifyToken - Authentication middleware
  * @param {Array} stockController.deleteStock - Contains ValidationChain and

@@ -1,3 +1,8 @@
+/**
+ * Stock controller functions.
+ * @module src/controllers/stock
+ */
+
 const Stock = require("../models/stock.model");
 const {
   stockCreationRules,
@@ -9,13 +14,13 @@ const validator = require("express-validator");
 const mongoose = require("mongoose");
 
 /**
- * Handles stock creation requests.
+ * Middleware array that contains new stock creation logic.
  *
- * When the createStock is used, the Express ValidationChain path
- * is executed first, running all middleware functions responsible for the
- * validation of new stock creation requests. If the validation passes
- * successfully, it proceeds to the main method which handles new
- * stock creation.
+ * @memberof module:src/controllers/stock
+ * @type {Array<Function>}
+ * @property {Array<Function>} stockCreationRules - Express validation rules for new stock creation.
+ * @property {Function} anonymousAsyncFunction - Handles new stock creation requests and responses.
+ *
  */
 const createStock = [
   ...stockCreationRules(),
@@ -56,13 +61,12 @@ const createStock = [
 ];
 
 /**
- * Handles stock update requests.
+ * Middleware array that contains stock update logic.
  *
- * When the updateStock is used, the Express ValidationChain path
- * is executed first, running all middleware functions responsible for
- * the validation of stock update requests. If the validation passes
- * successfully, it proceeds to the main method which handles stock
- * updates.
+ * @memberof module:src/controllers/stock
+ * @type {Array<Function>}
+ * @property {Array<Function>} stockUpdateRules - Express validation rules for stock update.
+ * @property {Function} anonymousAsyncFunction - Handles stock update requests and responses.
  *
  */
 const updateStock = [
@@ -118,13 +122,12 @@ const updateStock = [
 ];
 
 /**
- * Handles stock deletion requests.
+ * Middleware array that contains stock deletion logic.
  *
- * When the deleteStock is used, the Express ValidationChain path
- * is executed first, running all middleware functions responsible for
- * the validation of stock deletion requests. If the validation passes
- * successfully, it proceeds to the main method which handles stock
- * deletions.
+ * @memberof module:src/controllers/stock
+ * @type {Array<Function>}
+ * @property {Array<Function>} stockDeletionRules - Express validation rules for stock deletion.
+ * @property {Function} anonymousAsyncFunction - Handles stock deletion requests and responses.
  *
  */
 const deleteStock = [

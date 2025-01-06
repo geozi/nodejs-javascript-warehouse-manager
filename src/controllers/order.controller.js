@@ -1,3 +1,8 @@
+/**
+ * Order controller functions.
+ * @module src/controllers/order
+ */
+
 const Order = require("../models/order.model");
 const {
   orderCreationRules,
@@ -8,12 +13,13 @@ const validator = require("express-validator");
 const { default: mongoose } = require("mongoose");
 
 /**
- * Handles new order creation requests.
+ * Middleware array that contains new order creation logic.
  *
- * When the createOrder is used, the Express ValidationChain path
- * is executed first, running all middleware functions responsible for the
- * validation of new order creation requests. If the validation passes
- * successfully, it proceeds to the main method which handles order creations.
+ * @memberof module:src/controllers/order
+ * @type {Array<Function>}
+ * @property {Array<Function>} orderCreationRules - Express validation rules for order creation.
+ * @property {Function} anonymousAsyncFunction - Handles new order creation requests and responses.
+ *
  */
 const createOrder = [
   ...orderCreationRules(),
@@ -77,13 +83,13 @@ const createOrder = [
 ];
 
 /**
- * Handles order deletion requests.
+ * Middleware array that contains order deletion requests.
  *
- * When the deleteOrder is used, the Express ValidationChain path
- * is executed, running all middleware functions responsible for the
- * validation of order deletion requests. If the validation passes
- * successfully, it proceeds to the main method which handles order
- * deletions.
+ * @memberof module:src/controllers/order
+ * @type {Array<Function>}
+ * @property {Array<Function>} orderDeletionRules - Express validation rules for order deletion.
+ * @property {Function} anonymousAsyncFunction - Handles order deletion requests and responses.
+ *
  */
 const deleteOrder = [
   ...orderDeletionRules(),

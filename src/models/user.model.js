@@ -1,3 +1,8 @@
+/**
+ * User schema.
+ * @module src/models/user
+ */
+
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 const uniqueValidator = require("mongoose-unique-validator");
@@ -5,7 +10,15 @@ const validationErrorMessages = require("../resources/validationErrorMessages");
 const { EMAIL_REGEX } = require("../resources/validationRegExp");
 
 /**
- * Represents a User.
+ * User schema for persistence in MongoDB.
+ *
+ * @memberof module:src/models/user
+ * @type {mongoose.Schema<User>}
+ * @typedef {Object} User
+ * @property {String} username - The username of the user.
+ * @property {String} email - The email of the user.
+ * @property {String} password - The password of the user.
+ * @property {String} role - The role of the user.
  */
 const userSchema = new Schema(
   {

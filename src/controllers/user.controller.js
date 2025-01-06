@@ -1,3 +1,8 @@
+/**
+ * User controller functions.
+ * @module src/controllers/user
+ */
+
 const validator = require("express-validator");
 const bcrypt = require("bcryptjs");
 const User = require("../models/user.model");
@@ -7,13 +12,13 @@ const {
 const responseMessages = require("../resources/responseMessages");
 
 /**
- * Handles user registration requests.
+ * Middleware array that contains user registration logic.
  *
- * When the create method is used, the Express ValidationChain path
- * is executed first, running all middleware functions responsible for
- * the validation of new user creation requests. If the validation passes
- * successfully, it proceeds to the main method which handles new user
- * creation.
+ * @memberof module:src/controllers/user
+ * @type {Array<Function>}
+ * @property {Array<Function>} userRegistrationRules - Express validation rules for user registration.
+ * @property {Function} anonymousAsyncFunction - Handles user registration requests and responses.
+ *
  */
 const create = [
   ...userRegistrationRules(),

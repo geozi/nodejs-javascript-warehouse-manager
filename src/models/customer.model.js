@@ -1,3 +1,8 @@
+/**
+ * Customer schema.
+ * @module src/models/customer
+ */
+
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 const uniqueValidator = require("mongoose-unique-validator");
@@ -9,6 +14,21 @@ const {
   PHONE_REGEX,
 } = require("../resources/validationRegExp");
 
+/**
+ * Customer schema for persistence in MongoDB.
+ *
+ * @memberof module:src/models/customer
+ * @type {mongoose.Schema<Customer>}
+ * @typedef {Object} Customer
+ * @property {String} firstName - The first name of the customer.
+ * @property {String} lastName - The last name of the customer.
+ * @property {String} phoneNumber - The phone number of the customer.
+ * @property {String} city - The city where the customer lives.
+ * @property {String} streetAddress - The street address where the customer resides.
+ * @property {String} zipCode - The zip code of the customer's residential area
+ * @property {String} customerType - The categorization of the customer (wholesale / retail)
+ * @property {String} username - The username of the customer
+ */
 const customerSchema = new Schema(
   {
     firstName: {

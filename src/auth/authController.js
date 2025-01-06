@@ -1,3 +1,8 @@
+/**
+ * Auth controller functions.
+ * @module src/auth/authController
+ */
+
 require("dotenv").config();
 const validator = require("express-validator");
 const authMessages = require("./authResponseMessages");
@@ -11,12 +16,13 @@ const {
 const jwt = require("jsonwebtoken");
 
 /**
- * Handles login requests.
+ * Middleware array that contains user login logic.
  *
- * When login is used, the Express ValidationChain path
- * is executed first, running all middleware functions responsible for
- * the validation of login requests. If the validation passes successfully,
- * it proceeds to the main method which handles login requests.
+ * @memberof module:src/auth/authController
+ * @type {Array<Function>}
+ * @property {Array<Function>} userLoginRules - Express validation rules for user login.
+ * @property {Function} anonymousAsyncFunction - Handles user login requests and responses.
+ *
  */
 const login = [
   ...userLoginRules(),
@@ -56,6 +62,15 @@ const login = [
   },
 ];
 
+/**
+ * Middleware array that contains token validation logic.
+ *
+ * @memberof module:src/auth/authController
+ * @type {Array<Function>}
+ * @property {Array<Function>} headerValidationRules - Express validation rules for token validation.
+ * @property {Function} anonymousAsyncFunction - Handles token validation processes.
+ *
+ */
 const verifyToken = [
   ...headerValidationRules(),
   async (req, res, next) => {

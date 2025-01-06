@@ -1,10 +1,22 @@
+/**
+ * Product schema.
+ * @module src/models/product
+ */
+
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 const uniqueValidator = require("mongoose-unique-validator");
 const validationErrorMessages = require("../resources/validationErrorMessages");
 
 /**
- * Represents a product.
+ * Product schema for persistence in MongoDB.
+ *
+ * @memberof module:src/models/product
+ * @type {mongoose.Schema<Product>}
+ * @typedef {Object} Product
+ * @property {String} name - The name of the product.
+ * @property {Number} price - The price of the product.
+ * @property {String} category - The category of the product.
  */
 const productSchema = new Schema(
   {

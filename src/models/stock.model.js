@@ -1,10 +1,21 @@
+/**
+ * Stock schema.
+ * @module src/models/stock
+ */
+
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 const uniqueValidator = require("mongoose-unique-validator");
 const validationErrorMessages = require("../resources/validationErrorMessages");
 
 /**
- * Represents the stock of a product.
+ * Stock schema for persistence in MongoDB.
+ *
+ * @memberof module:src/models/stock
+ * @type {mongoose.Schema<Stock>}
+ * @typedef {Object} Stock
+ * @property {mongoose.Schema.Types.ObjectId} productId - The ID of the product to which the stock refers.
+ * @property {Number} numberOfUnits - The number of units in the stock.
  */
 const stockSchema = new Schema(
   {

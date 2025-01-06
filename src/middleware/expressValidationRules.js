@@ -1,6 +1,6 @@
 /**
- * Contains middleware functions that perform
- * validation controls on incoming HTTP requests.
+ * Validation rules for incoming HTTP requests.
+ * @module src/middleware/expressValidationRules
  */
 
 const { check } = require("express-validator");

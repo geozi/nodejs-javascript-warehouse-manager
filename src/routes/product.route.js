@@ -1,6 +1,6 @@
 /**
  * Product routes.
- * @module routes/product
+ * @module src/routes/product
  */
 const express = require("express");
 const productRouter = express.Router();
@@ -9,7 +9,7 @@ const productController = require("../controllers/product.controller");
 
 /**
  * Route for adding products.
- * @memberof module:routes/product
+ * @memberof module:src/routes/product
  * @param {String} path - Express path.
  * @param {Function} authController.verifyToken - Authentication middleware.
  * @param {Array} productController.createProduct - Contains ValidationChain and product addition logic.
@@ -22,7 +22,7 @@ productRouter.post(
 
 /**
  * Route for updating product info.
- * @memberof module:routes/product
+ * @memberof module:src/routes/product
  * @param {String} path - Express path.
  * @param {Function} authController.verifyToken - Authentication middleware.
  * @param {Array} productController.updateProduct - Contains ValidationChain and product info update logic.
@@ -35,7 +35,7 @@ productRouter.put(
 
 /**
  * Route for deleting product info.
- * @memberof module:routes/product
+ * @memberof module:src/routes/product
  * @param {String} path - Express path.
  * @param {Function} authController.verifyToken - Authentication middleware.
  * @param {Array} productController.deleteProduct - Contains ValidationChain and product info deletion logic.

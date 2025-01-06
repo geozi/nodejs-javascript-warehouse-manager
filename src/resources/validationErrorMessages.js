@@ -1,6 +1,6 @@
 /**
- * Contains the errors messages that are sent in response
- * to validation errors.
+ * Validation error messages.
+ * @module src/resources/validationErrorMessages
  */
 
 module.exports = {

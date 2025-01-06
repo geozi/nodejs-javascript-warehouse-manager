@@ -1,6 +1,6 @@
 /**
- * Contains middleware functions that perform
- * validation controls on authentication requests.
+ * Validation rules for authentication requests.
+ * @module src/auth/authValidationRules
  */
 
 const { check, header } = require("express-validator");

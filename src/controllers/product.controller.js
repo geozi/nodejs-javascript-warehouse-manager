@@ -1,3 +1,8 @@
+/**
+ * Product controller functions.
+ * @module src/controllers/product
+ */
+
 const Product = require("../models/product.model");
 const {
   productAdditionRules,
@@ -9,13 +14,13 @@ const validator = require("express-validator");
 const { default: mongoose } = require("mongoose");
 
 /**
- * Handles new product addition requests.
+ * Middleware array that contains new product addition logic.
  *
- * When the createProduct is used, the Express ValidationChain path
- * is executed, running all middleware functions responsible for the
- * validation of new product addition requests. If the validation passes
- * successfully, it proceeds to the main method which handles new
- * product addition requests.
+ * @memberof module:src/controllers/product
+ * @type {Array<Function>}
+ * @property {Array<Function>} productAdditionRules - Express validation rules for new product addition.
+ * @property {Function} anonymousAsyncFunction - Handles new product addition requests and responses.
+ *
  */
 const createProduct = [
   ...productAdditionRules(),
@@ -55,12 +60,13 @@ const createProduct = [
 ];
 
 /**
- * Handles product update requests.
+ * Middleware array that contains product info update logic.
  *
- * When the updateProduct is used, the Express ValidationChain path is
- * executed, running all middleware functions responsible for the validation
- * of product update requests. If the validation passes successfully, it
- * proceeds to the main method which handles product updates.
+ * @memberof module:src/controllers/product
+ * @type {Array<Function>}
+ * @property {Array<Function>} productUpdateRules - Express validation rules for product info update.
+ * @property {Function} anonymousAsyncFunction - Handles product info update requests and responses.
+ *
  */
 const updateProduct = [
   ...productUpdateRules(),
@@ -118,12 +124,13 @@ const updateProduct = [
 ];
 
 /**
- * Handles product deletion requests.
+ * Middleware array that contains product deletion logic.
  *
- * When the deleteProduct is used, the Express ValidationChain path is
- * executed, running all middleware functions responsible for the validation
- * of product deletion requests. If the validation passes successfully, it
- * proceeds to the main method which handles product deletions.
+ * @memberof module:src/controllers/product
+ * @type {Array<Function>}
+ * @property {Array<Function>} productDeletionRules - Express validation rules for product deletion.
+ * @property {Function} anonymousAsyncFunction - Handles product deletion requests and responses.
+ *
  */
 const deleteProduct = [
   ...productDeletionRules(),
