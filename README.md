@@ -29,6 +29,13 @@ The project is the backend implementation of a warehouse management API. It allo
 
 A presentation of the various tests that were run during the development of the project can be found in the [QA Test plan](QA-test-plan.md).
 
+## Security
+
+- **Authentication**: single-factor authentication
+- **Authorization**: JSON Web Token (JWT)
+
+##
+
 <p align="center">
         <a href="https://github.com/LelouchFR/skill-icons">
         <img src="https://go-skill-icons.vercel.app/api/icons?i=vscode,nodejs,js,jest,expressjs,mongoose,mongo"/>
