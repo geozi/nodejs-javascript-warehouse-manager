@@ -3,7 +3,7 @@
  * @module routes/user
  */
 const express = require("express");
-const router = express.Router();
+const userRouter = express.Router();
 const userController = require("../controllers/user.controller");
 
 /**
@@ -12,6 +12,6 @@ const userController = require("../controllers/user.controller");
  * @param {String} path - Express path.
  * @param {Array} userController.create - Contains ValidationChain and new user creation logic.
  */
-router.post("/register", userController.create);
+userRouter.post("/", userController.create);
 
-module.exports = { router };
+module.exports = { userRouter };

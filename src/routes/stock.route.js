@@ -3,7 +3,7 @@
  * @module routes/stock
  */
 const express = require("express");
-const router = express.Router();
+const stockRouter = express.Router();
 const authController = require("../auth/authController");
 const stockController = require("../controllers/stock.controller");
 
@@ -14,7 +14,7 @@ const stockController = require("../controllers/stock.controller");
  * @param {Function} authController.verifyToken - Authentication middleware
  * @param {Array} stockController.createStock - Contains ValidationChain and new stock creation logic.
  */
-router.post("/stocks", authController.verifyToken, stockController.createStock);
+stockRouter.post("/", authController.verifyToken, stockController.createStock);
 
 /**
  * Route for stock update.
@@ -23,7 +23,7 @@ router.post("/stocks", authController.verifyToken, stockController.createStock);
  * @param {Function} authController.verifyToken - Authentication middleware
  * @param {Array} stockController.updateStock - Contains ValidationChain and stock update logic.
  */
-router.put("/stocks", authController.verifyToken, stockController.updateStock);
+stockRouter.put("/", authController.verifyToken, stockController.updateStock);
 
 /**
  * Route for stock deletion.
@@ -33,10 +33,10 @@ router.put("/stocks", authController.verifyToken, stockController.updateStock);
  * @param {Array} stockController.deleteStock - Contains ValidationChain and
  * stock deletion logic.
  */
-router.delete(
-  "/stocks",
+stockRouter.delete(
+  "/",
   authController.verifyToken,
   stockController.deleteStock
 );
 
-module.exports = { router };
+module.exports = { stockRouter };

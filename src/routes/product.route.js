@@ -3,7 +3,7 @@
  * @module routes/product
  */
 const express = require("express");
-const router = express.Router();
+const productRouter = express.Router();
 const authController = require("../auth/authController");
 const productController = require("../controllers/product.controller");
 
@@ -14,8 +14,8 @@ const productController = require("../controllers/product.controller");
  * @param {Function} authController.verifyToken - Authentication middleware.
  * @param {Array} productController.createProduct - Contains ValidationChain and product addition logic.
  */
-router.post(
-  "/products",
+productRouter.post(
+  "/",
   authController.verifyToken,
   productController.createProduct
 );
@@ -27,8 +27,8 @@ router.post(
  * @param {Function} authController.verifyToken - Authentication middleware.
  * @param {Array} productController.updateProduct - Contains ValidationChain and product info update logic.
  */
-router.put(
-  "/products",
+productRouter.put(
+  "/",
   authController.verifyToken,
   productController.updateProduct
 );
@@ -40,10 +40,10 @@ router.put(
  * @param {Function} authController.verifyToken - Authentication middleware.
  * @param {Array} productController.deleteProduct - Contains ValidationChain and product info deletion logic.
  */
-router.delete(
-  "/products",
+productRouter.delete(
+  "/",
   authController.verifyToken,
   productController.deleteProduct
 );
 
-module.exports = { router };
+module.exports = { productRouter };

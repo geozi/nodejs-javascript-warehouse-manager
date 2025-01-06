@@ -3,7 +3,7 @@
  * @module routes/customer
  */
 const express = require("express");
-const router = express.Router();
+const customerRouter = express.Router();
 const customerController = require("../controllers/customer.controller");
 const authController = require("../auth/authController");
 
@@ -14,8 +14,8 @@ const authController = require("../auth/authController");
  * @param {Function} authController.verifyToken - Authentication middleware.
  * @param {Array} customerController.createCustomer - Contains ValidationChain and new customer addition logic.
  */
-router.post(
-  "/customers",
+customerRouter.post(
+  "/",
   authController.verifyToken,
   customerController.createCustomer
 );
@@ -27,8 +27,8 @@ router.post(
  * @param {Function} authController.verifyToken - Authentication middleware.
  * @param {Array} customerController.updateCustomerInfo - Contains ValidationChain and customer info update logic.
  */
-router.put(
-  "/customers",
+customerRouter.put(
+  "/",
   authController.verifyToken,
   customerController.updateCustomerInfo
 );
@@ -40,10 +40,10 @@ router.put(
  * @param {Function} authController.verifyToken - Authentication middleware.
  * @param {Array} customerController.deleteCustomer - Contains ValidationChain and customer info deletion logic.
  */
-router.delete(
-  "/customers",
+customerRouter.delete(
+  "/",
   authController.verifyToken,
   customerController.deleteCustomer
 );
 
-module.exports = { router };
+module.exports = { customerRouter };

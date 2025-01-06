@@ -3,7 +3,7 @@
  * @module routes/order
  */
 const express = require("express");
-const router = express.Router();
+const orderRouter = express.Router();
 const authController = require("../auth/authController");
 const orderController = require("../controllers/order.controller");
 
@@ -14,7 +14,7 @@ const orderController = require("../controllers/order.controller");
  * @param {Function} authController.verifyToken - Authentication middleware.
  * @param {Array} orderController.createOrder - Contains ValidationChain and order creation logic.
  */
-router.post("/orders", authController.verifyToken, orderController.createOrder);
+orderRouter.post("/", authController.verifyToken, orderController.createOrder);
 
 /**
  * Route for deleting orders.
@@ -23,10 +23,10 @@ router.post("/orders", authController.verifyToken, orderController.createOrder);
  * @param {Function} authController.verifyToken - Authentication middleware.
  * @param {Array} orderController.deleteOrder - Contains ValidationChain and order deletion logic.
  */
-router.delete(
-  "/orders",
+orderRouter.delete(
+  "/",
   authController.verifyToken,
   orderController.deleteOrder
 );
 
-module.exports = { router };
+module.exports = { orderRouter };

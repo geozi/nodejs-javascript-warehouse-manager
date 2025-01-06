@@ -3,7 +3,7 @@
  * @module routes/auth
  */
 const express = require("express");
-const router = express.Router();
+const authRouter = express.Router();
 const authController = require("../auth/authController");
 
 /**
@@ -12,6 +12,6 @@ const authController = require("../auth/authController");
  * @param {String} path - Express path.
  * @param {Array} authController.login - Contains ValidationChain and user login logic.
  */
-router.post("/login", authController.login);
+authRouter.post("/", authController.login);
 
-module.exports = { router };
+module.exports = { authRouter };
