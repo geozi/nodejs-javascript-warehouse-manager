@@ -8,31 +8,30 @@ const validationErrorMessages = require("../../src/resources/validationErrorMess
 
 describe("Product model unit tests", () => {
   describe("new product test", () => {
-    const validName = "Computer Widget";
-    const validPrice = "96";
-    const validCategory = "Electronics";
+    const validInput = {
+      name: "Computer Widget",
+      price: "96",
+      category: "Electronics",
+    };
 
     beforeAll(() => {
+      mockingoose(Product);
+    });
+
+    afterAll(() => {
       mockingoose.resetAll();
     });
 
     test("with valid fields", () => {
-      const newProduct = new Product({
-        name: validName,
-        price: validPrice,
-        category: validCategory,
-      });
+      const newProduct = new Product(validInput);
 
       const err = newProduct.validateSync();
       expect(err).toBeUndefined();
     });
 
     test("with negative price", () => {
-      const newProduct = new Product({
-        name: validName,
-        price: -2.3,
-        category: validCategory,
-      });
+      const newProduct = new Product(validInput);
+      newProduct.price = -2.3;
       const err = newProduct.validateSync();
 
       expect(err.errors.price).toBeDefined();
@@ -42,12 +41,8 @@ describe("Product model unit tests", () => {
     });
 
     test("with invalid category", () => {
-      const newProduct = new Product({
-        name: validName,
-        price: validPrice,
-        category: "Games",
-      });
-
+      const newProduct = new Product(validInput);
+      newProduct.category = "Games";
       const err = newProduct.validateSync();
 
       expect(err.errors.category).toBeDefined();
@@ -57,12 +52,9 @@ describe("Product model unit tests", () => {
     });
 
     test("with mix of undefined and invalid fields", () => {
-      const newProduct = new Product({
-        name: validName,
-        price: undefined,
-        category: "Games",
-      });
-
+      const newProduct = new Product(validInput);
+      newProduct.price = undefined;
+      newProduct.category = "Games";
       const err = newProduct.validateSync();
 
       expect(Object.keys(err.errors)).toHaveLength(2);

@@ -8,47 +8,35 @@ const validationErrorMessages = require("../../src/resources/validationErrorMess
 
 describe("Customer model unit tests", () => {
   describe("new customer test", () => {
-    const validFirstName = "Mark";
-    const validLastName = "Bennet";
-    const validPhoneNumber = "845-038-9950";
-    const validCity = "Athens";
-    const validStreetAddress = "Akropolis 1";
-    const validZipCode = "63038";
-    const validCustomerType = "retail";
-    const validUsername = "newUser";
+    const validInput = {
+      firstName: "Mark",
+      lastName: "Bennet",
+      phoneNumber: "845-038-9950",
+      city: "Athens",
+      streetAddress: "Acropolis 1",
+      zipCode: "63038",
+      customerType: "retail",
+      username: "newUser",
+    };
 
     beforeAll(() => {
+      mockingoose(Customer);
+    });
+
+    afterAll(() => {
       mockingoose.resetAll();
     });
 
     test("with valid fields", () => {
-      const newCustomer = new Customer({
-        firstName: validFirstName,
-        lastName: validLastName,
-        phoneNumber: validPhoneNumber,
-        city: validCity,
-        streetAddress: validStreetAddress,
-        zipCode: validZipCode,
-        customerType: validCustomerType,
-        username: validUsername,
-      });
-
+      const newCustomer = new Customer(validInput);
       const err = newCustomer.validateSync();
+
       expect(err).toBeUndefined();
     });
 
     test("with too short firstName", () => {
-      const newCustomer = new Customer({
-        firstName: "L",
-        lastName: validLastName,
-        phoneNumber: validPhoneNumber,
-        city: validCity,
-        streetAddress: validStreetAddress,
-        zipCode: validZipCode,
-        customerType: validCustomerType,
-        username: validUsername,
-      });
-
+      const newCustomer = new Customer(validInput);
+      newCustomer.firstName = "L";
       const err = newCustomer.validateSync();
 
       expect(err.errors.firstName).toBeDefined();
@@ -58,17 +46,8 @@ describe("Customer model unit tests", () => {
     });
 
     test("with invalid firstName", () => {
-      const newCustomer = new Customer({
-        firstName: "L3roy",
-        lastName: validLastName,
-        phoneNumber: validPhoneNumber,
-        city: validCity,
-        streetAddress: validStreetAddress,
-        zipCode: validZipCode,
-        customerType: validCustomerType,
-        username: validUsername,
-      });
-
+      const newCustomer = new Customer(validInput);
+      newCustomer.firstName = "L3roy";
       const err = newCustomer.validateSync();
 
       expect(err.errors.firstName).toBeDefined();
@@ -78,17 +57,8 @@ describe("Customer model unit tests", () => {
     });
 
     test("with too short lastName", () => {
-      const newCustomer = new Customer({
-        firstName: validFirstName,
-        lastName: "A",
-        phoneNumber: validPhoneNumber,
-        city: validCity,
-        streetAddress: validStreetAddress,
-        zipCode: validZipCode,
-        customerType: validCustomerType,
-        username: validUsername,
-      });
-
+      const newCustomer = new Customer(validInput);
+      newCustomer.lastName = "A";
       const err = newCustomer.validateSync();
 
       expect(err.errors.lastName).toBeDefined();
@@ -98,17 +68,8 @@ describe("Customer model unit tests", () => {
     });
 
     test("with invalid lastName", () => {
-      const newCustomer = new Customer({
-        firstName: validFirstName,
-        lastName: "B3nn3t",
-        phoneNumber: validPhoneNumber,
-        city: validCity,
-        streetAddress: validStreetAddress,
-        zipCode: validZipCode,
-        customerType: validCustomerType,
-        username: validUsername,
-      });
-
+      const newCustomer = new Customer(validInput);
+      newCustomer.lastName = "B3nn3t";
       const err = newCustomer.validateSync();
 
       expect(err.errors.lastName).toBeDefined();
@@ -118,17 +79,8 @@ describe("Customer model unit tests", () => {
     });
 
     test("with too short phoneNumber", () => {
-      const newCustomer = new Customer({
-        firstName: validFirstName,
-        lastName: validLastName,
-        phoneNumber: "1234",
-        city: validCity,
-        streetAddress: validStreetAddress,
-        zipCode: validZipCode,
-        customerType: validCustomerType,
-        username: validUsername,
-      });
-
+      const newCustomer = new Customer(validInput);
+      newCustomer.phoneNumber = "1234";
       const err = newCustomer.validateSync();
 
       expect(err.errors.phoneNumber).toBeDefined();
@@ -138,64 +90,16 @@ describe("Customer model unit tests", () => {
     });
 
     const phoneNumberInvalidCases = [
-      [
-        "with invalid phoneNumber -> letters",
-        {
-          firstName: validFirstName,
-          lastName: validLastName,
-          phoneNumber: "a1234-5678",
-          city: validCity,
-          streetAddress: validStreetAddress,
-          zipCode: validZipCode,
-          customerType: validCustomerType,
-          username: validUsername,
-        },
-      ],
-      [
-        "with invalid phoneNumber -> special symbols",
-        {
-          firstName: validFirstName,
-          lastName: validLastName,
-          phoneNumber: "1234*5678",
-          city: validCity,
-          streetAddress: validStreetAddress,
-          zipCode: validZipCode,
-          customerType: validCustomerType,
-          username: validUsername,
-        },
-      ],
-      [
-        "with invalid phoneNumber -> hyphen position",
-        {
-          firstName: validFirstName,
-          lastName: validLastName,
-          phoneNumber: "1234-5678-",
-          city: validCity,
-          streetAddress: validStreetAddress,
-          zipCode: validZipCode,
-          customerType: validCustomerType,
-          username: validUsername,
-        },
-      ],
-      [
-        "with invalid phoneNumber -> letters + special symbols",
-        {
-          firstName: validFirstName,
-          lastName: validLastName,
-          phoneNumber: "a12*4-5678",
-          city: validCity,
-          streetAddress: validStreetAddress,
-          zipCode: validZipCode,
-          customerType: validCustomerType,
-          username: validUsername,
-        },
-      ],
+      ["with invalid phoneNumber -> letters", "a1234-5678"],
+      ["with invalid phoneNumber -> special symbols", "1234*5678"],
+      ["with invalid phoneNumber -> hyphen position", "1234-5678-"],
+      ["with invalid phoneNumber -> letters + special symbols", "a12*4-5678"],
     ];
 
-    phoneNumberInvalidCases.forEach(([testName, input]) => {
+    phoneNumberInvalidCases.forEach(([testName, invalidInput]) => {
       test(testName, () => {
-        const newCustomer = new Customer(input);
-
+        const newCustomer = new Customer(validInput);
+        newCustomer.phoneNumber = invalidInput;
         const err = newCustomer.validateSync();
 
         expect(err.errors.phoneNumber).toBeDefined();
@@ -206,51 +110,15 @@ describe("Customer model unit tests", () => {
     });
 
     const cityInvalidCases = [
-      [
-        "with invalid city -> digits",
-        {
-          firstName: validFirstName,
-          lastName: validLastName,
-          phoneNumber: validPhoneNumber,
-          city: "Ath3ns",
-          streetAddress: validStreetAddress,
-          zipCode: validZipCode,
-          customerType: validCustomerType,
-          username: validUsername,
-        },
-      ],
-      [
-        "with invalid city -> special symbols",
-        {
-          firstName: validFirstName,
-          lastName: validLastName,
-          phoneNumber: validPhoneNumber,
-          city: "@thens",
-          streetAddress: validStreetAddress,
-          zipCode: validZipCode,
-          customerType: validCustomerType,
-          username: validUsername,
-        },
-      ],
-      [
-        "with invalid city -> digits + special symbols",
-        {
-          firstName: validFirstName,
-          lastName: validLastName,
-          phoneNumber: validPhoneNumber,
-          city: "@th3ns",
-          streetAddress: validStreetAddress,
-          zipCode: validZipCode,
-          customerType: validCustomerType,
-          username: validUsername,
-        },
-      ],
+      ["with invalid city -> digits", "Ath3ns"],
+      ["with invalid city -> special symbols", "@thens"],
+      ["with invalid city -> digits + special symbols", "@th3ns"],
     ];
 
-    cityInvalidCases.forEach(([testName, input]) => {
+    cityInvalidCases.forEach(([testName, invalidInput]) => {
       test(testName, () => {
-        const newCustomer = new Customer(input);
-
+        const newCustomer = new Customer(validInput);
+        newCustomer.city = invalidInput;
         const err = newCustomer.validateSync();
 
         expect(err.errors.city).toBeDefined();
@@ -261,77 +129,17 @@ describe("Customer model unit tests", () => {
     });
 
     const zipCodeInvalidCases = [
-      [
-        "with invalid zipCode -> letters",
-        {
-          firstName: validFirstName,
-          lastName: validLastName,
-          phoneNumber: validPhoneNumber,
-          city: validCity,
-          streetAddress: validStreetAddress,
-          zipCode: "6453a",
-          customerType: validCustomerType,
-          username: validUsername,
-        },
-      ],
-      [
-        "with invalid zipCode -> special symbols",
-        {
-          firstName: validFirstName,
-          lastName: validLastName,
-          phoneNumber: validPhoneNumber,
-          city: validCity,
-          streetAddress: validStreetAddress,
-          zipCode: "123B5",
-          customerType: validCustomerType,
-          username: validUsername,
-        },
-      ],
-      [
-        "with invalid zipCode -> whitespace",
-        {
-          firstName: validFirstName,
-          lastName: validLastName,
-          phoneNumber: validPhoneNumber,
-          city: validCity,
-          streetAddress: validStreetAddress,
-          zipCode: "4556 6",
-          customerType: validCustomerType,
-          username: validUsername,
-        },
-      ],
-      [
-        "with invalid zipCode -> letters + special symbols",
-        {
-          firstName: validFirstName,
-          lastName: validLastName,
-          phoneNumber: validPhoneNumber,
-          city: validCity,
-          streetAddress: validStreetAddress,
-          zipCode: "64@31L",
-          customerType: validCustomerType,
-          username: validUsername,
-        },
-      ],
-      [
-        "with invalid zipCode -> length !== 5",
-        {
-          firstName: validFirstName,
-          lastName: validLastName,
-          phoneNumber: validPhoneNumber,
-          city: validCity,
-          streetAddress: validStreetAddress,
-          zipCode: "645378",
-          customerType: validCustomerType,
-          username: validUsername,
-        },
-      ],
+      ["with invalid zipCode -> letters", "6453a"],
+      ["with invalid zipCode -> special symbols", "123B5"],
+      ["with invalid zipCode -> whitespace", "4556 6"],
+      ["with invalid zipCode -> letters + special symbols", "64@31L"],
+      ["with invalid zipCode -> length !== 5", "645378"],
     ];
 
-    zipCodeInvalidCases.forEach(([testName, input]) => {
+    zipCodeInvalidCases.forEach(([testName, invalidInput]) => {
       test(testName, () => {
-        const newCustomer = new Customer(input);
-
+        const newCustomer = new Customer(validInput);
+        newCustomer.zipCode = invalidInput;
         const err = newCustomer.validateSync();
 
         expect(err.errors.zipCode).toBeDefined();
@@ -342,17 +150,8 @@ describe("Customer model unit tests", () => {
     });
 
     test("with invalid customerType", () => {
-      const newCustomer = new Customer({
-        firstName: validFirstName,
-        lastName: validLastName,
-        phoneNumber: validPhoneNumber,
-        city: validCity,
-        streetAddress: validStreetAddress,
-        zipCode: validZipCode,
-        customerType: "consumer",
-        username: validUsername,
-      });
-
+      const newCustomer = new Customer(validInput);
+      newCustomer.customerType = "consumer";
       const err = newCustomer.validateSync();
 
       expect(err.errors.customerType).toBeDefined();
@@ -362,17 +161,11 @@ describe("Customer model unit tests", () => {
     });
 
     test("with mix of undefined and invalid fields", () => {
-      const newCustomer = new Customer({
-        firstName: validFirstName,
-        lastName: "B3nnet",
-        phoneNumber: validPhoneNumber,
-        city: undefined,
-        streetAddress: validStreetAddress,
-        zipCode: "123456",
-        customerType: validCustomerType,
-        username: undefined,
-      });
-
+      const newCustomer = new Customer(validInput);
+      newCustomer.lastName = "B3nnet";
+      newCustomer.city = undefined;
+      newCustomer.zipCode = "123456";
+      newCustomer.username = undefined;
       const err = newCustomer.validateSync();
 
       expect(Object.keys(err.errors)).toHaveLength(4);

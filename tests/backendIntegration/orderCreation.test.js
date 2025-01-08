@@ -6,20 +6,22 @@ const validationErrorMessages = require("../../src/resources/validationErrorMess
 describe("Order creation integration tests", () => {
   let req, res, next;
 
-  const validCustomerId = "676ebb16ef1902e59f440af8";
-  const validProductList = [
-    "676ebc4f4c7fe8bc98eb8142",
-    "676ebc5d4b3523f3fa29559f",
-    "676ebc6946f5a33e21734847",
-  ];
-  const validOrderDate = new Date();
-  const validTotalNumberOfUnits = 2;
-  const validTotalCost = 95;
-  const validShippingAddress = "Akropolis 1, Athens";
-  const validBillingAddress = "Akropolis 1, Athens";
-  const validStatus = "Pending";
-  const validShippingMethod = "Standard";
-  const validPaymentMethod = "Credit/Debit card";
+  const input = {
+    customerId: "676ebb16ef1902e59f440af8",
+    products: [
+      "676ebc4f4c7fe8bc98eb8142",
+      "676ebc5d4b3523f3fa29559f",
+      "676ebc6946f5a33e21734847",
+    ],
+    orderDate: new Date(),
+    totalNumberOfUnits: 2,
+    totalCost: 95,
+    shippingAddress: "Acropolis 1, Athens",
+    billingAddress: "Acropolis 1, Athens",
+    status: "Pending",
+    shippingMethod: "Standard",
+    paymentMethod: "Credit/Debit card",
+  };
 
   beforeEach(() => {
     res = { status: jest.fn().mockReturnThis(), json: jest.fn() };
@@ -33,20 +35,7 @@ describe("Order creation integration tests", () => {
 
   describe("created (201)", () => {
     test("with valid fields", async () => {
-      req = {
-        body: {
-          customerId: validCustomerId,
-          products: validProductList,
-          orderDate: validOrderDate,
-          totalNumberOfUnits: validTotalNumberOfUnits,
-          totalCost: validTotalCost,
-          shippingAddress: validShippingAddress,
-          billingAddress: validBillingAddress,
-          status: validStatus,
-          shippingMethod: validShippingMethod,
-          paymentMethod: validPaymentMethod,
-        },
-      };
+      req = { body: input };
 
       for (let middleware of createOrder) {
         await middleware(req, res, next);
@@ -62,41 +51,15 @@ describe("Order creation integration tests", () => {
 
   describe("bad request (400)", () => {
     const customerIdInvalidCases = [
-      [
-        "with undefined customerId",
-        {
-          customerId: undefined,
-          products: validProductList,
-          orderDate: validOrderDate,
-          totalNumberOfUnits: validTotalNumberOfUnits,
-          totalCost: validTotalCost,
-          shippingAddress: validShippingAddress,
-          billingAddress: validBillingAddress,
-          status: validStatus,
-          shippingMethod: validShippingMethod,
-          paymentMethod: validPaymentMethod,
-        },
-      ],
-      [
-        "with null customerId",
-        {
-          customerId: null,
-          products: validProductList,
-          orderDate: validOrderDate,
-          totalNumberOfUnits: validTotalNumberOfUnits,
-          totalCost: validTotalCost,
-          shippingAddress: validShippingAddress,
-          billingAddress: validBillingAddress,
-          status: validStatus,
-          shippingMethod: validShippingMethod,
-          paymentMethod: validPaymentMethod,
-        },
-      ],
+      ["with undefined customerId", undefined],
+      ["with null customerId", null],
     ];
 
-    customerIdInvalidCases.forEach(([testName, input]) => {
+    customerIdInvalidCases.forEach(([testName, invalidInput]) => {
       test(testName, async () => {
-        req = { body: input };
+        let validInput = { ...input };
+        req = { body: validInput };
+        req.body.customerId = invalidInput;
 
         for (let middleware of createOrder) {
           await middleware(req, res, next);
@@ -111,41 +74,15 @@ describe("Order creation integration tests", () => {
     });
 
     const productsRequiredCases = [
-      [
-        "with undefined products",
-        {
-          customerId: validCustomerId,
-          products: undefined,
-          orderDate: validOrderDate,
-          totalNumberOfUnits: validTotalNumberOfUnits,
-          totalCost: validTotalCost,
-          shippingAddress: validShippingAddress,
-          billingAddress: validBillingAddress,
-          status: validStatus,
-          shippingMethod: validShippingMethod,
-          paymentMethod: validPaymentMethod,
-        },
-      ],
-      [
-        "with null products",
-        {
-          customerId: validCustomerId,
-          products: null,
-          orderDate: validOrderDate,
-          totalNumberOfUnits: validTotalNumberOfUnits,
-          totalCost: validTotalCost,
-          shippingAddress: validShippingAddress,
-          billingAddress: validBillingAddress,
-          status: validStatus,
-          shippingMethod: validShippingMethod,
-          paymentMethod: validPaymentMethod,
-        },
-      ],
+      ["with undefined products", undefined],
+      ["with null products", null],
     ];
 
-    productsRequiredCases.forEach(([testName, input]) => {
+    productsRequiredCases.forEach(([testName, invalidInput]) => {
       test(testName, async () => {
-        req = { body: input };
+        let validInput = { ...input };
+        req = { body: validInput };
+        req.body.products = invalidInput;
 
         for (let middleware of createOrder) {
           await middleware(req, res, next);
@@ -160,41 +97,15 @@ describe("Order creation integration tests", () => {
     });
 
     const orderDateRequiredCases = [
-      [
-        "with undefined orderDate",
-        {
-          customerId: validCustomerId,
-          products: validProductList,
-          orderDate: undefined,
-          totalNumberOfUnits: validTotalNumberOfUnits,
-          totalCost: validTotalCost,
-          shippingAddress: validShippingAddress,
-          billingAddress: validBillingAddress,
-          status: validStatus,
-          shippingMethod: validShippingMethod,
-          paymentMethod: validPaymentMethod,
-        },
-      ],
-      [
-        "with null orderDate",
-        {
-          customerId: validCustomerId,
-          products: validProductList,
-          orderDate: null,
-          totalNumberOfUnits: validTotalNumberOfUnits,
-          totalCost: validTotalCost,
-          shippingAddress: validShippingAddress,
-          billingAddress: validBillingAddress,
-          status: validStatus,
-          shippingMethod: validShippingMethod,
-          paymentMethod: validPaymentMethod,
-        },
-      ],
+      ["with undefined orderDate", undefined],
+      ["with null orderDate", null],
     ];
 
-    orderDateRequiredCases.forEach(([testName, input]) => {
+    orderDateRequiredCases.forEach(([testName, invalidInput]) => {
       test(testName, async () => {
-        req = { body: input };
+        let validInput = { ...input };
+        req = { body: validInput };
+        req.body.orderDate = invalidInput;
 
         for (let middleware of createOrder) {
           await middleware(req, res, next);
@@ -209,41 +120,15 @@ describe("Order creation integration tests", () => {
     });
 
     const totalUnitNumberRequiredCases = [
-      [
-        "with undefined totalNumberOfUnits",
-        {
-          customerId: validCustomerId,
-          products: validProductList,
-          orderDate: validOrderDate,
-          totalNumberOfUnits: undefined,
-          totalCost: validTotalCost,
-          shippingAddress: validShippingAddress,
-          billingAddress: validBillingAddress,
-          status: validStatus,
-          shippingMethod: validShippingMethod,
-          paymentMethod: validPaymentMethod,
-        },
-      ],
-      [
-        "with null totalNumberOfUnits",
-        {
-          customerId: validCustomerId,
-          products: validProductList,
-          orderDate: validOrderDate,
-          totalNumberOfUnits: null,
-          totalCost: validTotalCost,
-          shippingAddress: validShippingAddress,
-          billingAddress: validBillingAddress,
-          status: validStatus,
-          shippingMethod: validShippingMethod,
-          paymentMethod: validPaymentMethod,
-        },
-      ],
+      ["with undefined totalNumberOfUnits", undefined],
+      ["with null totalNumberOfUnits", null],
     ];
 
-    totalUnitNumberRequiredCases.forEach(([testName, input]) => {
+    totalUnitNumberRequiredCases.forEach(([testName, invalidInput]) => {
       test(testName, async () => {
-        req = { body: input };
+        let validInput = { ...input };
+        req = { body: validInput };
+        req.body.totalNumberOfUnits = invalidInput;
 
         for (let middleware of createOrder) {
           await middleware(req, res, next);
@@ -261,56 +146,16 @@ describe("Order creation integration tests", () => {
     });
 
     const totalUnitNumberInvalidCases = [
-      [
-        "with totalNumberOfUnits containing letter(s)",
-        {
-          customerId: validCustomerId,
-          products: validProductList,
-          orderDate: validOrderDate,
-          totalNumberOfUnits: "1b",
-          totalCost: validTotalCost,
-          shippingAddress: validShippingAddress,
-          billingAddress: validBillingAddress,
-          status: validStatus,
-          shippingMethod: validShippingMethod,
-          paymentMethod: validPaymentMethod,
-        },
-      ],
-      [
-        "with totalNumberOfUnits containing symbol(s)",
-        {
-          customerId: validCustomerId,
-          products: validProductList,
-          orderDate: validOrderDate,
-          totalNumberOfUnits: "123*1-",
-          totalCost: validTotalCost,
-          shippingAddress: validShippingAddress,
-          billingAddress: validBillingAddress,
-          status: validStatus,
-          shippingMethod: validShippingMethod,
-          paymentMethod: validPaymentMethod,
-        },
-      ],
-      [
-        "with totalNumberOfUnits containing white spaces",
-        {
-          customerId: validCustomerId,
-          products: validProductList,
-          orderDate: validOrderDate,
-          totalNumberOfUnits: " 2 1",
-          totalCost: validTotalCost,
-          shippingAddress: validShippingAddress,
-          billingAddress: validBillingAddress,
-          status: validStatus,
-          shippingMethod: validShippingMethod,
-          paymentMethod: validPaymentMethod,
-        },
-      ],
+      ["with totalNumberOfUnits containing letter(s)", "1b"],
+      ["with totalNumberOfUnits containing symbol(s)", "123*1-"],
+      ["with totalNumberOfUnits containing white spaces", " 2 1"],
     ];
 
-    totalUnitNumberInvalidCases.forEach(([testName, input]) => {
+    totalUnitNumberInvalidCases.forEach(([testName, invalidInput]) => {
       test(testName, async () => {
-        req = { body: input };
+        let validInput = { ...input };
+        req = { body: validInput };
+        req.body.totalNumberOfUnits = invalidInput;
 
         for (let middleware of createOrder) {
           await middleware(req, res, next);
@@ -327,41 +172,15 @@ describe("Order creation integration tests", () => {
     });
 
     const totalCostRequiredCases = [
-      [
-        "with undefined totalCost",
-        {
-          customerId: validCustomerId,
-          products: validProductList,
-          orderDate: validOrderDate,
-          totalNumberOfUnits: validTotalNumberOfUnits,
-          totalCost: undefined,
-          shippingAddress: validShippingAddress,
-          billingAddress: validBillingAddress,
-          status: validStatus,
-          shippingMethod: validShippingMethod,
-          paymentMethod: validPaymentMethod,
-        },
-      ],
-      [
-        "with null totalCost",
-        {
-          customerId: validCustomerId,
-          products: validProductList,
-          orderDate: validOrderDate,
-          totalNumberOfUnits: validTotalNumberOfUnits,
-          totalCost: null,
-          shippingAddress: validShippingAddress,
-          billingAddress: validBillingAddress,
-          status: validStatus,
-          shippingMethod: validShippingMethod,
-          paymentMethod: validPaymentMethod,
-        },
-      ],
+      ["with undefined totalCost", undefined],
+      ["with null totalCost", null],
     ];
 
-    totalCostRequiredCases.forEach(([testName, input]) => {
+    totalCostRequiredCases.forEach(([testName, invalidInput]) => {
       test(testName, async () => {
-        req = { body: input };
+        let validInput = { ...input };
+        req = { body: validInput };
+        req.body.totalCost = invalidInput;
 
         for (let middleware of createOrder) {
           await middleware(req, res, next);
@@ -379,56 +198,16 @@ describe("Order creation integration tests", () => {
     });
 
     const totalCostInvalidCases = [
-      [
-        "with totalCost containing letter(s)",
-        {
-          customerId: validCustomerId,
-          products: validProductList,
-          orderDate: validOrderDate,
-          totalNumberOfUnits: validTotalNumberOfUnits,
-          totalCost: "9a8",
-          shippingAddress: validShippingAddress,
-          billingAddress: validBillingAddress,
-          status: validStatus,
-          shippingMethod: validShippingMethod,
-          paymentMethod: validPaymentMethod,
-        },
-      ],
-      [
-        "with totalCost containing symbol(s)",
-        {
-          customerId: validCustomerId,
-          products: validProductList,
-          orderDate: validOrderDate,
-          totalNumberOfUnits: validTotalNumberOfUnits,
-          totalCost: "-9*8^",
-          shippingAddress: validShippingAddress,
-          billingAddress: validBillingAddress,
-          status: validStatus,
-          shippingMethod: validShippingMethod,
-          paymentMethod: validPaymentMethod,
-        },
-      ],
-      [
-        "with totalCost containing white space(s)",
-        {
-          customerId: validCustomerId,
-          products: validProductList,
-          orderDate: validOrderDate,
-          totalNumberOfUnits: validTotalNumberOfUnits,
-          totalCost: "9 8",
-          shippingAddress: validShippingAddress,
-          billingAddress: validBillingAddress,
-          status: validStatus,
-          shippingMethod: validShippingMethod,
-          paymentMethod: validPaymentMethod,
-        },
-      ],
+      ["with totalCost containing letter(s)", "9a8"],
+      ["with totalCost containing symbol(s)", "-9*8^"],
+      ["with totalCost containing white space(s)", "9 8"],
     ];
 
-    totalCostInvalidCases.forEach(([testName, input]) => {
+    totalCostInvalidCases.forEach(([testName, invalidInput]) => {
       test(testName, async () => {
-        req = { body: input };
+        let validInput = { ...input };
+        req = { body: validInput };
+        req.body.totalCost = invalidInput;
 
         for (let middleware of createOrder) {
           await middleware(req, res, next);
@@ -443,41 +222,15 @@ describe("Order creation integration tests", () => {
     });
 
     const shippingAddressRequiredCases = [
-      [
-        "with undefined shippingAddress",
-        {
-          customerId: validCustomerId,
-          products: validProductList,
-          orderDate: validOrderDate,
-          totalNumberOfUnits: validTotalNumberOfUnits,
-          totalCost: validTotalCost,
-          shippingAddress: undefined,
-          billingAddress: validBillingAddress,
-          status: validStatus,
-          shippingMethod: validShippingMethod,
-          paymentMethod: validPaymentMethod,
-        },
-      ],
-      [
-        "with null shippingAddress",
-        {
-          customerId: validCustomerId,
-          products: validProductList,
-          orderDate: validOrderDate,
-          totalNumberOfUnits: validTotalNumberOfUnits,
-          totalCost: validTotalCost,
-          shippingAddress: null,
-          billingAddress: validBillingAddress,
-          status: validStatus,
-          shippingMethod: validShippingMethod,
-          paymentMethod: validPaymentMethod,
-        },
-      ],
+      ["with undefined shippingAddress", undefined],
+      ["with null shippingAddress", null],
     ];
 
-    shippingAddressRequiredCases.forEach(([testName, input]) => {
+    shippingAddressRequiredCases.forEach(([testName, invalidInput]) => {
       test(testName, async () => {
-        req = { body: input };
+        let validInput = { ...input };
+        req = { body: validInput };
+        req.body.shippingAddress = invalidInput;
 
         for (let middleware of createOrder) {
           await middleware(req, res, next);
@@ -494,41 +247,15 @@ describe("Order creation integration tests", () => {
     });
 
     const billingAddressRequiredCases = [
-      [
-        "with undefined billingAddress",
-        {
-          customerId: validCustomerId,
-          products: validProductList,
-          orderDate: validOrderDate,
-          totalNumberOfUnits: validTotalNumberOfUnits,
-          totalCost: validTotalCost,
-          shippingAddress: validShippingAddress,
-          billingAddress: undefined,
-          status: validStatus,
-          shippingMethod: validShippingMethod,
-          paymentMethod: validPaymentMethod,
-        },
-      ],
-      [
-        "with null billingAddress",
-        {
-          customerId: validCustomerId,
-          products: validProductList,
-          orderDate: validOrderDate,
-          totalNumberOfUnits: validTotalNumberOfUnits,
-          totalCost: validTotalCost,
-          shippingAddress: validShippingAddress,
-          billingAddress: null,
-          status: validStatus,
-          shippingMethod: validShippingMethod,
-          paymentMethod: validPaymentMethod,
-        },
-      ],
+      ["with undefined billingAddress", undefined],
+      ["with null billingAddress", null],
     ];
 
-    billingAddressRequiredCases.forEach(([testName, input]) => {
+    billingAddressRequiredCases.forEach(([testName, invalidInput]) => {
       test(testName, async () => {
-        req = { body: input };
+        let validInput = { ...input };
+        req = { body: validInput };
+        req.body.billingAddress = invalidInput;
 
         for (let middleware of createOrder) {
           await middleware(req, res, next);
@@ -545,41 +272,15 @@ describe("Order creation integration tests", () => {
     });
 
     const statusRequiredCases = [
-      [
-        "with undefined status",
-        {
-          customerId: validCustomerId,
-          products: validProductList,
-          orderDate: validOrderDate,
-          totalNumberOfUnits: validTotalNumberOfUnits,
-          totalCost: validTotalCost,
-          shippingAddress: validShippingAddress,
-          billingAddress: validBillingAddress,
-          status: undefined,
-          shippingMethod: validShippingMethod,
-          paymentMethod: validPaymentMethod,
-        },
-      ],
-      [
-        "with null status",
-        {
-          customerId: validCustomerId,
-          products: validProductList,
-          orderDate: validOrderDate,
-          totalNumberOfUnits: validTotalNumberOfUnits,
-          totalCost: validTotalCost,
-          shippingAddress: validShippingAddress,
-          billingAddress: validBillingAddress,
-          status: null,
-          shippingMethod: validShippingMethod,
-          paymentMethod: validPaymentMethod,
-        },
-      ],
+      ["with undefined status", undefined],
+      ["with null status", null],
     ];
 
-    statusRequiredCases.forEach(([testName, input]) => {
+    statusRequiredCases.forEach(([testName, invalidInput]) => {
       test(testName, async () => {
-        req = { body: input };
+        let validInput = { ...input };
+        req = { body: validInput };
+        req.body.status = invalidInput;
 
         for (let middleware of createOrder) {
           await middleware(req, res, next);
@@ -594,41 +295,15 @@ describe("Order creation integration tests", () => {
     });
 
     const shippingMethodRequiredCases = [
-      [
-        "with undefined shippingMethod",
-        {
-          customerId: validCustomerId,
-          products: validProductList,
-          orderDate: validOrderDate,
-          totalNumberOfUnits: validTotalNumberOfUnits,
-          totalCost: validTotalCost,
-          shippingAddress: validShippingAddress,
-          billingAddress: validBillingAddress,
-          status: validStatus,
-          shippingMethod: undefined,
-          paymentMethod: validPaymentMethod,
-        },
-      ],
-      [
-        "with null shippingMethod",
-        {
-          customerId: validCustomerId,
-          products: validProductList,
-          orderDate: validOrderDate,
-          totalNumberOfUnits: validTotalNumberOfUnits,
-          totalCost: validTotalCost,
-          shippingAddress: validShippingAddress,
-          billingAddress: validBillingAddress,
-          status: validStatus,
-          shippingMethod: null,
-          paymentMethod: validPaymentMethod,
-        },
-      ],
+      ["with undefined shippingMethod", undefined],
+      ["with null shippingMethod", null],
     ];
 
-    shippingMethodRequiredCases.forEach(([testName, input]) => {
+    shippingMethodRequiredCases.forEach(([testName, invalidInput]) => {
       test(testName, async () => {
-        req = { body: input };
+        let validInput = { ...input };
+        req = { body: validInput };
+        req.body.shippingMethod = invalidInput;
 
         for (let middleware of createOrder) {
           await middleware(req, res, next);
@@ -645,41 +320,15 @@ describe("Order creation integration tests", () => {
     });
 
     const paymentMethodRequiredCases = [
-      [
-        "with undefined paymentMethod",
-        {
-          customerId: validCustomerId,
-          products: validProductList,
-          orderDate: validOrderDate,
-          totalNumberOfUnits: validTotalNumberOfUnits,
-          totalCost: validTotalCost,
-          shippingAddress: validShippingAddress,
-          billingAddress: validBillingAddress,
-          status: validStatus,
-          shippingMethod: validShippingMethod,
-          paymentMethod: undefined,
-        },
-      ],
-      [
-        "with null paymentMethod",
-        {
-          customerId: validCustomerId,
-          products: validProductList,
-          orderDate: validOrderDate,
-          totalNumberOfUnits: validTotalNumberOfUnits,
-          totalCost: validTotalCost,
-          shippingAddress: validShippingAddress,
-          billingAddress: validBillingAddress,
-          status: validStatus,
-          shippingMethod: validShippingMethod,
-          paymentMethod: null,
-        },
-      ],
+      ["with undefined paymentMethod", undefined],
+      ["with null paymentMethod", null],
     ];
 
-    paymentMethodRequiredCases.forEach(([testName, input]) => {
+    paymentMethodRequiredCases.forEach(([testName, invalidInput]) => {
       test(testName, async () => {
-        req = { body: input };
+        let validInput = { ...input };
+        req = { body: validInput };
+        req.body.paymentMethod = invalidInput;
 
         for (let middleware of createOrder) {
           await middleware(req, res, next);

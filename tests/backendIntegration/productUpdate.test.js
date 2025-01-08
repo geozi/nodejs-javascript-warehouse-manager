@@ -6,10 +6,12 @@ const validationErrorMessages = require("../../src/resources/validationErrorMess
 describe("Product update integration tests", () => {
   let req, res, next;
 
-  const validId = "67710722913928977aa04ea0";
-  const validName = "Truck Tool";
-  const validPrice = 198;
-  const validCategory = "Automotive";
+  const input = {
+    id: "67710722913928977aa04ea0",
+    name: "Truck Tool",
+    price: 198,
+    category: "Automotive",
+  };
 
   beforeEach(() => {
     res = { status: jest.fn().mockReturnThis(), json: jest.fn() };
@@ -26,23 +28,15 @@ describe("Product update integration tests", () => {
       [
         "with valid ID only",
         {
-          id: validId,
+          id: input.id,
         },
       ],
-      [
-        "with valid fields",
-        {
-          id: validId,
-          name: validName,
-          price: validPrice,
-          category: validCategory,
-        },
-      ],
+      ["with valid fields", input],
     ];
 
-    updatedCustomerCases.forEach(([testName, input]) => {
+    updatedCustomerCases.forEach(([testName, validInput]) => {
       test(testName, async () => {
-        req = { body: input };
+        req = { body: validInput };
 
         for (let middleware of updateProduct) {
           await middleware(req, res, next);
@@ -59,23 +53,15 @@ describe("Product update integration tests", () => {
 
   describe("bad request (400)", () => {
     const idRequiredCases = [
-      [
-        "with undefined id",
-        {
-          id: undefined,
-        },
-      ],
-      [
-        "with null id",
-        {
-          id: null,
-        },
-      ],
+      ["with undefined id", undefined],
+      ["with null id", null],
     ];
 
-    idRequiredCases.forEach(([testName, input]) => {
+    idRequiredCases.forEach(([testName, invalidInput]) => {
       test(testName, async () => {
-        req = { body: input };
+        let validInput = { ...input };
+        req = { body: validInput };
+        req.body.id = invalidInput;
 
         for (let middleware of updateProduct) {
           await middleware(req, res, next);
@@ -94,23 +80,15 @@ describe("Product update integration tests", () => {
     });
 
     const idLengthCases = [
-      [
-        "with too short id",
-        {
-          id: "67710722913928977",
-        },
-      ],
-      [
-        "with too long id",
-        {
-          id: "67710722913928977aa04ea067710722913928977aa04ea0",
-        },
-      ],
+      ["with too short id", "67710722913928977"],
+      ["with too long id", "67710722913928977aa04ea067710722913928977aa04ea0"],
     ];
 
-    idLengthCases.forEach(([testName, input]) => {
+    idLengthCases.forEach(([testName, invalidInput]) => {
       test(testName, async () => {
-        req = { body: input };
+        let validInput = { ...input };
+        req = { body: validInput };
+        req.body.id = invalidInput;
 
         for (let middleware of updateProduct) {
           await middleware(req, res, next);
@@ -125,29 +103,16 @@ describe("Product update integration tests", () => {
     });
 
     const idInvalidCases = [
-      [
-        "with id containing special symbols",
-        {
-          id: "67*db12ed*29a1*ed143e37e",
-        },
-      ],
-      [
-        "with id containing white spaces",
-        {
-          id: "6771 722 13928977aa04ea0",
-        },
-      ],
-      [
-        "with id containing capital letters",
-        {
-          id: "67710722913928977AA04ea0",
-        },
-      ],
+      ["with id containing special symbols", "67*db12ed*29a1*ed143e37e"],
+      ["with id containing white spaces", "6771 722 13928977aa04ea0"],
+      ["with id containing capital letters", "67710722913928977AA04ea0"],
     ];
 
-    idInvalidCases.forEach(([testName, input]) => {
+    idInvalidCases.forEach(([testName, invalidInput]) => {
       test(testName, async () => {
-        req = { body: input };
+        let validInput = { ...input };
+        req = { body: validInput };
+        req.body.id = invalidInput;
 
         for (let middleware of updateProduct) {
           await middleware(req, res, next);

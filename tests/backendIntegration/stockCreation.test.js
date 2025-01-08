@@ -6,8 +6,10 @@ const validationErrorMessages = require("../../src/resources/validationErrorMess
 describe("Stock creation integration tests", () => {
   let req, res, next;
 
-  const validProductId = "677276dcd35754d5bfd42c11";
-  const validNumberOfUnits = 1;
+  const input = {
+    productId: "677276dcd35754d5bfd42c11",
+    numberOfUnits: 1,
+  };
 
   beforeEach(() => {
     res = { status: jest.fn().mockReturnThis(), json: jest.fn() };
@@ -21,12 +23,7 @@ describe("Stock creation integration tests", () => {
 
   describe("created (201)", () => {
     test("with valid fields", async () => {
-      req = {
-        body: {
-          productId: validProductId,
-          numberOfUnits: validNumberOfUnits,
-        },
-      };
+      req = { body: input };
 
       for (let middleware of createStock) {
         await middleware(req, res, next);
@@ -42,25 +39,15 @@ describe("Stock creation integration tests", () => {
 
   describe("bad request (400)", () => {
     const productIdRequiredCases = [
-      [
-        "with undefined productId",
-        {
-          productId: undefined,
-          numberOfUnits: validNumberOfUnits,
-        },
-      ],
-      [
-        "with null productId",
-        {
-          productId: null,
-          numberOfUnits: validNumberOfUnits,
-        },
-      ],
+      ["with undefined productId", undefined],
+      ["with null productId", null],
     ];
 
-    productIdRequiredCases.forEach(([testName, input]) => {
+    productIdRequiredCases.forEach(([testName, invalidInput]) => {
       test(testName, async () => {
-        req = { body: input };
+        let validInput = { ...input };
+        req = { body: validInput };
+        req.body.productId = invalidInput;
 
         for (let middleware of createStock) {
           await middleware(req, res, next);
@@ -75,25 +62,15 @@ describe("Stock creation integration tests", () => {
     });
 
     const unitNumberRequiredCases = [
-      [
-        "with undefined numberOfUnits",
-        {
-          productId: validProductId,
-          numberOfUnits: undefined,
-        },
-      ],
-      [
-        "with null numberOfUnits",
-        {
-          productId: validProductId,
-          numberOfUnits: null,
-        },
-      ],
+      ["with undefined numberOfUnits", undefined],
+      ["with null numberOfUnits", null],
     ];
 
-    unitNumberRequiredCases.forEach(([testName, input]) => {
+    unitNumberRequiredCases.forEach(([testName, invalidInput]) => {
       test(testName, async () => {
-        req = { body: input };
+        let validInput = { ...input };
+        req = { body: validInput };
+        req.body.numberOfUnits = invalidInput;
 
         for (let middleware of createStock) {
           await middleware(req, res, next);
@@ -111,32 +88,16 @@ describe("Stock creation integration tests", () => {
     });
 
     const unitNumberInvalidCases = [
-      [
-        "with numberOfUnits containing letter(s)",
-        {
-          productId: validProductId,
-          numberOfUnits: "1b",
-        },
-      ],
-      [
-        "with numberOfUnits containing special symbols",
-        {
-          productId: validProductId,
-          numberOfUnits: "*12",
-        },
-      ],
-      [
-        "with numberOfUnits containing white spaces",
-        {
-          productId: validProductId,
-          numberOfUnits: "15 1",
-        },
-      ],
+      ["with numberOfUnits containing letter(s)", "1b"],
+      ["with numberOfUnits containing special symbols", "*12"],
+      ["with numberOfUnits containing white spaces", "15 1"],
     ];
 
-    unitNumberInvalidCases.forEach(([testName, input]) => {
+    unitNumberInvalidCases.forEach(([testName, invalidInput]) => {
       test(testName, async () => {
-        req = { body: input };
+        let validInput = { ...input };
+        req = { body: validInput };
+        req.body.numberOfUnits = invalidInput;
 
         for (let middleware of createStock) {
           await middleware(req, res, next);

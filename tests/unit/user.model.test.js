@@ -11,34 +11,31 @@ const validationErrorMessages = require("../../src/resources/validationErrorMess
 
 describe("User model unit tests", () => {
   describe("new user test", () => {
-    const validUsername = "newUser";
-    const validEmail = "random@mail.com";
-    const validPassword = "W;Vj(+C8Sgqo'_4";
-    const validRole = "customer";
+    const validInput = {
+      username: "newUser",
+      email: "random@mail.com",
+      password: "W;Vj(+C8Sgqo'_4",
+      role: "customer",
+    };
 
     beforeAll(() => {
+      mockingoose(User);
+    });
+
+    afterAll(() => {
       mockingoose.resetAll();
     });
-    test("with valid fields", () => {
-      const newUser = new User({
-        username: validUsername,
-        email: validEmail,
-        password: validPassword,
-        role: validRole,
-      });
 
+    test("with valid fields", () => {
+      const newUser = new User(validInput);
       const err = newUser.validateSync();
 
       expect(err).toBeUndefined();
     });
 
     test("with too short username", () => {
-      const newUser = new User({
-        username: "ab",
-        email: validEmail,
-        password: validPassword,
-        role: validRole,
-      });
+      const newUser = new User(validInput);
+      newUser.username = "ab";
       const err = newUser.validateSync();
 
       expect(err.errors.username).toBeDefined();
@@ -48,13 +45,8 @@ describe("User model unit tests", () => {
     });
 
     test("with too long username", () => {
-      const newUser = new User({
-        username: "thisIsAVeryLongUsername",
-        email: validEmail,
-        password: validPassword,
-        role: validRole,
-      });
-
+      const newUser = new User(validInput);
+      newUser.username = "thisIsAVeryLongUsername";
       const err = newUser.validateSync();
 
       expect(err.errors.username).toBeDefined();
@@ -64,56 +56,17 @@ describe("User model unit tests", () => {
     });
 
     const emailInvalidCases = [
-      [
-        "with invalid email: no prefix",
-        {
-          username: validUsername,
-          email: "@mail.com",
-          password: validPassword,
-          role: validRole,
-        },
-      ],
-      [
-        "with invalid email: no @",
-        {
-          username: validUsername,
-          email: "randommail.com",
-          password: validPassword,
-          role: validRole,
-        },
-      ],
-      [
-        "with invalid email: no domain name",
-        {
-          username: validUsername,
-          email: "random@.com",
-          password: validPassword,
-          role: validRole,
-        },
-      ],
-      [
-        "with invalid email: no .",
-        {
-          username: validUsername,
-          email: "random@mailcom",
-          password: validPassword,
-          role: validRole,
-        },
-      ],
-      [
-        "with invalid email: no top level domain",
-        {
-          username: validUsername,
-          email: "random@mail.",
-          password: validPassword,
-          role: validRole,
-        },
-      ],
+      ["with invalid email: no prefix", "@mail.com"],
+      ["with invalid email: no @", "randommail.com"],
+      ["with invalid email: no domain name", "random@.com"],
+      ["with invalid email: no .", "random@mailcom"],
+      ["with invalid email: no top level domain", "random@mail."],
     ];
 
-    emailInvalidCases.forEach(([testName, input]) => {
+    emailInvalidCases.forEach(([testName, invalidInput]) => {
       test(testName, () => {
-        const newUser = new User(input);
+        const newUser = new User(validInput);
+        newUser.email = invalidInput;
         const err = newUser.validateSync();
 
         expect(err.errors.email).toBeDefined();
@@ -124,13 +77,8 @@ describe("User model unit tests", () => {
     });
 
     test("with invalid role", () => {
-      const newUser = new User({
-        username: validUsername,
-        email: validEmail,
-        password: validPassword,
-        role: "consumer",
-      });
-
+      const newUser = new User(validInput);
+      newUser.role = "consumer";
       const err = newUser.validateSync();
 
       expect(err.errors.role).toBeDefined();
@@ -140,13 +88,9 @@ describe("User model unit tests", () => {
     });
 
     test("with mix undefined and invalid fields", () => {
-      const newUser = new User({
-        username: "ab",
-        email: undefined,
-        password: validPassword,
-        role: validRole,
-      });
-
+      const newUser = new User(validInput);
+      newUser.username = "ab";
+      newUser.email = undefined;
       const err = newUser.validateSync();
 
       expect(Object.keys(err.errors)).toHaveLength(2);

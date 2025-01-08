@@ -4,7 +4,10 @@ const validationErrorMessages = require("../../src/resources/validationErrorMess
 
 describe("Order deletion integration tests", () => {
   let req, res, next;
-  const validId = "67710722913928977aa04ea0";
+
+  const input = {
+    customerId: "67710722913928977aa04ea0",
+  };
 
   beforeEach(() => {
     res = { status: jest.fn().mockReturnThis(), json: jest.fn() };
@@ -18,7 +21,7 @@ describe("Order deletion integration tests", () => {
 
   describe("deleted (204)", () => {
     test("with valid customerId", async () => {
-      req = { body: { customerId: validId } };
+      req = { body: { customerId: input.customerId } };
 
       for (let middleware of deleteOrder) {
         await middleware(req, res, next);
@@ -31,18 +34,15 @@ describe("Order deletion integration tests", () => {
 
   describe("bad request (400)", () => {
     const customerIdRequiredCases = [
-      [
-        "with undefined customerId",
-        {
-          customerId: undefined,
-        },
-      ],
-      ["with null customerId", { customerId: null }],
+      ["with undefined customerId", undefined],
+      ["with null customerId", null],
     ];
 
-    customerIdRequiredCases.forEach(([testName, input]) => {
+    customerIdRequiredCases.forEach(([testName, invalidInput]) => {
       test(testName, async () => {
-        req = { body: input };
+        let validInput = { ...input };
+        req = { body: validInput };
+        req.body.customerId = invalidInput;
 
         for (let middleware of deleteOrder) {
           await middleware(req, res, next);
@@ -61,23 +61,18 @@ describe("Order deletion integration tests", () => {
     });
 
     const customerIdLengthCases = [
-      [
-        "with too short customerId",
-        {
-          customerId: "67710722913928977",
-        },
-      ],
+      ["with too short customerId", "67710722913928977"],
       [
         "with too long customerId",
-        {
-          customerId: "67710722913928977aa04ea067710722913928977aa04ea0",
-        },
+        "67710722913928977aa04ea067710722913928977aa04ea0",
       ],
     ];
 
-    customerIdLengthCases.forEach(([testName, input]) => {
+    customerIdLengthCases.forEach(([testName, invalidInput]) => {
       test(testName, async () => {
-        req = { body: input };
+        let validInput = { ...input };
+        req = { body: validInput };
+        req.body.customerId = invalidInput;
 
         for (let middleware of deleteOrder) {
           await middleware(req, res, next);
@@ -94,27 +89,20 @@ describe("Order deletion integration tests", () => {
     const customerIdInvalidCases = [
       [
         "with customerId containing special symbols",
-        {
-          customerId: "67*db12ed*29a1*ed143e37e",
-        },
+        "67*db12ed*29a1*ed143e37e",
       ],
-      [
-        "with customerId containing white spaces",
-        {
-          customerId: "6771 722 13928977aa04ea0",
-        },
-      ],
+      ["with customerId containing white spaces", "6771 722 13928977aa04ea0"],
       [
         "with customerId containing capital letters",
-        {
-          customerId: "67710722913928977AA04ea0",
-        },
+        "67710722913928977AA04ea0",
       ],
     ];
 
-    customerIdInvalidCases.forEach(([testName, input]) => {
+    customerIdInvalidCases.forEach(([testName, invalidInput]) => {
       test(testName, async () => {
-        req = { body: input };
+        let validInput = { ...input };
+        req = { body: validInput };
+        req.body.customerId = invalidInput;
 
         for (let middleware of deleteOrder) {
           await middleware(req, res, next);

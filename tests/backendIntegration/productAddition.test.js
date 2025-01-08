@@ -6,9 +6,11 @@ const validationErrorMessages = require("../../src/resources/validationErrorMess
 describe("Product addition integration tests", () => {
   let req, res, next;
 
-  const validName = "Truck Tool";
-  const validPrice = 198;
-  const validCategory = "Automotive";
+  const input = {
+    name: "Truck Tool",
+    price: 198,
+    category: "Automotive",
+  };
 
   beforeEach(() => {
     res = { status: jest.fn().mockReturnThis(), json: jest.fn() };
@@ -22,13 +24,7 @@ describe("Product addition integration tests", () => {
 
   describe("created (201)", () => {
     test("with valid fields", async () => {
-      req = {
-        body: {
-          name: validName,
-          price: validPrice,
-          category: validCategory,
-        },
-      };
+      req = { body: input };
 
       for (let middleware of createProduct) {
         await middleware(req, res, next);
@@ -44,27 +40,15 @@ describe("Product addition integration tests", () => {
 
   describe("bad request (400)", () => {
     const nameInvalidCases = [
-      [
-        "with undefined name",
-        {
-          name: undefined,
-          price: validPrice,
-          category: validCategory,
-        },
-      ],
-      [
-        "with null name",
-        {
-          name: null,
-          price: validPrice,
-          category: validCategory,
-        },
-      ],
+      ["with undefined name", undefined],
+      ["with null name", null],
     ];
 
-    nameInvalidCases.forEach(([testName, input]) => {
+    nameInvalidCases.forEach(([testName, invalidInput]) => {
       test(testName, async () => {
-        req = { body: input };
+        let validInput = { ...input };
+        req = { body: validInput };
+        req.body.name = invalidInput;
 
         for (let middleware of createProduct) {
           await middleware(req, res, next);
@@ -79,27 +63,15 @@ describe("Product addition integration tests", () => {
     });
 
     const priceRequiredCases = [
-      [
-        "with undefined price",
-        {
-          name: validName,
-          price: undefined,
-          category: validCategory,
-        },
-      ],
-      [
-        "with null price",
-        {
-          name: validName,
-          price: null,
-          category: validCategory,
-        },
-      ],
+      ["with undefined price", undefined],
+      ["with null price", null],
     ];
 
-    priceRequiredCases.forEach(([testName, input]) => [
+    priceRequiredCases.forEach(([testName, invalidInput]) => [
       test(testName, async () => {
-        req = { body: input };
+        let validInput = { ...input };
+        req = { body: validInput };
+        req.body.price = invalidInput;
 
         for (let middleware of createProduct) {
           await middleware(req, res, next);
@@ -117,35 +89,16 @@ describe("Product addition integration tests", () => {
     ]);
 
     const priceInvalidCases = [
-      [
-        "with price containing letters",
-        {
-          name: validName,
-          price: "12a",
-          category: validCategory,
-        },
-      ],
-      [
-        "with price containing symbols",
-        {
-          name: validName,
-          price: "12-1",
-          category: validCategory,
-        },
-      ],
-      [
-        "with price containing white spaces",
-        {
-          name: validName,
-          price: "12 8",
-          category: validCategory,
-        },
-      ],
+      ["with price containing letters", "12a"],
+      ["with price containing symbols", "12-1"],
+      ["with price containing white spaces", "12 8"],
     ];
 
-    priceInvalidCases.forEach(([testName, input]) => {
+    priceInvalidCases.forEach(([testName, invalidInput]) => {
       test(testName, async () => {
-        req = { body: input };
+        let validInput = { ...input };
+        req = { body: validInput };
+        req.body.price = invalidInput;
 
         for (let middleware of createProduct) {
           await middleware(req, res, next);
@@ -159,27 +112,15 @@ describe("Product addition integration tests", () => {
     });
 
     const categoryRequiredCases = [
-      [
-        "with undefined category",
-        {
-          name: validName,
-          price: validPrice,
-          category: undefined,
-        },
-      ],
-      [
-        "with null category",
-        {
-          name: validName,
-          price: validPrice,
-          category: null,
-        },
-      ],
+      ["with undefined category", undefined],
+      ["with null category", null],
     ];
 
-    categoryRequiredCases.forEach(([testName, input]) => {
+    categoryRequiredCases.forEach(([testName, invalidInput]) => {
       test(testName, async () => {
-        req = { body: input };
+        let validInput = { ...input };
+        req = { body: validInput };
+        req.body.category = invalidInput;
 
         for (let middleware of createProduct) {
           await middleware(req, res, next);
@@ -194,13 +135,10 @@ describe("Product addition integration tests", () => {
     });
 
     test("with 2 undefined fields", async () => {
-      req = {
-        body: {
-          name: undefined,
-          price: validPrice,
-          category: undefined,
-        },
-      };
+      let validInput = { ...input };
+      req = { body: validInput };
+      req.body.name = undefined;
+      req.body.category = undefined;
 
       for (let middleware of createProduct) {
         await middleware(req, res, next);
@@ -217,13 +155,10 @@ describe("Product addition integration tests", () => {
     });
 
     test("with 2 null fields", async () => {
-      req = {
-        body: {
-          name: validName,
-          price: null,
-          category: null,
-        },
-      };
+      let validInput = { ...input };
+      req = { body: validInput };
+      req.body.price = null;
+      req.body.category = null;
 
       for (let middleware of createProduct) {
         await middleware(req, res, next);
@@ -241,13 +176,10 @@ describe("Product addition integration tests", () => {
     });
 
     test("with mix of undefined and null fields", async () => {
-      req = {
-        body: {
-          name: undefined,
-          price: null,
-          category: validCategory,
-        },
-      };
+      let validInput = { ...input };
+      req = { body: validInput };
+      req.body.name = undefined;
+      req.body.price = null;
 
       for (let middleware of createProduct) {
         await middleware(req, res, next);

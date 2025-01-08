@@ -4,10 +4,13 @@ const authResponses = require("../../src/auth/authResponseMessages");
 describe("JWT integration test(s)", () => {
   let req, res, next;
 
-  const validUsername = "newUser";
-  const validPassword = "W;Vj(+C8Sgqo'_4";
   const testToken =
     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im5ld1VzZXIiLCJpYXQiOjE1MTYyMzkwMjJ9.6X6NKeg86aa_8fjqOnI0iGsANvBUgBDBqV4Mc6Kiigg";
+
+  const input = {
+    username: "newUser",
+    password: "W;Vj(+C8Sgqo'_4",
+  };
 
   describe("unauthorized (401):", () => {
     beforeEach(() => {
@@ -20,47 +23,18 @@ describe("JWT integration test(s)", () => {
     });
 
     const authHeaderRequiredCases = [
-      [
-        "undefined auth header",
-        {
-          body: {
-            username: validUsername,
-            password: validPassword,
-          },
-          headers: {
-            authorization: undefined,
-          },
-        },
-      ],
-      [
-        "null auth header",
-        {
-          body: {
-            username: validUsername,
-            password: validPassword,
-          },
-          headers: {
-            authorization: null,
-          },
-        },
-      ],
-      [
-        "empty auth header",
-        {
-          body: {
-            username: validUsername,
-            password: validPassword,
-          },
-          headers: {
-            authorization: "",
-          },
-        },
-      ],
+      ["undefined auth header", undefined],
+      ["null auth header", null],
+      ["empty auth header", ""],
     ];
 
-    authHeaderRequiredCases.forEach(([testName, input]) => {
+    authHeaderRequiredCases.forEach(([testName, invalidInput]) => {
       test(testName, async () => {
-        req = input;
+        let validInput = { ...input };
+        req = {
+          body: validInput,
+          headers: { authorization: invalidInput },
+        };
 
         for (let middleware of verifyToken) {
           await middleware(req, res, next);
@@ -75,10 +49,7 @@ describe("JWT integration test(s)", () => {
 
     test("with invalid token", async () => {
       req = {
-        body: {
-          username: validUsername,
-          password: validPassword,
-        },
+        body: input,
         headers: {
           authorization: `Bearer ${testToken}`,
         },

@@ -9,58 +9,41 @@ const validationErrorMessages = require("../../src/resources/validationErrorMess
 
 describe("Order model unit tests", () => {
   describe("new order test", () => {
+    const validInput = {
+      customerId: new mongoose.Types.ObjectId("676ebb16ef1902e59f440af8"),
+      products: [
+        new mongoose.Types.ObjectId("676ebc4f4c7fe8bc98eb8142"),
+        new mongoose.Types.ObjectId("676ebc5d4b3523f3fa29559f"),
+        new mongoose.Types.ObjectId("676ebc6946f5a33e21734847"),
+      ],
+      orderDate: new Date(),
+      totalNumberOfUnits: 2,
+      totalCost: 95,
+      shippingAddress: "Acropolis 1, Athens",
+      billingAddress: "Acropolis 1, Athens",
+      status: "Pending",
+      shippingMethod: "Standard",
+      paymentMethod: "Credit/Debit card",
+    };
+
     beforeAll(() => {
+      mockingoose(Order);
+    });
+
+    afterAll(() => {
       mockingoose.resetAll();
     });
 
-    const validCustomerId = new mongoose.Types.ObjectId(
-      "676ebb16ef1902e59f440af8"
-    );
-    const validProductList = [
-      new mongoose.Types.ObjectId("676ebc4f4c7fe8bc98eb8142"),
-      new mongoose.Types.ObjectId("676ebc5d4b3523f3fa29559f"),
-      new mongoose.Types.ObjectId("676ebc6946f5a33e21734847"),
-    ];
-    const validOrderDate = new Date();
-    const validTotalNumberOfUnits = 2;
-    const validTotalCost = 95;
-    const validShippingAddress = "Akropolis 1, Athens";
-    const validBillingAddress = "Akropolis 1, Athens";
-    const validStatus = "Pending";
-    const validShippingMethod = "Standard";
-    const validPaymentMethod = "Credit/Debit card";
-
     test("with valid fields", () => {
-      const newOrder = new Order({
-        customerId: validCustomerId,
-        products: validProductList,
-        orderDate: validOrderDate,
-        totalNumberOfUnits: validTotalNumberOfUnits,
-        totalCost: validTotalCost,
-        shippingAddress: validShippingAddress,
-        billingAddress: validBillingAddress,
-        status: validStatus,
-        shippingMethod: validShippingMethod,
-        paymentMethod: validPaymentMethod,
-      });
+      const newOrder = new Order(validInput);
 
       const err = newOrder.validateSync();
       expect(err).toBeUndefined();
     });
 
     test("with empty product list", () => {
-      const newOrder = new Order({
-        customerId: validCustomerId,
-        products: [],
-        orderDate: validOrderDate,
-        totalNumberOfUnits: validTotalNumberOfUnits,
-        totalCost: validTotalCost,
-        shippingAddress: validShippingAddress,
-        billingAddress: validBillingAddress,
-        status: validStatus,
-        shippingMethod: validShippingMethod,
-        paymentMethod: validPaymentMethod,
-      });
+      const newOrder = new Order(validInput);
+      newOrder.products = [];
       const err = newOrder.validateSync();
 
       expect(err.errors.products).toBeDefined();
@@ -70,18 +53,8 @@ describe("Order model unit tests", () => {
     });
 
     test("with totalNumberOfUnits = 0", () => {
-      const newOrder = new Order({
-        customerId: validCustomerId,
-        products: validProductList,
-        orderDate: validOrderDate,
-        totalNumberOfUnits: 0,
-        totalCost: validTotalCost,
-        shippingAddress: validShippingAddress,
-        billingAddress: validBillingAddress,
-        status: validStatus,
-        shippingMethod: validShippingMethod,
-        paymentMethod: validPaymentMethod,
-      });
+      const newOrder = new Order(validInput);
+      newOrder.totalNumberOfUnits = 0;
       const err = newOrder.validateSync();
 
       expect(err.errors.totalNumberOfUnits).toBeDefined();
@@ -91,19 +64,8 @@ describe("Order model unit tests", () => {
     });
 
     test("with totalCost = 0", () => {
-      const newOrder = new Order({
-        customerId: validCustomerId,
-        products: validProductList,
-        orderDate: validOrderDate,
-        totalNumberOfUnits: validTotalNumberOfUnits,
-        totalCost: 0,
-        shippingAddress: validShippingAddress,
-        billingAddress: validBillingAddress,
-        status: validStatus,
-        shippingMethod: validShippingMethod,
-        paymentMethod: validPaymentMethod,
-      });
-
+      const newOrder = new Order(validInput);
+      newOrder.totalCost = 0;
       const err = newOrder.validateSync();
 
       expect(err.errors.totalCost).toBeDefined();
@@ -113,18 +75,8 @@ describe("Order model unit tests", () => {
     });
 
     test("with invalid status", () => {
-      const newOrder = new Order({
-        customerId: validCustomerId,
-        products: validProductList,
-        orderDate: validOrderDate,
-        totalNumberOfUnits: validTotalNumberOfUnits,
-        totalCost: validTotalCost,
-        shippingAddress: validShippingAddress,
-        billingAddress: validBillingAddress,
-        status: "Ready",
-        shippingMethod: validShippingMethod,
-        paymentMethod: validPaymentMethod,
-      });
+      const newOrder = new Order(validInput);
+      newOrder.status = "Ready";
       const err = newOrder.validateSync();
 
       expect(err.errors.status).toBeDefined();
@@ -134,18 +86,8 @@ describe("Order model unit tests", () => {
     });
 
     test("with invalid shippingMethod", () => {
-      const newOrder = new Order({
-        customerId: validCustomerId,
-        products: validProductList,
-        orderDate: validOrderDate,
-        totalNumberOfUnits: validTotalNumberOfUnits,
-        totalCost: validTotalCost,
-        shippingAddress: validShippingAddress,
-        billingAddress: validBillingAddress,
-        status: validStatus,
-        shippingMethod: "Fast",
-        paymentMethod: validPaymentMethod,
-      });
+      const newOrder = new Order(validInput);
+      newOrder.shippingMethod = "Fast";
       const err = newOrder.validateSync();
 
       expect(err.errors.shippingMethod).toBeDefined();
@@ -155,18 +97,8 @@ describe("Order model unit tests", () => {
     });
 
     test("with invalid paymentMethod", () => {
-      const newOrder = new Order({
-        customerId: validCustomerId,
-        products: validProductList,
-        orderDate: validOrderDate,
-        totalNumberOfUnits: validTotalNumberOfUnits,
-        totalCost: validTotalCost,
-        shippingAddress: validShippingAddress,
-        billingAddress: validBillingAddress,
-        status: validStatus,
-        shippingMethod: validShippingMethod,
-        paymentMethod: "Coins",
-      });
+      const newOrder = new Order(validInput);
+      newOrder.paymentMethod = "Coins";
       const err = newOrder.validateSync();
 
       expect(err.errors.paymentMethod).toBeDefined();

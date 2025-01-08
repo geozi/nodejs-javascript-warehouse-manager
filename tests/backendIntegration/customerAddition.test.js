@@ -6,14 +6,16 @@ const validationErrorMessages = require("../../src/resources/validationErrorMess
 describe("Customer addition integration tests", () => {
   let req, res, next;
 
-  const validFirstName = "Maria";
-  const validLastName = "Bennet";
-  const validPhoneNumber = "620-763-3940";
-  const validCity = "Athens";
-  const validStreetAddress = "Acropolis 1";
-  const validZipCode = "11742";
-  const validCustomerType = "retail";
-  const validUsername = "helloWorld";
+  const input = {
+    firstName: "Maria",
+    lastName: "Bennet",
+    phoneNumber: "620-763-3940",
+    city: "Athens",
+    streetAddress: "Acropolis 1",
+    zipCode: "11742",
+    customerType: "retail",
+    username: "helloWorld",
+  };
 
   beforeEach(() => {
     res = { status: jest.fn().mockReturnThis(), json: jest.fn() };
@@ -27,18 +29,8 @@ describe("Customer addition integration tests", () => {
 
   describe("created (201)", () => {
     test("with valid fields", async () => {
-      req = {
-        body: {
-          firstName: validFirstName,
-          lastName: validLastName,
-          phoneNumber: validPhoneNumber,
-          city: validCity,
-          streetAddress: validStreetAddress,
-          zipCode: validZipCode,
-          customerType: validCustomerType,
-          username: validUsername,
-        },
-      };
+      let validInput = { ...input };
+      req = { body: validInput };
 
       for (let middleware of createCustomer) {
         await middleware(req, res, next);
@@ -54,37 +46,15 @@ describe("Customer addition integration tests", () => {
 
   describe("bad request (400)", () => {
     const firstNameRequiredCases = [
-      [
-        "with undefined firstName",
-        {
-          firstName: undefined,
-          lastName: validLastName,
-          phoneNumber: validPhoneNumber,
-          city: validCity,
-          streetAddress: validStreetAddress,
-          zipCode: validZipCode,
-          customerType: validCustomerType,
-          username: validUsername,
-        },
-      ],
-      [
-        "with null firstName",
-        {
-          firstName: null,
-          lastName: validLastName,
-          phoneNumber: validPhoneNumber,
-          city: validCity,
-          streetAddress: validStreetAddress,
-          zipCode: validZipCode,
-          customerType: validCustomerType,
-          username: validUsername,
-        },
-      ],
+      ["with undefined firstName", undefined],
+      ["with null firstName", null],
     ];
 
-    firstNameRequiredCases.forEach(([testName, input]) => {
+    firstNameRequiredCases.forEach(([testName, invalidInput]) => {
       test(testName, async () => {
-        req = { body: input };
+        let validInput = { ...input };
+        req = { body: validInput };
+        req.body.firstName = invalidInput;
 
         for (let middleware of createCustomer) {
           await middleware(req, res, next);
@@ -99,37 +69,15 @@ describe("Customer addition integration tests", () => {
     });
 
     const lastNameRequiredCases = [
-      [
-        "with undefined lastName",
-        {
-          firstName: validFirstName,
-          lastName: undefined,
-          phoneNumber: validPhoneNumber,
-          city: validCity,
-          streetAddress: validStreetAddress,
-          zipCode: validZipCode,
-          customerType: validCustomerType,
-          username: validUsername,
-        },
-      ],
-      [
-        "with null lastName",
-        {
-          firstName: validFirstName,
-          lastName: null,
-          phoneNumber: validPhoneNumber,
-          city: validCity,
-          streetAddress: validStreetAddress,
-          zipCode: validZipCode,
-          customerType: validCustomerType,
-          username: validUsername,
-        },
-      ],
+      ["with undefined lastName", undefined],
+      ["with null lastName", null],
     ];
 
-    lastNameRequiredCases.forEach(([testName, input]) => {
+    lastNameRequiredCases.forEach(([testName, invalidInput]) => {
       test(testName, async () => {
-        req = { body: input };
+        let validInput = { ...input };
+        req = { body: validInput };
+        req.body.lastName = invalidInput;
 
         for (let middleware of createCustomer) {
           await middleware(req, res, next);
@@ -144,37 +92,15 @@ describe("Customer addition integration tests", () => {
     });
 
     const phoneNumberRequiredCases = [
-      [
-        "with undefined phoneNumber",
-        {
-          firstName: validFirstName,
-          lastName: validLastName,
-          phoneNumber: undefined,
-          city: validCity,
-          streetAddress: validStreetAddress,
-          zipCode: validZipCode,
-          customerType: validCustomerType,
-          username: validUsername,
-        },
-      ],
-      [
-        "with null phoneNumber",
-        {
-          firstName: validFirstName,
-          lastName: validLastName,
-          phoneNumber: null,
-          city: validCity,
-          streetAddress: validStreetAddress,
-          zipCode: validZipCode,
-          customerType: validCustomerType,
-          username: validUsername,
-        },
-      ],
+      ["with undefined phoneNumber", undefined],
+      ["with null phoneNumber", null],
     ];
 
-    phoneNumberRequiredCases.forEach(([testName, input]) => {
+    phoneNumberRequiredCases.forEach(([testName, invalidInput]) => {
       test(testName, async () => {
-        req = { body: input };
+        let validInput = { ...input };
+        req = { body: validInput };
+        req.body.phoneNumber = invalidInput;
 
         for (let middleware of createCustomer) {
           await middleware(req, res, next);
@@ -189,37 +115,15 @@ describe("Customer addition integration tests", () => {
     });
 
     const cityRequiredCases = [
-      [
-        "with undefined city",
-        {
-          firstName: validFirstName,
-          lastName: validLastName,
-          phoneNumber: validPhoneNumber,
-          city: undefined,
-          streetAddress: validStreetAddress,
-          zipCode: validZipCode,
-          customerType: validCustomerType,
-          username: validUsername,
-        },
-      ],
-      [
-        "with null city",
-        {
-          firstName: validFirstName,
-          lastName: validLastName,
-          phoneNumber: validPhoneNumber,
-          city: null,
-          streetAddress: validStreetAddress,
-          zipCode: validZipCode,
-          customerType: validCustomerType,
-          username: validUsername,
-        },
-      ],
+      ["with undefined city", undefined],
+      ["with null city", null],
     ];
 
-    cityRequiredCases.forEach(([testName, input]) => {
+    cityRequiredCases.forEach(([testName, invalidInput]) => {
       test(testName, async () => {
-        req = { body: input };
+        let validInput = { ...input };
+        req = { body: validInput };
+        req.body.city = invalidInput;
 
         for (let middleware of createCustomer) {
           await middleware(req, res, next);
@@ -234,37 +138,15 @@ describe("Customer addition integration tests", () => {
     });
 
     const streetAddressRequiredCases = [
-      [
-        "with undefined streetAddress",
-        {
-          firstName: validFirstName,
-          lastName: validLastName,
-          phoneNumber: validPhoneNumber,
-          city: validCity,
-          streetAddress: undefined,
-          zipCode: validZipCode,
-          customerType: validCustomerType,
-          username: validUsername,
-        },
-      ],
-      [
-        "with null streetAddress",
-        {
-          firstName: validFirstName,
-          lastName: validLastName,
-          phoneNumber: validPhoneNumber,
-          city: validCity,
-          streetAddress: null,
-          zipCode: validZipCode,
-          customerType: validCustomerType,
-          username: validUsername,
-        },
-      ],
+      ["with undefined streetAddress", undefined],
+      ["with null streetAddress", null],
     ];
 
-    streetAddressRequiredCases.forEach(([testName, input]) => {
+    streetAddressRequiredCases.forEach(([testName, invalidInput]) => {
       test(testName, async () => {
-        req = { body: input };
+        let validInput = { ...input };
+        req = { body: validInput };
+        req.body.streetAddress = invalidInput;
 
         for (let middleware of createCustomer) {
           await middleware(req, res, next);
@@ -281,37 +163,15 @@ describe("Customer addition integration tests", () => {
     });
 
     const zipCodeRequiredCases = [
-      [
-        "with undefined zipCode",
-        {
-          firstName: validFirstName,
-          lastName: validLastName,
-          phoneNumber: validPhoneNumber,
-          city: validCity,
-          streetAddress: validStreetAddress,
-          zipCode: undefined,
-          customerType: validCustomerType,
-          username: validUsername,
-        },
-      ],
-      [
-        "with null zipCode",
-        {
-          firstName: validFirstName,
-          lastName: validLastName,
-          phoneNumber: validPhoneNumber,
-          city: validCity,
-          streetAddress: validStreetAddress,
-          zipCode: null,
-          customerType: validCustomerType,
-          username: validUsername,
-        },
-      ],
+      ["with undefined zipCode", undefined],
+      ["with null zipCode", null],
     ];
 
-    zipCodeRequiredCases.forEach(([testName, input]) => {
+    zipCodeRequiredCases.forEach(([testName, invalidInput]) => {
       test(testName, async () => {
-        req = { body: input };
+        let validInput = { ...input };
+        req = { body: validInput };
+        req.body.zipCode = invalidInput;
 
         for (let middleware of createCustomer) {
           await middleware(req, res, next);
@@ -326,37 +186,15 @@ describe("Customer addition integration tests", () => {
     });
 
     const customerTypeRequiredCases = [
-      [
-        "with undefined customerType",
-        {
-          firstName: validFirstName,
-          lastName: validLastName,
-          phoneNumber: validPhoneNumber,
-          city: validCity,
-          streetAddress: validStreetAddress,
-          zipCode: validZipCode,
-          customerType: undefined,
-          username: validUsername,
-        },
-      ],
-      [
-        "with null customerType",
-        {
-          firstName: validFirstName,
-          lastName: validLastName,
-          phoneNumber: validPhoneNumber,
-          city: validCity,
-          streetAddress: validStreetAddress,
-          zipCode: validZipCode,
-          customerType: null,
-          username: validUsername,
-        },
-      ],
+      ["with undefined customerType", undefined],
+      ["with null customerType", null],
     ];
 
-    customerTypeRequiredCases.forEach(([testName, input]) => {
+    customerTypeRequiredCases.forEach(([testName, invalidInput]) => {
       test(testName, async () => {
-        req = { body: input };
+        let validInput = { ...input };
+        req = { body: validInput };
+        req.body.customerType = invalidInput;
 
         for (let middleware of createCustomer) {
           await middleware(req, res, next);
@@ -371,37 +209,15 @@ describe("Customer addition integration tests", () => {
     });
 
     const usernameRequiredCases = [
-      [
-        "with undefined username",
-        {
-          firstName: validFirstName,
-          lastName: validLastName,
-          phoneNumber: validPhoneNumber,
-          city: validCity,
-          streetAddress: validStreetAddress,
-          zipCode: validZipCode,
-          customerType: validCustomerType,
-          username: undefined,
-        },
-      ],
-      [
-        "with null username",
-        {
-          firstName: validFirstName,
-          lastName: validLastName,
-          phoneNumber: validPhoneNumber,
-          city: validCity,
-          streetAddress: validStreetAddress,
-          zipCode: validZipCode,
-          customerType: validCustomerType,
-          username: null,
-        },
-      ],
+      ["with undefined username", undefined],
+      ["with null username", null],
     ];
 
-    usernameRequiredCases.forEach(([testName, input]) => {
+    usernameRequiredCases.forEach(([testName, invalidInput]) => {
       test(testName, async () => {
-        req = { body: input };
+        let validInput = { ...input };
+        req = { body: validInput };
+        req.body.username = invalidInput;
 
         for (let middleware of createCustomer) {
           await middleware(req, res, next);

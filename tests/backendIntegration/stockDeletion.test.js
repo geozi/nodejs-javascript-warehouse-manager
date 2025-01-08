@@ -4,7 +4,10 @@ const validationErrorMessages = require("../../src/resources/validationErrorMess
 
 describe("Stock deletion integration tests", () => {
   let req, res, next;
-  const validProductId = "67710722913928977aa04ea0";
+
+  const input = {
+    productId: "67710722913928977aa04ea0",
+  };
 
   beforeEach(() => {
     res = { status: jest.fn().mockReturnThis(), json: jest.fn() };
@@ -18,7 +21,7 @@ describe("Stock deletion integration tests", () => {
 
   describe("deleted (204)", () => {
     test("with valid productId", async () => {
-      req = { body: { productId: validProductId } };
+      req = { body: { productId: input.productId } };
 
       for (let middleware of deleteStock) {
         await middleware(req, res, next);
@@ -31,18 +34,15 @@ describe("Stock deletion integration tests", () => {
 
   describe("bad request (400)", () => {
     const productIdRequiredCases = [
-      [
-        "with undefined productId",
-        {
-          productId: undefined,
-        },
-      ],
-      ["with null productId", { productId: null }],
+      ["with undefined productId", undefined],
+      ["with null productId", null],
     ];
 
-    productIdRequiredCases.forEach(([testName, input]) => {
+    productIdRequiredCases.forEach(([testName, invalidInput]) => {
       test(testName, async () => {
-        req = { body: input };
+        let validInput = { ...input };
+        req = { body: validInput };
+        req.body.productId = invalidInput;
 
         for (let middleware of deleteStock) {
           await middleware(req, res, next);
@@ -61,23 +61,18 @@ describe("Stock deletion integration tests", () => {
     });
 
     const productIdLengthCases = [
-      [
-        "with too short productId",
-        {
-          productId: "67710722913928977",
-        },
-      ],
+      ["with too short productId", "67710722913928977"],
       [
         "with too long productId",
-        {
-          productId: "67710722913928977aa04ea067710722913928977aa04ea0",
-        },
+        "67710722913928977aa04ea067710722913928977aa04ea0",
       ],
     ];
 
-    productIdLengthCases.forEach(([testName, input]) => {
+    productIdLengthCases.forEach(([testName, invalidInput]) => {
       test(testName, async () => {
-        req = { body: input };
+        let validInput = { ...input };
+        req = { body: validInput };
+        req.body.productId = invalidInput;
 
         for (let middleware of deleteStock) {
           await middleware(req, res, next);
@@ -92,29 +87,16 @@ describe("Stock deletion integration tests", () => {
     });
 
     const productIdInvalidCases = [
-      [
-        "with productId containing special symbols",
-        {
-          productId: "67*db12ed*29a1*ed143e37e",
-        },
-      ],
-      [
-        "with productId containing white spaces",
-        {
-          productId: "6771 722 13928977aa04ea0",
-        },
-      ],
-      [
-        "with productId containing capital letters",
-        {
-          productId: "67710722913928977AA04ea0",
-        },
-      ],
+      ["with productId containing special symbols", "67*db12ed*29a1*ed143e37e"],
+      ["with productId containing white spaces", "6771 722 13928977aa04ea0"],
+      ["with productId containing capital letters", "67710722913928977AA04ea0"],
     ];
 
-    productIdInvalidCases.forEach(([testName, input]) => {
+    productIdInvalidCases.forEach(([testName, invalidInput]) => {
       test(testName, async () => {
-        req = { body: input };
+        let validInput = { ...input };
+        req = { body: validInput };
+        req.body.productId = invalidInput;
 
         for (let middleware of deleteStock) {
           await middleware(req, res, next);

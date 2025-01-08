@@ -7,8 +7,10 @@ const validationErrorMessages = require("../../src/resources/validationErrorMess
 describe("Failed login integration test(s)", () => {
   let req, res, next;
 
-  const validUsername = "newUser";
-  const validPassword = "W;Vj(+C8Sgqo'_4";
+  const input = {
+    username: "newUser",
+    password: "W;Vj(+C8Sgqo'_4",
+  };
 
   describe("bad request (400):", () => {
     beforeEach(() => {
@@ -21,25 +23,15 @@ describe("Failed login integration test(s)", () => {
     });
 
     const userNameRequiredCases = [
-      [
-        "username is undefined",
-        {
-          username: undefined,
-          password: validPassword,
-        },
-      ],
-      [
-        "username is null",
-        {
-          username: null,
-          password: validPassword,
-        },
-      ],
+      ["username is undefined", undefined],
+      ["username is null", null],
     ];
 
-    userNameRequiredCases.forEach(([testName, input]) => {
+    userNameRequiredCases.forEach(([testName, invalidInput]) => {
       test(testName, async () => {
-        req = { body: input };
+        let validInput = { ...input };
+        req = { body: validInput };
+        req.body.username = invalidInput;
 
         for (let middleware of login) {
           await middleware(req, res, next);
@@ -53,25 +45,15 @@ describe("Failed login integration test(s)", () => {
     });
 
     const passwordRequiredCases = [
-      [
-        "password is undefined",
-        {
-          username: validUsername,
-          password: undefined,
-        },
-      ],
-      [
-        "password is null",
-        {
-          username: validUsername,
-          password: null,
-        },
-      ],
+      ["password is undefined", undefined],
+      ["password is null", null],
     ];
 
-    passwordRequiredCases.forEach(([testName, input]) => {
+    passwordRequiredCases.forEach(([testName, invalidInput]) => {
       test(testName, async () => {
-        req = { body: input };
+        let validInput = { ...input };
+        req = { body: validInput };
+        req.body.password = invalidInput;
 
         for (let middleware of login) {
           await middleware(req, res, next);
@@ -89,39 +71,17 @@ describe("Failed login integration test(s)", () => {
     });
 
     const passwordInvalidCases = [
-      [
-        "password has no uppercase letters",
-        {
-          username: validUsername,
-          password: "!]i&u^^.57h3.,%",
-        },
-      ],
-      [
-        "password has no lowercase letters",
-        {
-          username: validUsername,
-          password: "+[Q]D~~A,9CGYZ~",
-        },
-      ],
-      [
-        "password has no numbers",
-        {
-          username: validUsername,
-          password: "Q}_MC}mdguOs!Gr",
-        },
-      ],
-      [
-        "password has no special symbols",
-        {
-          username: validUsername,
-          password: "EyB0McqoXAOYA1Y",
-        },
-      ],
+      ["password has no uppercase letters", "!]i&u^^.57h3.,%"],
+      ["password has no lowercase letters", "+[Q]D~~A,9CGYZ~"],
+      ["password has no numbers", "Q}_MC}mdguOs!Gr"],
+      ["password has no special symbols", "EyB0McqoXAOYA1Y"],
     ];
 
-    passwordInvalidCases.forEach(([testName, input]) => {
+    passwordInvalidCases.forEach(([testName, invalidInput]) => {
       test(testName, async () => {
-        req = { body: input };
+        let validInput = { ...input };
+        req = { body: validInput };
+        req.body.password = invalidInput;
 
         for (let middleware of login) {
           await middleware(req, res, next);
@@ -139,12 +99,9 @@ describe("Failed login integration test(s)", () => {
     });
 
     test("password is too short", async () => {
-      req = {
-        body: {
-          username: validUsername,
-          password: "$b4'1A",
-        },
-      };
+      let validInput = { ...input };
+      req = { body: validInput };
+      req.body.password = "$b4'1A";
 
       for (let middleware of login) {
         await middleware(req, res, next);
@@ -157,12 +114,10 @@ describe("Failed login integration test(s)", () => {
     });
 
     test("with mix of undefined and null fields", async () => {
-      req = {
-        body: {
-          username: undefined,
-          password: null,
-        },
-      };
+      let validInput = { ...input };
+      req = { body: validInput };
+      req.body.username = undefined;
+      req.body.password = null;
 
       for (let middleware of login) {
         await middleware(req, res, next);
@@ -210,12 +165,7 @@ describe("Failed login integration test(s)", () => {
     test("user was not found", async () => {
       User.findOne = jest.fn().mockReturnValue(undefined);
 
-      req = {
-        body: {
-          username: validUsername,
-          password: validPassword,
-        },
-      };
+      req = { body: input };
 
       for (let middleware of login) {
         await middleware(req, res, next);
@@ -231,10 +181,7 @@ describe("Failed login integration test(s)", () => {
       bcrypt.compare = jest.fn().mockReturnValue(false);
 
       req = {
-        body: {
-          username: validUsername,
-          password: validPassword,
-        },
+        body: input,
       };
 
       for (let middleware of login) {

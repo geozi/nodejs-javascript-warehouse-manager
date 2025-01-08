@@ -6,10 +6,13 @@ const validationErrorMessages = require("../../src/resources/validationErrorMess
 
 describe("User reg. integration tests", () => {
   let req, res, next;
-  const validUsername = "newUser";
-  const validEmail = "myEmail@example.com";
-  const validPassword = "lj}6L6H$=0(UgI&";
-  const validRole = "customer";
+
+  const input = {
+    username: "newUser",
+    email: "myEmail@example.com",
+    password: "lj}6L6H$=0(UgI&",
+    role: "customer",
+  };
 
   beforeEach(() => {
     res = { status: jest.fn().mockReturnThis(), json: jest.fn() };
@@ -24,14 +27,9 @@ describe("User reg. integration tests", () => {
 
   describe("created (201)", () => {
     test("with valid fields", async () => {
-      req = {
-        body: {
-          username: validUsername,
-          email: validEmail,
-          password: validPassword,
-          role: validRole,
-        },
-      };
+      let validInput = { ...input };
+      req = { body: validInput };
+
       for (let middleware of create) {
         await middleware(req, res, next);
       }
@@ -46,29 +44,15 @@ describe("User reg. integration tests", () => {
 
   describe("bad request (400)", () => {
     const usernameRequiredCases = [
-      [
-        "with undefined username",
-        {
-          username: undefined,
-          email: validEmail,
-          password: validPassword,
-          role: validRole,
-        },
-      ],
-      [
-        "with null username",
-        {
-          username: null,
-          email: validEmail,
-          password: validPassword,
-          role: validRole,
-        },
-      ],
+      ["with undefined username", undefined],
+      ["with null username", null],
     ];
 
-    usernameRequiredCases.forEach(([testName, input]) => [
+    usernameRequiredCases.forEach(([testName, invalidInput]) => [
       test(testName, async () => {
-        req = { body: input };
+        let validInput = { ...input };
+        req = { body: validInput };
+        req.body.username = invalidInput;
 
         for (let middleware of create) {
           await middleware(req, res, next);
@@ -83,29 +67,15 @@ describe("User reg. integration tests", () => {
     ]);
 
     const emailRequiredCases = [
-      [
-        "with undefined email",
-        {
-          username: validUsername,
-          email: undefined,
-          password: validPassword,
-          role: validRole,
-        },
-      ],
-      [
-        "with null email",
-        {
-          username: validUsername,
-          email: null,
-          password: validPassword,
-          role: validRole,
-        },
-      ],
+      ["with undefined email", undefined],
+      ["with null email", null],
     ];
 
-    emailRequiredCases.forEach(([testName, input]) => {
+    emailRequiredCases.forEach(([testName, invalidInput]) => {
       test(testName, async () => {
-        req = { body: input };
+        let validInput = { ...input };
+        req = { body: validInput };
+        req.body.email = invalidInput;
 
         for (let middleware of create) {
           await middleware(req, res, next);
@@ -120,29 +90,15 @@ describe("User reg. integration tests", () => {
     });
 
     const passwordRequiredCases = [
-      [
-        "with undefined password",
-        {
-          username: validUsername,
-          email: validEmail,
-          password: undefined,
-          role: validRole,
-        },
-      ],
-      [
-        "with null password",
-        {
-          username: validUsername,
-          email: validEmail,
-          password: null,
-          role: validRole,
-        },
-      ],
+      ["with undefined password", undefined],
+      ["with null password", null],
     ];
 
-    passwordRequiredCases.forEach(([testName, input]) => {
+    passwordRequiredCases.forEach(([testName, invalidInput]) => {
       test(testName, async () => {
-        req = { body: input };
+        let validInput = { ...input };
+        req = { body: validInput };
+        req.body.password = invalidInput;
 
         for (let middleware of create) {
           await middleware(req, res, next);
@@ -161,29 +117,15 @@ describe("User reg. integration tests", () => {
     });
 
     const roleRequiredCases = [
-      [
-        "with undefined role",
-        {
-          username: validUsername,
-          email: validEmail,
-          password: validPassword,
-          role: undefined,
-        },
-      ],
-      [
-        "with null role",
-        {
-          username: validUsername,
-          email: validEmail,
-          password: validPassword,
-          role: null,
-        },
-      ],
+      ["with undefined role", undefined],
+      ["with null role", null],
     ];
 
-    roleRequiredCases.forEach(([testName, input]) => {
+    roleRequiredCases.forEach(([testName, invalidInput]) => {
       test(testName, async () => {
-        req = { body: input };
+        let validInput = { ...input };
+        req = { body: validInput };
+        req.body.role = invalidInput;
 
         for (let middleware of create) {
           await middleware(req, res, next);
@@ -198,14 +140,10 @@ describe("User reg. integration tests", () => {
     });
 
     test("with 2 undefined fields", async () => {
-      req = {
-        body: {
-          username: undefined,
-          email: undefined,
-          password: validPassword,
-          role: validRole,
-        },
-      };
+      let validInput = { ...input };
+      req = { body: validInput };
+      req.body.username = undefined;
+      req.body.email = undefined;
 
       for (let middleware of create) {
         await middleware(req, res, next);
@@ -222,14 +160,10 @@ describe("User reg. integration tests", () => {
     });
 
     test("with 2 null fields", async () => {
-      req = {
-        body: {
-          username: null,
-          email: validEmail,
-          password: null,
-          role: validRole,
-        },
-      };
+      let validInput = { ...input };
+      req = { body: validInput };
+      req.body.username = null;
+      req.body.password = null;
 
       for (let middleware of create) {
         await middleware(req, res, next);
@@ -248,9 +182,7 @@ describe("User reg. integration tests", () => {
     });
 
     test("with empty request", async () => {
-      req = {
-        body: {},
-      };
+      req = { body: {} };
 
       for (let middleware of create) {
         await middleware(req, res, next);
