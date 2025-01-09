@@ -17,8 +17,8 @@ const { default: mongoose } = require("mongoose");
  * Middleware array that contains new product addition logic.
  *
  * @memberof module:src/controllers/product
- * @type {Array<Function>}
- * @property {Array<Function>} productAdditionRules - Express validation rules for new product addition.
+ * @type {Array<Object>}
+ * @property {ValidationChain[]} productAdditionRules - Express validation rules for new product addition.
  * @property {Function} anonymousAsyncFunction - Handles new product addition requests and responses.
  *
  */
@@ -63,8 +63,8 @@ const createProduct = [
  * Middleware array that contains product info update logic.
  *
  * @memberof module:src/controllers/product
- * @type {Array<Function>}
- * @property {Array<Function>} productUpdateRules - Express validation rules for product info update.
+ * @type {Array<Object>}
+ * @property {ValidationChain[]} productUpdateRules - Express validation rules for product info update.
  * @property {Function} anonymousAsyncFunction - Handles product info update requests and responses.
  *
  */
@@ -127,8 +127,8 @@ const updateProduct = [
  * Middleware array that contains product deletion logic.
  *
  * @memberof module:src/controllers/product
- * @type {Array<Function>}
- * @property {Array<Function>} productDeletionRules - Express validation rules for product deletion.
+ * @type {Array<Object>}
+ * @property {ValidationChain[]} productDeletionRules - Express validation rules for product deletion.
  * @property {Function} anonymousAsyncFunction - Handles product deletion requests and responses.
  *
  */

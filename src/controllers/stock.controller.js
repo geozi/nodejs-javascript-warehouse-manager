@@ -17,8 +17,8 @@ const mongoose = require("mongoose");
  * Middleware array that contains new stock creation logic.
  *
  * @memberof module:src/controllers/stock
- * @type {Array<Function>}
- * @property {Array<Function>} stockCreationRules - Express validation rules for new stock creation.
+ * @type {Array<Object>}
+ * @property {ValidationChain[]} stockCreationRules - Express validation rules for new stock creation.
  * @property {Function} anonymousAsyncFunction - Handles new stock creation requests and responses.
  *
  */
@@ -64,8 +64,8 @@ const createStock = [
  * Middleware array that contains stock update logic.
  *
  * @memberof module:src/controllers/stock
- * @type {Array<Function>}
- * @property {Array<Function>} stockUpdateRules - Express validation rules for stock update.
+ * @type {Array<Object>}
+ * @property {ValidationChain[]} stockUpdateRules - Express validation rules for stock update.
  * @property {Function} anonymousAsyncFunction - Handles stock update requests and responses.
  *
  */
@@ -125,8 +125,8 @@ const updateStock = [
  * Middleware array that contains stock deletion logic.
  *
  * @memberof module:src/controllers/stock
- * @type {Array<Function>}
- * @property {Array<Function>} stockDeletionRules - Express validation rules for stock deletion.
+ * @type {Array<Object>}
+ * @property {ValidationChain[]} stockDeletionRules - Express validation rules for stock deletion.
  * @property {Function} anonymousAsyncFunction - Handles stock deletion requests and responses.
  *
  */

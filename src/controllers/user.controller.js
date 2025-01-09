@@ -15,8 +15,8 @@ const responseMessages = require("../resources/responseMessages");
  * Middleware array that contains user registration logic.
  *
  * @memberof module:src/controllers/user
- * @type {Array<Function>}
- * @property {Array<Function>} userRegistrationRules - Express validation rules for user registration.
+ * @type {Array<Object>}
+ * @property {ValidationChain[]} userRegistrationRules - Express validation rules for user registration.
  * @property {Function} anonymousAsyncFunction - Handles user registration requests and responses.
  *
  */

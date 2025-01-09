@@ -7,7 +7,10 @@ const { check } = require("express-validator");
 const validationErrorMessages = require("../resources/validationErrorMessages");
 const { PASSWORD_REGEX, ID_REGEX } = require("../resources/validationRegExp");
 
-// Validation rules for user registration.
+/**
+ * Returns a validation chain for user registration.
+ * @returns {ValidationChain[]} - Validation chain.
+ */
 const userRegistrationRules = () => {
   return [
     check("username")
@@ -27,7 +30,10 @@ const userRegistrationRules = () => {
   ];
 };
 
-// Validation rules for customer addition.
+/**
+ * Returns a validation chain for customer addition.
+ * @returns {ValidationChain[]} - Validation chain.
+ */
 const customerAdditionRules = () => {
   return [
     check("firstName")
@@ -55,7 +61,10 @@ const customerAdditionRules = () => {
   ];
 };
 
-// Validation rules for customer update.
+/**
+ * Returns a validation chain for customer info update.
+ * @returns {ValidationChain[]} - Validation chain.
+ */
 const customerUpdateRules = () => {
   return [
     check("id")
@@ -76,7 +85,10 @@ const customerUpdateRules = () => {
   ];
 };
 
-// Validation rules for customer deletion.
+/**
+ * Returns a validation chain for customer info deletion.
+ * @returns {ValidationChain[]} - Validation chain.
+ */
 const customerDeletionRules = () => {
   return [
     check("id")
@@ -89,7 +101,10 @@ const customerDeletionRules = () => {
   ];
 };
 
-// Validation rules for product addition.
+/**
+ * Returns a validation chain for product addition.
+ * @returns {ValidationChain[]} - Validation chain.
+ */
 const productAdditionRules = () => {
   return [
     check("name")
@@ -106,7 +121,10 @@ const productAdditionRules = () => {
   ];
 };
 
-// Validation rules for product update.
+/**
+ * Returns a validation chain for product info update.
+ * @returns {ValidationChain[]} - Validation chain.
+ */
 const productUpdateRules = () => {
   return [
     check("id")
@@ -122,7 +140,10 @@ const productUpdateRules = () => {
   ];
 };
 
-// Validation rules for product deletion.
+/**
+ * Returns a validation chain for product info deletion.
+ * @returns {ValidationChain[]} - Validation chain.
+ */
 const productDeletionRules = () => {
   return [
     check("id")
@@ -135,7 +156,10 @@ const productDeletionRules = () => {
   ];
 };
 
-// Validation rules for stock creation.
+/**
+ * Returns a validation chain for stock creation.
+ * @returns {ValidationChain[]} - Validation chain.
+ */
 const stockCreationRules = () => {
   return [
     check("productId")
@@ -149,7 +173,10 @@ const stockCreationRules = () => {
   ];
 };
 
-// Validation rules for stock update.
+/**
+ * Returns a validation chain for stock update.
+ * @returns {ValidationChain[]} - Validation chain.
+ */
 const stockUpdateRules = () => {
   return [
     check("productId")
@@ -163,7 +190,10 @@ const stockUpdateRules = () => {
   ];
 };
 
-// Validation rules for stock deletion.
+/**
+ * Returns a validation chain for stock deletion.
+ * @returns {ValidationChain[]} - Validation chain.
+ */
 const stockDeletionRules = () => [
   check("productId")
     .notEmpty()
@@ -174,7 +204,10 @@ const stockDeletionRules = () => [
     .withMessage(validationErrorMessages.PRODUCT_ID_LENGTH),
 ];
 
-// Validation rules for order creation.
+/**
+ * Returns a validation chain for order creation.
+ * @returns {ValidationChain[]} - Validation chain.
+ */
 const orderCreationRules = () => {
   return [
     check("customerId")
@@ -214,7 +247,10 @@ const orderCreationRules = () => {
   ];
 };
 
-// Validation rules for order deletion.
+/**
+ * Returns a validation chain for order deletion.
+ * @returns {ValidationChain[]} - Validation chain.
+ */
 const orderDeletionRules = () => {
   return [
     check("customerId")

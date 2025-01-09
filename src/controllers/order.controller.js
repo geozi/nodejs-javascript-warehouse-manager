@@ -16,8 +16,8 @@ const { default: mongoose } = require("mongoose");
  * Middleware array that contains new order creation logic.
  *
  * @memberof module:src/controllers/order
- * @type {Array<Function>}
- * @property {Array<Function>} orderCreationRules - Express validation rules for order creation.
+ * @type {Array<Object>}
+ * @property {ValidationChain[]} orderCreationRules - Express validation rules for order creation.
  * @property {Function} anonymousAsyncFunction - Handles new order creation requests and responses.
  *
  */
@@ -86,8 +86,8 @@ const createOrder = [
  * Middleware array that contains order deletion requests.
  *
  * @memberof module:src/controllers/order
- * @type {Array<Function>}
- * @property {Array<Function>} orderDeletionRules - Express validation rules for order deletion.
+ * @type {Array<Object>}
+ * @property {ValidationChain[]} orderDeletionRules - Express validation rules for order deletion.
  * @property {Function} anonymousAsyncFunction - Handles order deletion requests and responses.
  *
  */

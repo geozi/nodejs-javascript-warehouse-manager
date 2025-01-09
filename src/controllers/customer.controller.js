@@ -17,8 +17,8 @@ const mongoose = require("mongoose");
  * Middleware array that contains new customer addition logic.
  *
  * @memberof module:src/controllers/customer
- * @type {Array<Function>}
- * @property {Array<Function>} customerAdditionRules - Express validation rules for customer addition.
+ * @type {Array<Object>}
+ * @property {ValidationChain[]} customerAdditionRules - Express validation rules for customer addition.
  * @property {Function} anonymousAsyncFunction - Handles new customer addition requests and responses.
  */
 const createCustomer = [
@@ -76,8 +76,8 @@ const createCustomer = [
  * Middleware array that contains customer info update logic.
  *
  * @memberof module:src/controllers/customer
- * @type {Array<Function>}
- * @property {Array<Function>} customerUpdateRules - Express validation rules for customer info updates.
+ * @type {Array<Object>}
+ * @property {ValidationChain[]} customerUpdateRules - Express validation rules for customer info updates.
  * @property {Function} anonymousAsyncFunction - Handles customer info update requests and responses.
  */
 const updateCustomerInfo = [
@@ -155,8 +155,8 @@ const updateCustomerInfo = [
  * Middleware array that contains customer deletion logic.
  *
  * @memberof module:src/controllers/customer
- * @type {Array<Function>}
- * @property {Array<Function>} customerDeletionRules - Express validation rules for customer deletion.
+ * @type {Array<Object>}
+ * @property {ValidationChain[]} customerDeletionRules - Express validation rules for customer deletion.
  * @property {Function} anonymousAsyncFunction - Handles customer deletion requests and responses.
  */
 const deleteCustomer = [
