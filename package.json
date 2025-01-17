@@ -12,7 +12,11 @@
     "lint": "eslint ."
   },
   "keywords": [
-    "RESTful API"
+    "middleware pattern",
+    "RESTful API",
+    "JWT authentication",
+    "JavaScript",
+    "Jest"
   ],
   "author": "geozi",
   "license": "ISC",
