@@ -31,7 +31,7 @@ A presentation of the various tests that were run during the development of the 
 
 ## Security
 
-- **Authentication**: single-factor authentication
+- **Authentication**: Single-factor, local authentication.
 - **Authorization**: JSON Web Token (JWT)
 
 ##
